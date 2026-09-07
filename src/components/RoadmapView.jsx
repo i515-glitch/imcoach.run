@@ -213,12 +213,7 @@ export function RoadmapView({ roadmap, goal, userAssessment }) {
         <>
           {/* 1️⃣ [맨 위] 1안, 2안, 3안 가로방향 3개 박스형 배열 */}
           {plans && (
-            <div style={{ marginBottom: '18px' }}>
-              <div style={{ fontSize: '13px', color: 'var(--text-secondary)', fontWeight: '800', marginBottom: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span>🎯 맞춤형 3안 로드맵 선택</span>
-                <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>가로로 탭하여 플랜 변경</span>
-              </div>
-
+            <div style={{ marginBottom: '16px' }}>
               {/* 3안 가로 3개 박스 그리드 */}
               <div style={{
                 display: 'grid',
@@ -245,16 +240,16 @@ export function RoadmapView({ roadmap, goal, userAssessment }) {
                     <div>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
                         <span style={{ fontSize: '10px', fontWeight: '800', padding: '2px 5px', borderRadius: '5px', background: 'rgba(100, 210, 255, 0.2)', color: 'var(--accent-secondary)' }}>
-                          {plans.plan1.totalWeeks}주 실전
+                          {plans.plan1.totalWeeks}주
                         </span>
                         {activePlanId === 'plan1' && <span style={{ fontSize: '10px', color: 'var(--accent-secondary)', fontWeight: '900' }}>✓</span>}
                       </div>
-                      <div style={{ fontSize: '13px', fontWeight: '900', color: activePlanId === 'plan1' ? 'var(--accent-secondary)' : '#fff', marginBottom: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      <div style={{ fontSize: '13px', fontWeight: '900', color: activePlanId === 'plan1' ? 'var(--accent-secondary)' : '#fff', marginBottom: '2px' }}>
                         1안 실전형
                       </div>
                     </div>
-                    <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginTop: '4px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                      빠른 실전 돌파
+                    <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginTop: '2px' }}>
+                      단기 실전
                     </div>
                   </div>
                 )}
@@ -279,16 +274,16 @@ export function RoadmapView({ roadmap, goal, userAssessment }) {
                     <div>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
                         <span style={{ fontSize: '10px', fontWeight: '800', padding: '2px 5px', borderRadius: '5px', background: 'rgba(48, 209, 88, 0.2)', color: 'var(--accent-primary)' }}>
-                          {plans.plan2.totalWeeks}주 정석★
+                          {plans.plan2.totalWeeks}주 ★
                         </span>
                         {activePlanId === 'plan2' && <span style={{ fontSize: '10px', color: 'var(--accent-primary)', fontWeight: '900' }}>✓</span>}
                       </div>
-                      <div style={{ fontSize: '13px', fontWeight: '900', color: activePlanId === 'plan2' ? 'var(--accent-primary)' : '#fff', marginBottom: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      <div style={{ fontSize: '13px', fontWeight: '900', color: activePlanId === 'plan2' ? 'var(--accent-primary)' : '#fff', marginBottom: '2px' }}>
                         2안 정석형
                       </div>
                     </div>
-                    <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginTop: '4px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                      4단계 주기화
+                    <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginTop: '2px' }}>
+                      표준 주기화
                     </div>
                   </div>
                 )}
@@ -313,16 +308,16 @@ export function RoadmapView({ roadmap, goal, userAssessment }) {
                     <div>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
                         <span style={{ fontSize: '10px', fontWeight: '800', padding: '2px 5px', borderRadius: '5px', background: 'rgba(255, 183, 3, 0.2)', color: '#ffb703' }}>
-                          {plans.plan3.totalWeeks}주 초보
+                          {plans.plan3.totalWeeks}주
                         </span>
                         {activePlanId === 'plan3' && <span style={{ fontSize: '10px', color: '#ffb703', fontWeight: '900' }}>✓</span>}
                       </div>
-                      <div style={{ fontSize: '13px', fontWeight: '900', color: activePlanId === 'plan3' ? '#ffb703' : '#fff', marginBottom: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      <div style={{ fontSize: '13px', fontWeight: '900', color: activePlanId === 'plan3' ? '#ffb703' : '#fff', marginBottom: '2px' }}>
                         3안 초보형
                       </div>
                     </div>
-                    <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginTop: '4px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                      부상방지 완주
+                    <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginTop: '2px' }}>
+                      부상 방지
                     </div>
                   </div>
                 )}
@@ -332,123 +327,121 @@ export function RoadmapView({ roadmap, goal, userAssessment }) {
 
           {/* 2️⃣ [그 아래] 페이스 가이드 (1~3안 선택에 따라 자동 변경) */}
           <div style={{
-            padding: '14px 16px',
-            borderRadius: '18px',
+            padding: '12px 14px',
+            borderRadius: '16px',
             background: 'rgba(28, 28, 30, 0.85)',
             border: '1px solid rgba(255, 255, 255, 0.08)',
             backdropFilter: 'blur(20px)',
-            marginBottom: '18px'
+            marginBottom: '16px'
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+            <div style={{ marginBottom: '8px' }}>
               <span style={{ fontSize: '12px', fontWeight: '800', color: activePlanId === 'plan3' ? '#ffb703' : activePlanId === 'plan1' ? 'var(--accent-secondary)' : 'var(--accent-primary)' }}>
                 {activePlanId === 'plan3'
-                  ? '🌱 3안 초보자 맞춤 페이스 가이드'
+                  ? '🌱 3안 초보 맞춤 페이스'
                   : activePlanId === 'plan1'
-                  ? '⚡ 1안 실전형 목표 페이스 가이드'
-                  : '🏆 2안 정석 표준 페이스 가이드'}
-              </span>
-              <span style={{ fontSize: '10px', color: 'var(--text-muted)' }}>
-                {activePlanId === 'plan3' ? '슬로우 조깅 & 부상 방지' : '심폐 & 스피드 훈련'}
+                  ? '⚡ 1안 실전 목표 페이스'
+                  : '🏆 2안 정석 표준 페이스'}
               </span>
             </div>
 
             {/* 3안 초보자 선택 시 */}
             {activePlanId === 'plan3' ? (
               <div className="grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
-                <div style={{ padding: '10px 8px', background: 'rgba(255, 183, 3, 0.06)', borderRadius: '12px', border: '1px solid rgba(255, 183, 3, 0.2)' }}>
-                  <div style={{ fontSize: '10px', fontWeight: '800', color: '#ffb703' }}>E 조깅 (대화 속도)</div>
+                <div style={{ padding: '8px', background: 'rgba(255, 183, 3, 0.06)', borderRadius: '10px', border: '1px solid rgba(255, 183, 3, 0.2)' }}>
+                  <div style={{ fontSize: '10px', fontWeight: '800', color: '#ffb703' }}>E 조깅</div>
                   <div style={{ fontSize: '13px', fontWeight: '800', color: '#fff', marginTop: '2px' }}>8:00~8:45</div>
-                  <div style={{ fontSize: '9px', color: 'var(--text-muted)', marginTop: '2px' }}>부상 방지 조깅</div>
+                  <div style={{ fontSize: '9px', color: 'var(--text-muted)', marginTop: '2px' }}>대화 속도</div>
                 </div>
 
-                <div style={{ padding: '10px 8px', background: 'rgba(48, 209, 88, 0.06)', borderRadius: '12px', border: '1px solid rgba(48, 209, 88, 0.2)' }}>
+                <div style={{ padding: '8px', background: 'rgba(48, 209, 88, 0.06)', borderRadius: '10px', border: '1px solid rgba(48, 209, 88, 0.2)' }}>
                   <div style={{ fontSize: '10px', fontWeight: '800', color: 'var(--accent-primary)' }}>80:20 걷뛰</div>
-                  <div style={{ fontSize: '13px', fontWeight: '800', color: '#fff', marginTop: '2px' }}>2분 뜀 + 1분 걸음</div>
-                  <div style={{ fontSize: '9px', color: 'var(--text-muted)', marginTop: '2px' }}>무릎 충격 제로</div>
+                  <div style={{ fontSize: '13px', fontWeight: '800', color: '#fff', marginTop: '2px' }}>2분뜀+1분걸음</div>
+                  <div style={{ fontSize: '9px', color: 'var(--text-muted)', marginTop: '2px' }}>무릎 보호</div>
                 </div>
 
-                <div style={{ padding: '10px 8px', background: 'rgba(56, 189, 248, 0.06)', borderRadius: '12px', border: '1px solid rgba(56, 189, 248, 0.2)' }}>
-                  <div style={{ fontSize: '10px', fontWeight: '800', color: '#38bdf8' }}>하체 & 스트레칭</div>
-                  <div style={{ fontSize: '13px', fontWeight: '800', color: '#fff', marginTop: '2px' }}>주 2회 보강</div>
-                  <div style={{ fontSize: '9px', color: 'var(--text-muted)', marginTop: '2px' }}>스쿼트 & 폼롤러</div>
+                <div style={{ padding: '8px', background: 'rgba(56, 189, 248, 0.06)', borderRadius: '10px', border: '1px solid rgba(56, 189, 248, 0.2)' }}>
+                  <div style={{ fontSize: '10px', fontWeight: '800', color: '#38bdf8' }}>보강 운동</div>
+                  <div style={{ fontSize: '13px', fontWeight: '800', color: '#fff', marginTop: '2px' }}>주 2회</div>
+                  <div style={{ fontSize: '9px', color: 'var(--text-muted)', marginTop: '2px' }}>스쿼트</div>
                 </div>
               </div>
             ) : activePlanId === 'plan1' ? (
               /* 1안 실전형 선택 시 */
               <div className="grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
-                <div style={{ padding: '10px 8px', background: 'rgba(100, 210, 255, 0.06)', borderRadius: '12px', border: '1px solid rgba(100, 210, 255, 0.2)' }}>
-                  <div style={{ fontSize: '10px', fontWeight: '800', color: 'var(--accent-secondary)' }}>E (이지런)</div>
+                <div style={{ padding: '8px', background: 'rgba(100, 210, 255, 0.06)', borderRadius: '10px', border: '1px solid rgba(100, 210, 255, 0.2)' }}>
+                  <div style={{ fontSize: '10px', fontWeight: '800', color: 'var(--accent-secondary)' }}>E 이지런</div>
                   <div style={{ fontSize: '13px', fontWeight: '800', color: '#fff', marginTop: '2px' }}>
                     {roadmap.capabilityAnalysis?.vdotZones?.easy?.range || '6:30~7:00'}
                   </div>
-                  <div style={{ fontSize: '9px', color: 'var(--text-muted)', marginTop: '2px' }}>심폐 회복 지속</div>
+                  <div style={{ fontSize: '9px', color: 'var(--text-muted)', marginTop: '2px' }}>회복 조깅</div>
                 </div>
 
-                <div style={{ padding: '10px 8px', background: 'rgba(48, 209, 88, 0.06)', borderRadius: '12px', border: '1px solid rgba(48, 209, 88, 0.2)' }}>
-                  <div style={{ fontSize: '10px', fontWeight: '800', color: 'var(--accent-primary)' }}>M (목표 실전속도)</div>
+                <div style={{ padding: '8px', background: 'rgba(48, 209, 88, 0.06)', borderRadius: '10px', border: '1px solid rgba(48, 209, 88, 0.2)' }}>
+                  <div style={{ fontSize: '10px', fontWeight: '800', color: 'var(--accent-primary)' }}>M 실전속도</div>
                   <div style={{ fontSize: '13px', fontWeight: '800', color: '#fff', marginTop: '2px' }}>
                     {roadmap.capabilityAnalysis?.vdotZones?.marathon?.pace || '5:50'}
                   </div>
-                  <div style={{ fontSize: '9px', color: 'var(--text-muted)', marginTop: '2px' }}>대회 목표 페이스</div>
+                  <div style={{ fontSize: '9px', color: 'var(--text-muted)', marginTop: '2px' }}>목표 페이스</div>
                 </div>
 
-                <div style={{ padding: '10px 8px', background: 'rgba(255, 107, 107, 0.06)', borderRadius: '12px', border: '1px solid rgba(255, 107, 107, 0.2)' }}>
-                  <div style={{ fontSize: '10px', fontWeight: '800', color: '#ff6b6b' }}>T (젖산역치 스피드)</div>
+                <div style={{ padding: '8px', background: 'rgba(255, 107, 107, 0.06)', borderRadius: '10px', border: '1px solid rgba(255, 107, 107, 0.2)' }}>
+                  <div style={{ fontSize: '10px', fontWeight: '800', color: '#ff6b6b' }}>T 스피드</div>
                   <div style={{ fontSize: '13px', fontWeight: '800', color: '#fff', marginTop: '2px' }}>
                     {roadmap.capabilityAnalysis?.vdotZones?.threshold?.pace || '5:30'}
                   </div>
-                  <div style={{ fontSize: '9px', color: 'var(--text-muted)', marginTop: '2px' }}>고강도 스피드 강화</div>
+                  <div style={{ fontSize: '9px', color: 'var(--text-muted)', marginTop: '2px' }}>젖산 역치</div>
                 </div>
               </div>
             ) : (
               /* 2안 정석형 선택 시 */
               <div className="grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
-                <div style={{ padding: '10px 8px', background: 'rgba(0, 255, 135, 0.06)', borderRadius: '12px', border: '1px solid rgba(0, 255, 135, 0.2)' }}>
-                  <div style={{ fontSize: '10px', fontWeight: '800', color: 'var(--accent-primary)' }}>E (이지 조깅)</div>
+                <div style={{ padding: '8px', background: 'rgba(0, 255, 135, 0.06)', borderRadius: '10px', border: '1px solid rgba(0, 255, 135, 0.2)' }}>
+                  <div style={{ fontSize: '10px', fontWeight: '800', color: 'var(--accent-primary)' }}>E 조깅</div>
                   <div style={{ fontSize: '13px', fontWeight: '800', color: '#fff', marginTop: '2px' }}>
                     {roadmap.capabilityAnalysis?.vdotZones?.easy?.range || '7:00~7:30'}
                   </div>
-                  <div style={{ fontSize: '9px', color: 'var(--text-muted)', marginTop: '2px' }}>심폐 지구력 기초</div>
+                  <div style={{ fontSize: '9px', color: 'var(--text-muted)', marginTop: '2px' }}>기초 유산소</div>
                 </div>
 
-                <div style={{ padding: '10px 8px', background: 'rgba(56, 189, 248, 0.06)', borderRadius: '12px', border: '1px solid rgba(56, 189, 248, 0.2)' }}>
-                  <div style={{ fontSize: '10px', fontWeight: '800', color: '#38bdf8' }}>M (목표 실전속도)</div>
+                <div style={{ padding: '8px', background: 'rgba(56, 189, 248, 0.06)', borderRadius: '10px', border: '1px solid rgba(56, 189, 248, 0.2)' }}>
+                  <div style={{ fontSize: '10px', fontWeight: '800', color: '#38bdf8' }}>M 완주속도</div>
                   <div style={{ fontSize: '13px', fontWeight: '800', color: '#fff', marginTop: '2px' }}>
                     {roadmap.capabilityAnalysis?.vdotZones?.marathon?.pace || '6:00'}
                   </div>
-                  <div style={{ fontSize: '9px', color: 'var(--text-muted)', marginTop: '2px' }}>대회 완주 페이스</div>
+                  <div style={{ fontSize: '9px', color: 'var(--text-muted)', marginTop: '2px' }}>대회 페이스</div>
                 </div>
 
-                <div style={{ padding: '10px 8px', background: 'rgba(255, 183, 3, 0.06)', borderRadius: '12px', border: '1px solid rgba(255, 183, 3, 0.2)' }}>
-                  <div style={{ fontSize: '10px', fontWeight: '800', color: '#ffb703' }}>T (젖산역치 템포)</div>
+                <div style={{ padding: '8px', background: 'rgba(255, 183, 3, 0.06)', borderRadius: '10px', border: '1px solid rgba(255, 183, 3, 0.2)' }}>
+                  <div style={{ fontSize: '10px', fontWeight: '800', color: '#ffb703' }}>T 템포런</div>
                   <div style={{ fontSize: '13px', fontWeight: '800', color: '#fff', marginTop: '2px' }}>
                     {roadmap.capabilityAnalysis?.vdotZones?.threshold?.pace || '5:40'}
                   </div>
-                  <div style={{ fontSize: '9px', color: 'var(--text-muted)', marginTop: '2px' }}>젖산 축적 억제</div>
+                  <div style={{ fontSize: '9px', color: 'var(--text-muted)', marginTop: '2px' }}>스피드 지구력</div>
                 </div>
               </div>
             )}
           </div>
 
           {/* 3️⃣ [그 아래] 그래프 및 AI 주간 코칭 조언 */}
-          <div style={{ marginBottom: '20px' }}>
+          <div style={{ marginBottom: '16px' }}>
             {/* AI 주간 코칭 조언 배너 */}
             <div style={{
-              padding: '14px 18px',
+              padding: '12px 16px',
               backgroundColor: weeklyAdvice.bg,
               borderRadius: 'var(--radius-md)',
               borderLeft: `4px solid ${weeklyAdvice.color}`,
-              marginBottom: '16px',
+              marginBottom: '14px',
               display: 'flex',
-              flexDirection: 'column',
-              gap: '4px'
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '8px'
             }}>
-              <div style={{ fontSize: '14px', fontWeight: '800', color: weeklyAdvice.color }}>
+              <span style={{ fontSize: '13px', fontWeight: '800', color: weeklyAdvice.color }}>
                 {weeklyAdvice.title}
-              </div>
-              <div style={{ fontSize: '12px', color: 'var(--text-secondary)', lineHeight: '1.4' }}>
+              </span>
+              <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
                 {weeklyAdvice.desc}
-              </div>
+              </span>
             </div>
 
             {/* 계획 vs 실천 동적 예측 그래프 컴포넌트 */}
@@ -459,14 +452,9 @@ export function RoadmapView({ roadmap, goal, userAssessment }) {
           </div>
 
           {/* 4️⃣ [그 아래] 주차별 세부 일정계획 & 일자별 체크리스트 */}
-          <div style={{ marginBottom: '20px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-              <div style={{ fontSize: '13px', color: 'var(--text-primary)', fontWeight: '800' }}>
-                📅 주차별 훈련 일정계획 & 체크리스트
-              </div>
-              <div style={{ fontSize: '11px', color: 'var(--accent-primary)' }}>
-                💡 탭하여 주차 선택 · 항목 체크/수정 가능
-              </div>
+          <div style={{ marginBottom: '16px' }}>
+            <div style={{ fontSize: '13px', color: 'var(--text-primary)', fontWeight: '800', marginBottom: '8px' }}>
+              📅 주차별 훈련 일정
             </div>
 
             {/* 주차 선택 탭 버튼 (1주차 ~ N주차) */}
@@ -626,25 +614,19 @@ export function RoadmapView({ roadmap, goal, userAssessment }) {
             </div>
           )}
 
-          {/* 7️⃣ 목표 달성을 위한 필수 운동능력 역산 진단 & 단계별 마일스톤 */}
+          {/* 7️⃣ 목표 달성을 위한 필수 체력 기준 & 단계별 마일스톤 */}
           {roadmap.capabilityAnalysis && (
             <div style={{
-              padding: '16px 20px',
+              padding: '14px 16px',
               borderRadius: '16px',
               background: 'rgba(0, 0, 0, 0.35)',
-              border: '1px solid rgba(96, 239, 255, 0.25)',
-              marginTop: '20px',
-              marginBottom: '20px'
+              border: '1px solid rgba(96, 239, 255, 0.2)',
+              marginTop: '16px',
+              marginBottom: '16px'
             }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                <span style={{ fontSize: '13px', fontWeight: '800', color: 'var(--text-primary)' }}>
-                  🎯 목표 달성 필수 지표
-                </span>
+              <div style={{ fontSize: '13px', fontWeight: '800', color: 'var(--text-primary)', marginBottom: '10px' }}>
+                🎯 필수 체력 기준
               </div>
-
-              <p style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '12px', lineHeight: '1.4' }}>
-                {roadmap.capabilityAnalysis.advisoryText}
-              </p>
 
               {/* 필수 조건 4대 지표 그리드 */}
               <div className="grid-4" style={{ gap: '8px' }}>
@@ -656,14 +638,14 @@ export function RoadmapView({ roadmap, goal, userAssessment }) {
                 </div>
 
                 <div style={{ padding: '8px 10px', background: 'rgba(255,255,255,0.03)', borderRadius: '10px', border: '1px solid var(--border-glass)' }}>
-                  <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>10km 완주 시간</div>
+                  <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>완주 시간</div>
                   <div style={{ fontSize: '13px', fontWeight: '800', color: 'var(--accent-secondary)', marginTop: '2px' }}>
                     {roadmap.capabilityAnalysis.requirements.req10kRecord}
                   </div>
                 </div>
 
                 <div style={{ padding: '8px 10px', background: 'rgba(255,255,255,0.03)', borderRadius: '10px', border: '1px solid var(--border-glass)' }}>
-                  <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>필요 장거리 지속</div>
+                  <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>지속 훈련</div>
                   <div style={{ fontSize: '13px', fontWeight: '800', color: 'var(--accent-orange)', marginTop: '2px' }}>
                     {roadmap.capabilityAnalysis.requirements.reqLSD}
                   </div>
@@ -677,14 +659,11 @@ export function RoadmapView({ roadmap, goal, userAssessment }) {
                 </div>
               </div>
 
-              {/* 🏆 단계별 풀코스 완주 마일스톤 타임라인 (현재 기초체력 기반 역산) */}
+              {/* 🏆 단계별 완주 마일스톤 */}
               {roadmap.capabilityAnalysis.milestoneTimeline && (
-                <div style={{ marginTop: '16px', paddingTop: '14px', borderTop: '1px dashed rgba(255,255,255,0.1)' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-                    <div style={{ fontSize: '12px', fontWeight: '800', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <span>🏁</span>
-                      <span>단계별 빌드업 마일스톤</span>
-                    </div>
+                <div style={{ marginTop: '14px', paddingTop: '12px', borderTop: '1px dashed rgba(255,255,255,0.1)' }}>
+                  <div style={{ fontSize: '12px', fontWeight: '800', color: 'var(--text-primary)', marginBottom: '8px' }}>
+                    🏁 단계별 마일스톤
                   </div>
 
                   <div className="grid-4" style={{ gap: '8px' }}>

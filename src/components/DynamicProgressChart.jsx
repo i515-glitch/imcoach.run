@@ -77,25 +77,25 @@ export function DynamicProgressChart({ forecastData, activePlan }) {
   // 상태별 색상 및 텍스트
   let statusColor = 'var(--accent-primary)';
   let statusBg = 'rgba(0, 255, 135, 0.1)';
-  let statusTitle = '계획대로 순항 중';
+  let statusTitle = '순항 중';
   let statusDesc = activeTab === 'time'
-    ? `현재 페이스 유지 시 ${predictedFinishMin}분 완주 예상`
-    : `현재 페이스 유지 시 최종 ${predictedFinalWeight}kg 달성 예상`;
+    ? `예상 완주 ${predictedFinishMin}분`
+    : `예상 체중 ${predictedFinalWeight}kg`;
 
   if (forecastStatus === 'ahead') {
     statusColor = '#60efff';
     statusBg = 'rgba(96, 239, 255, 0.12)';
-    statusTitle = '🔥 초과 달성 중';
+    statusTitle = '초과 달성';
     statusDesc = activeTab === 'time'
-      ? `완주 시간 ${predictedFinishMin}분 (${predictedFinishPace})으로 단축 예상`
-      : `초과 감량 예상: 최종 ${predictedFinalWeight}kg`;
+      ? `${predictedFinishMin}분 (${predictedFinishPace}) 단축 예상`
+      : `최종 ${predictedFinalWeight}kg 감량 예상`;
   } else if (forecastStatus === 'behind') {
     statusColor = '#ff6b6b';
     statusBg = 'rgba(255, 107, 107, 0.12)';
-    statusTitle = '⚠️ 실천 지연 주의';
+    statusTitle = '지연 주의';
     statusDesc = activeTab === 'time'
-      ? `완주 시간 ${predictedFinishMin}분으로 지연 예상`
-      : `감량 지연 예상: 최종 ${predictedFinalWeight}kg`;
+      ? `${predictedFinishMin}분 지연 예상`
+      : `최종 ${predictedFinalWeight}kg`;
   }
 
   // 체중 눈금 생성 (minW ~ maxW 간격)
@@ -106,16 +106,16 @@ export function DynamicProgressChart({ forecastData, activePlan }) {
   }
 
   return (
-    <div className="card-glass" style={{ padding: '20px', marginBottom: '20px' }}>
+    <div className="card-glass" style={{ padding: '16px', marginBottom: '16px' }}>
       {/* 탭 전환 버튼 (체중 목표가 설정된 경우 노출) */}
       {hasWeight && (
-        <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', borderBottom: '1px solid var(--border-glass)', paddingBottom: '12px' }}>
+        <div style={{ display: 'flex', gap: '8px', marginBottom: '12px', borderBottom: '1px solid var(--border-glass)', paddingBottom: '10px' }}>
           <button
             type="button"
             onClick={() => setActiveTab('time')}
             style={{
-              padding: '6px 14px',
-              borderRadius: '20px',
+              padding: '6px 12px',
+              borderRadius: '16px',
               fontSize: '12px',
               fontWeight: '700',
               cursor: 'pointer',
@@ -125,18 +125,18 @@ export function DynamicProgressChart({ forecastData, activePlan }) {
               background: activeTab === 'time' ? 'var(--accent-primary)' : 'rgba(255,255,255,0.05)',
               color: activeTab === 'time' ? '#000' : 'var(--text-secondary)',
               border: activeTab === 'time' ? 'none' : '1px solid var(--border-glass)',
-              transition: 'all 0.2s ease'
+              transition: 'all 0.15s ease'
             }}
           >
-            <span>🏃 완주 시간 & 페이스 궤적</span>
+            <span>🏃 완주 페이스</span>
           </button>
 
           <button
             type="button"
             onClick={() => setActiveTab('weight')}
             style={{
-              padding: '6px 14px',
-              borderRadius: '20px',
+              padding: '6px 12px',
+              borderRadius: '16px',
               fontSize: '12px',
               fontWeight: '700',
               cursor: 'pointer',
@@ -146,55 +146,49 @@ export function DynamicProgressChart({ forecastData, activePlan }) {
               background: activeTab === 'weight' ? 'var(--accent-primary)' : 'rgba(255,255,255,0.05)',
               color: activeTab === 'weight' ? '#000' : 'var(--text-secondary)',
               border: activeTab === 'weight' ? 'none' : '1px solid var(--border-glass)',
-              transition: 'all 0.2s ease'
+              transition: 'all 0.15s ease'
             }}
           >
             <Scale size={13} />
-            <span>⚖️ 체중 감량 궤적 ({startWeight}kg ➔ {targetWeight}kg)</span>
+            <span>⚖️ 체중 감량 ({startWeight}kg ➔ {targetWeight}kg)</span>
           </button>
         </div>
       )}
 
       {/* 1. 상단 예측 요약 대시보드 */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '16px' }}>
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-            <span style={{ fontSize: '16px', fontWeight: '800' }}>
-              {activeTab === 'time' ? '📊 계획 vs 실천 완주시간 예측선' : '⚖️ 체중 감량 예측 & 실천 궤적'}
-            </span>
-            <span className="badge" style={{ backgroundColor: statusBg, color: statusColor, border: `1px solid ${statusColor}40`, fontSize: '11px' }}>
-              {statusTitle}
-            </span>
-          </div>
-          <p style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{statusDesc}</p>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', marginBottom: '12px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span style={{ fontSize: '15px', fontWeight: '800' }}>
+            {activeTab === 'time' ? '📊 완주시간 예측' : '⚖️ 체중 예측'}
+          </span>
+          <span className="badge" style={{ backgroundColor: statusBg, color: statusColor, border: `1px solid ${statusColor}40`, fontSize: '10px' }}>
+            {statusTitle}
+          </span>
         </div>
 
-        {/* 3대 핵심 예측 수치 */}
-        <div style={{ display: 'flex', gap: '10px' }}>
+        {/* 2대 핵심 예측 수치 */}
+        <div style={{ display: 'flex', gap: '8px' }}>
           {activeTab === 'time' ? (
-            <div style={{ padding: '8px 14px', background: 'rgba(0,0,0,0.3)', borderRadius: 'var(--radius-sm)', textAlign: 'center', border: '1px solid var(--border-subtle)' }}>
-              <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>AI 예측 10km 완주</div>
-              <div style={{ fontSize: '16px', fontWeight: '800', color: statusColor }}>
+            <div style={{ padding: '6px 12px', background: 'rgba(0,0,0,0.3)', borderRadius: 'var(--radius-sm)', textAlign: 'center', border: '1px solid var(--border-subtle)' }}>
+              <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>예상 완주</div>
+              <div style={{ fontSize: '15px', fontWeight: '800', color: statusColor }}>
                 {predictedFinishMin}분
               </div>
-              <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>{predictedFinishPace}</div>
             </div>
           ) : (
-            <div style={{ padding: '8px 14px', background: 'rgba(0,0,0,0.3)', borderRadius: 'var(--radius-sm)', textAlign: 'center', border: '1px solid var(--border-subtle)' }}>
-              <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>AI 예측 최종 체중</div>
-              <div style={{ fontSize: '16px', fontWeight: '800', color: statusColor }}>
+            <div style={{ padding: '6px 12px', background: 'rgba(0,0,0,0.3)', borderRadius: 'var(--radius-sm)', textAlign: 'center', border: '1px solid var(--border-subtle)' }}>
+              <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>예상 체중</div>
+              <div style={{ fontSize: '15px', fontWeight: '800', color: statusColor }}>
                 {predictedFinalWeight} kg
               </div>
-              <div style={{ fontSize: '10px', color: 'var(--accent-primary)' }}>목표 {targetWeight}kg (-{(startWeight - targetWeight).toFixed(1)}kg)</div>
             </div>
           )}
 
-          <div style={{ padding: '8px 14px', background: 'rgba(0,0,0,0.3)', borderRadius: 'var(--radius-sm)', textAlign: 'center', border: '1px solid var(--border-subtle)' }}>
-            <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>목표 달성 확률</div>
-            <div style={{ fontSize: '16px', fontWeight: '800', color: achievementProbability >= 80 ? 'var(--accent-primary)' : achievementProbability >= 60 ? '#ffb703' : '#ff6b6b' }}>
+          <div style={{ padding: '6px 12px', background: 'rgba(0,0,0,0.3)', borderRadius: 'var(--radius-sm)', textAlign: 'center', border: '1px solid var(--border-subtle)' }}>
+            <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>달성 확률</div>
+            <div style={{ fontSize: '15px', fontWeight: '800', color: achievementProbability >= 80 ? 'var(--accent-primary)' : achievementProbability >= 60 ? '#ffb703' : '#ff6b6b' }}>
               {achievementProbability}%
             </div>
-            <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>실천율 {overallRate}%</div>
           </div>
         </div>
       </div>
