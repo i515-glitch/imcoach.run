@@ -43,6 +43,12 @@
   --transition-normal: 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
+html, body {
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 * {
   margin: 0;
   padding: 0;
