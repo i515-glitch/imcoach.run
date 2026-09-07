@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flame, RotateCcw, Cloud, User, LogOut, CheckCircle2 } from 'lucide-react';
+import { RotateCcw, Cloud, User, LogOut, CheckCircle2, Zap } from 'lucide-react';
 
 export function Navbar({ currentStep, setStep, activeGoal, onReset, user, onOpenAuth, onLogout }) {
   return (
@@ -20,14 +20,29 @@ export function Navbar({ currentStep, setStep, activeGoal, onReset, user, onOpen
         <div style={{
           width: '38px',
           height: '38px',
-          borderRadius: '10px',
+          borderRadius: '11px',
           background: 'linear-gradient(135deg, var(--accent-primary) 0%, #38bdf8 100%)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           boxShadow: '0 0 16px rgba(48, 209, 88, 0.35)'
         }}>
-          <Flame size={20} color="#000000" strokeWidth={2.5} />
+          {/* 🏃 Dynamic Runner Vector Icon */}
+          <svg 
+            width="22" 
+            height="22" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="#000000" 
+            strokeWidth="2.5" 
+            strokeLinecap="round" 
+            strokeLinejoin="round"
+          >
+            <circle cx="16" cy="4" r="2" fill="#000000" />
+            <path d="M7 21l3-6 4 2 2-6-5-3-3 2" />
+            <path d="M6 9l3 2 4-2" />
+            <path d="M16 13l3 4 2-1" />
+          </svg>
         </div>
         <div>
           <span style={{ fontSize: '20px', fontWeight: '900', letterSpacing: '-0.03em', color: '#fff' }}>

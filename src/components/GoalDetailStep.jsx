@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Clock, ArrowRight, Zap, Flame, Shield, Sparkles, ChevronRight } from 'lucide-react';
+import { Calendar, Clock, ArrowRight, Zap, Shield, Sparkles, ChevronRight } from 'lucide-react';
 import {
   MARATHON_DISTANCES,
   getPresetsForDistance,

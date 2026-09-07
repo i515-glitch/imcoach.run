@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, CheckCircle2, Circle, Edit3, Check, X, Flame, ShieldCheck, Sparkles, Trophy, Plus, RefreshCw, Smartphone, Layers, ArrowRight } from 'lucide-react';
+import { Calendar, CheckCircle2, Circle, Edit3, Check, X, ShieldCheck, Sparkles, Trophy, Plus, RefreshCw, Smartphone, Layers, ArrowRight } from 'lucide-react';
 import { DynamicProgressChart } from './DynamicProgressChart';
 import { TodayWorkoutCard } from './TodayWorkoutCard';
 import { calculateForecastTrajectory } from '../services/coachEngine';

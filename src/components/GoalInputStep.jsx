@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { PRESET_GOALS, analyzeGoalInput } from '../services/coachEngine';
-import { Target, Calendar, Clock, Flame, Sparkles, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Target, Calendar, Clock, Sparkles, ArrowRight, CheckCircle2 } from 'lucide-react';
 
 export function GoalInputStep({ onGoalSubmit, initialGoal }) {
   const [selectedPreset, setSelectedPreset] = useState(initialGoal?.presetId || 'marathon_10k_58m');

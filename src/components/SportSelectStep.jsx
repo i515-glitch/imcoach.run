@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Flame, Trophy } from 'lucide-react';
+import { ArrowRight, Trophy } from 'lucide-react';
 
 export function SportSelectStep({ onSelectSport }) {
   return (

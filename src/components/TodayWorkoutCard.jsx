@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckCircle2, Circle, Edit3, Check, X, Flame, Trophy, Calendar, Sparkles, ChevronRight, TrendingUp, Clock } from 'lucide-react';
+import { CheckCircle2, Circle, Edit3, Check, X, Trophy, Calendar, Sparkles, ChevronRight, TrendingUp, Clock, Timer } from 'lucide-react';
 
 export function TodayWorkoutCard({
   basePlan,
@@ -183,7 +183,7 @@ export function TodayWorkoutCard({
         <div style={{ marginBottom: '16px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Flame size={15} color="var(--accent-primary)" />
+              <Timer size={16} color="var(--accent-primary)" />
               <span style={{ fontSize: '14px', fontWeight: '800', color: 'var(--text-primary)' }}>
                 오늘의 운동
               </span>

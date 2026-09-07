@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Lock, Mail, User, Sparkles, CheckCircle2, ShieldCheck, Flame } from 'lucide-react';
+import { X, Lock, Mail, User, Sparkles, CheckCircle2, ShieldCheck } from 'lucide-react';
 import { loginWithGoogle, loginWithEmail, registerWithEmail } from '../services/firebase';
 
 export function AuthModal({ isOpen, onClose, onAuthSuccess, currentPlanData }) {
@@ -140,7 +140,22 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, currentPlanData }) {
             margin: '0 auto 12px auto',
             boxShadow: '0 0 20px rgba(48, 209, 88, 0.3)'
           }}>
-            <Flame size={24} color="#000000" strokeWidth={2.5} />
+            {/* 🏃 Dynamic Runner Vector Icon */}
+            <svg 
+              width="26" 
+              height="26" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="#000000" 
+              strokeWidth="2.5" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+            >
+              <circle cx="16" cy="4" r="2" fill="#000000" />
+              <path d="M7 21l3-6 4 2 2-6-5-3-3 2" />
+              <path d="M6 9l3 2 4-2" />
+              <path d="M16 13l3 4 2-1" />
+            </svg>
           </div>
           <h2 style={{ fontSize: '20px', fontWeight: '900', letterSpacing: '-0.02em', color: '#ffffff' }}>
             {mode === 'login' ? 'imcoach 로그인' : '간편 회원가입'}
