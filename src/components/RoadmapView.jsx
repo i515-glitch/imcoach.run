@@ -1,21 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, CheckCircle2, Circle, Edit3, Check, X, Flame, ShieldCheck, Sparkles, Trophy, Plus, RefreshCw, Smartphone, Layers } from 'lucide-react';
+import { Calendar, CheckCircle2, Circle, Edit3, Check, X, Flame, ShieldCheck, Sparkles, Trophy, Plus, RefreshCw, Smartphone, Layers, ArrowRight } from 'lucide-react';
 import { DynamicProgressChart } from './DynamicProgressChart';
 import { TodayWorkoutCard } from './TodayWorkoutCard';
 import { calculateForecastTrajectory } from '../services/coachEngine';
 
-export function RoadmapView({ roadmap, goal, userAssessment }) {
+export function RoadmapView({
+  roadmap,
+  goal,
+  userAssessment,
+  viewMode = 'coaching',
+  onNavigate,
+  activePlanId = 'plan2',
+  setActivePlanId
+}) {
   if (!roadmap) return null;
 
   const { isSenior, safetyAdvisory, plans } = roadmap;
   const userLevel = userAssessment?.userLevel || { level: 2, levelTitle: '도전자' };
 
-  // 화면 뷰 모드: 'coaching' (실전 코칭 ⚡) | 'roadmap' (전체 로드맵 🗺️)
-  const [viewMode, setViewMode] = useState('coaching');
+  // 1안 vs 2안 vs 3안 선택 상태 (props or internal)
+  const [internalPlanId, setInternalPlanId] = useState('plan2');
+  const currentPlanId = activePlanId || internalPlanId;
+  const handleSelectPlan = (planId) => {
+    if (setActivePlanId) setActivePlanId(planId);
+    setInternalPlanId(planId);
+  };
 
-  // 1안 vs 2안 vs 3안 선택 상태 (기본: 2안 정석 추천)
-  const [activePlanId, setActivePlanId] = useState('plan2');
-  const basePlan = (plans && plans[activePlanId]) ? plans[activePlanId] : {
+  const basePlan = (plans && plans[currentPlanId]) ? plans[currentPlanId] : {
     totalWeeks: roadmap.totalWeeks,
     estimatedDaysToTarget: roadmap.estimatedDaysToTarget,
     targetDate: roadmap.targetDate,
@@ -139,59 +150,6 @@ export function RoadmapView({ roadmap, goal, userAssessment }) {
 
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', animation: 'fadeIn 0.25s ease' }}>
-      {/* 🍎 상단 2대 탭: 실전 코칭 ⚡ vs 전체 로드맵 🗺️ */}
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        marginBottom: '20px'
-      }}>
-        <div style={{
-          display: 'inline-flex',
-          background: 'rgba(118, 118, 128, 0.24)',
-          padding: '3px',
-          borderRadius: '16px',
-          backdropFilter: 'blur(20px)',
-          border: '1px solid rgba(255, 255, 255, 0.08)'
-        }}>
-          <button
-            type="button"
-            onClick={() => setViewMode('coaching')}
-            style={{
-              padding: '8px 22px',
-              borderRadius: '13px',
-              fontSize: '13px',
-              fontWeight: '800',
-              cursor: 'pointer',
-              border: 'none',
-              background: viewMode === 'coaching' ? '#1c1c1e' : 'transparent',
-              color: viewMode === 'coaching' ? '#ffffff' : 'rgba(255, 255, 255, 0.65)',
-              boxShadow: viewMode === 'coaching' ? '0 3px 8px rgba(0,0,0,0.4)' : 'none',
-              transition: 'all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1)'
-            }}
-          >
-            ⚡ 실전 코칭
-          </button>
-          <button
-            type="button"
-            onClick={() => setViewMode('roadmap')}
-            style={{
-              padding: '8px 22px',
-              borderRadius: '13px',
-              fontSize: '13px',
-              fontWeight: '800',
-              cursor: 'pointer',
-              border: 'none',
-              background: viewMode === 'roadmap' ? '#1c1c1e' : 'transparent',
-              color: viewMode === 'roadmap' ? '#ffffff' : 'rgba(255, 255, 255, 0.65)',
-              boxShadow: viewMode === 'roadmap' ? '0 3px 8px rgba(0,0,0,0.4)' : 'none',
-              transition: 'all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1)'
-            }}
-          >
-            🗺️ 전체 로드맵
-          </button>
-        </div>
-      </div>
-
       {/* 📱 1. [실전 코칭 ⚡ 탭]: 오늘의 코칭 1장 + 주차별 세부 훈련 일정 & 체크리스트 */}
       {viewMode === 'coaching' ? (
         <div style={{ animation: 'fadeIn 0.2s ease' }}>
@@ -209,7 +167,7 @@ export function RoadmapView({ roadmap, goal, userAssessment }) {
             setEditingText={setEditingText}
             onSaveEdit={handleSaveEdit}
             onCancelEdit={handleCancelEdit}
-            onViewFullRoadmap={() => setViewMode('roadmap')}
+            onViewFullRoadmap={() => onNavigate && onNavigate('roadmap')}
           />
 
           {/* 주차별 세부 일정계획 & 일자별 체크리스트 */}
@@ -495,14 +453,14 @@ export function RoadmapView({ roadmap, goal, userAssessment }) {
                 {/* 1안 */}
                 {plans.plan1 && (
                   <div
-                    onClick={() => { setActivePlanId('plan1'); setSelectedWeek(1); }}
+                    onClick={() => { handleSelectPlan('plan1'); setSelectedWeek(1); }}
                     style={{
                       cursor: 'pointer',
                       padding: '12px 10px',
                       borderRadius: '14px',
-                      background: activePlanId === 'plan1' ? 'rgba(100, 210, 255, 0.15)' : 'rgba(28, 28, 30, 0.75)',
-                      border: activePlanId === 'plan1' ? '2px solid var(--accent-secondary)' : '1px solid rgba(255, 255, 255, 0.08)',
-                      boxShadow: activePlanId === 'plan1' ? '0 4px 16px rgba(100, 210, 255, 0.3)' : 'none',
+                      background: currentPlanId === 'plan1' ? 'rgba(100, 210, 255, 0.15)' : 'rgba(28, 28, 30, 0.75)',
+                      border: currentPlanId === 'plan1' ? '2px solid var(--accent-secondary)' : '1px solid rgba(255, 255, 255, 0.08)',
+                      boxShadow: currentPlanId === 'plan1' ? '0 4px 16px rgba(100, 210, 255, 0.3)' : 'none',
                       transition: 'all 0.15s ease',
                       display: 'flex',
                       flexDirection: 'column',
@@ -514,9 +472,9 @@ export function RoadmapView({ roadmap, goal, userAssessment }) {
                         <span style={{ fontSize: '10px', fontWeight: '800', padding: '2px 5px', borderRadius: '5px', background: 'rgba(100, 210, 255, 0.2)', color: 'var(--accent-secondary)' }}>
                           {plans.plan1.totalWeeks}주
                         </span>
-                        {activePlanId === 'plan1' && <span style={{ fontSize: '10px', color: 'var(--accent-secondary)', fontWeight: '900' }}>✓</span>}
+                        {currentPlanId === 'plan1' && <span style={{ fontSize: '10px', color: 'var(--accent-secondary)', fontWeight: '900' }}>✓</span>}
                       </div>
-                      <div style={{ fontSize: '13px', fontWeight: '900', color: activePlanId === 'plan1' ? 'var(--accent-secondary)' : '#fff', marginBottom: '2px' }}>
+                      <div style={{ fontSize: '13px', fontWeight: '900', color: currentPlanId === 'plan1' ? 'var(--accent-secondary)' : '#fff', marginBottom: '2px' }}>
                         1안 필승도전
                       </div>
                     </div>
@@ -529,14 +487,14 @@ export function RoadmapView({ roadmap, goal, userAssessment }) {
                 {/* 2안 (추천) */}
                 {plans.plan2 && (
                   <div
-                    onClick={() => { setActivePlanId('plan2'); setSelectedWeek(1); }}
+                    onClick={() => { handleSelectPlan('plan2'); setSelectedWeek(1); }}
                     style={{
                       cursor: 'pointer',
                       padding: '12px 10px',
                       borderRadius: '14px',
-                      background: activePlanId === 'plan2' ? 'rgba(48, 209, 88, 0.15)' : 'rgba(28, 28, 30, 0.75)',
-                      border: activePlanId === 'plan2' ? '2px solid var(--accent-primary)' : '1px solid rgba(255, 255, 255, 0.08)',
-                      boxShadow: activePlanId === 'plan2' ? '0 4px 16px rgba(48, 209, 88, 0.3)' : 'none',
+                      background: currentPlanId === 'plan2' ? 'rgba(48, 209, 88, 0.15)' : 'rgba(28, 28, 30, 0.75)',
+                      border: currentPlanId === 'plan2' ? '2px solid var(--accent-primary)' : '1px solid rgba(255, 255, 255, 0.08)',
+                      boxShadow: currentPlanId === 'plan2' ? '0 4px 16px rgba(48, 209, 88, 0.3)' : 'none',
                       transition: 'all 0.15s ease',
                       display: 'flex',
                       flexDirection: 'column',
@@ -548,9 +506,9 @@ export function RoadmapView({ roadmap, goal, userAssessment }) {
                         <span style={{ fontSize: '10px', fontWeight: '800', padding: '2px 5px', borderRadius: '5px', background: 'rgba(48, 209, 88, 0.2)', color: 'var(--accent-primary)' }}>
                           {plans.plan2.totalWeeks}주 ★
                         </span>
-                        {activePlanId === 'plan2' && <span style={{ fontSize: '10px', color: 'var(--accent-primary)', fontWeight: '900' }}>✓</span>}
+                        {currentPlanId === 'plan2' && <span style={{ fontSize: '10px', color: 'var(--accent-primary)', fontWeight: '900' }}>✓</span>}
                       </div>
-                      <div style={{ fontSize: '13px', fontWeight: '900', color: activePlanId === 'plan2' ? 'var(--accent-primary)' : '#fff', marginBottom: '2px' }}>
+                      <div style={{ fontSize: '13px', fontWeight: '900', color: currentPlanId === 'plan2' ? 'var(--accent-primary)' : '#fff', marginBottom: '2px' }}>
                         2안 적정기간
                       </div>
                     </div>
@@ -563,14 +521,14 @@ export function RoadmapView({ roadmap, goal, userAssessment }) {
                 {/* 3안 (초보/라이트) */}
                 {plans.plan3 && (
                   <div
-                    onClick={() => { setActivePlanId('plan3'); setSelectedWeek(1); }}
+                    onClick={() => { handleSelectPlan('plan3'); setSelectedWeek(1); }}
                     style={{
                       cursor: 'pointer',
                       padding: '12px 10px',
                       borderRadius: '14px',
-                      background: activePlanId === 'plan3' ? 'rgba(255, 183, 3, 0.15)' : 'rgba(28, 28, 30, 0.75)',
-                      border: activePlanId === 'plan3' ? '2px solid #ffb703' : '1px solid rgba(255, 255, 255, 0.08)',
-                      boxShadow: activePlanId === 'plan3' ? '0 4px 16px rgba(255, 183, 3, 0.3)' : 'none',
+                      background: currentPlanId === 'plan3' ? 'rgba(255, 183, 3, 0.15)' : 'rgba(28, 28, 30, 0.75)',
+                      border: currentPlanId === 'plan3' ? '2px solid #ffb703' : '1px solid rgba(255, 255, 255, 0.08)',
+                      boxShadow: currentPlanId === 'plan3' ? '0 4px 16px rgba(255, 183, 3, 0.3)' : 'none',
                       transition: 'all 0.15s ease',
                       display: 'flex',
                       flexDirection: 'column',
@@ -582,9 +540,9 @@ export function RoadmapView({ roadmap, goal, userAssessment }) {
                         <span style={{ fontSize: '10px', fontWeight: '800', padding: '2px 5px', borderRadius: '5px', background: 'rgba(255, 183, 3, 0.2)', color: '#ffb703' }}>
                           {plans.plan3.totalWeeks}주
                         </span>
-                        {activePlanId === 'plan3' && <span style={{ fontSize: '10px', color: '#ffb703', fontWeight: '900' }}>✓</span>}
+                        {currentPlanId === 'plan3' && <span style={{ fontSize: '10px', color: '#ffb703', fontWeight: '900' }}>✓</span>}
                       </div>
-                      <div style={{ fontSize: '13px', fontWeight: '900', color: activePlanId === 'plan3' ? '#ffb703' : '#fff', marginBottom: '2px' }}>
+                      <div style={{ fontSize: '13px', fontWeight: '900', color: currentPlanId === 'plan3' ? '#ffb703' : '#fff', marginBottom: '2px' }}>
                         3안 초보안심
                       </div>
                     </div>
@@ -607,17 +565,17 @@ export function RoadmapView({ roadmap, goal, userAssessment }) {
             marginBottom: '16px'
           }}>
             <div style={{ marginBottom: '8px' }}>
-              <span style={{ fontSize: '12px', fontWeight: '800', color: activePlanId === 'plan3' ? '#ffb703' : activePlanId === 'plan1' ? 'var(--accent-secondary)' : 'var(--accent-primary)' }}>
-                {activePlanId === 'plan3'
+              <span style={{ fontSize: '12px', fontWeight: '800', color: currentPlanId === 'plan3' ? '#ffb703' : currentPlanId === 'plan1' ? 'var(--accent-secondary)' : 'var(--accent-primary)' }}>
+                {currentPlanId === 'plan3'
                   ? '🌱 3안 초보안심 페이스'
-                  : activePlanId === 'plan1'
+                  : currentPlanId === 'plan1'
                   ? '⚡ 1안 필승도전 페이스'
                   : '🏆 2안 적정기간 표준 페이스'}
               </span>
             </div>
 
             {/* 3안 초보자 선택 시 */}
-            {activePlanId === 'plan3' ? (
+            {currentPlanId === 'plan3' ? (
               <div className="grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
                 <div style={{ padding: '8px', background: 'rgba(255, 183, 3, 0.06)', borderRadius: '10px', border: '1px solid rgba(255, 183, 3, 0.2)' }}>
                   <div style={{ fontSize: '10px', fontWeight: '800', color: '#ffb703' }}>E 조깅</div>
@@ -637,7 +595,7 @@ export function RoadmapView({ roadmap, goal, userAssessment }) {
                   <div style={{ fontSize: '9px', color: 'var(--text-muted)', marginTop: '2px' }}>스쿼트</div>
                 </div>
               </div>
-            ) : activePlanId === 'plan1' ? (
+            ) : currentPlanId === 'plan1' ? (
               /* 1안 실전형 선택 시 */
               <div className="grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
                 <div style={{ padding: '8px', background: 'rgba(100, 210, 255, 0.06)', borderRadius: '10px', border: '1px solid rgba(100, 210, 255, 0.2)' }}>
@@ -720,9 +678,33 @@ export function RoadmapView({ roadmap, goal, userAssessment }) {
             <DynamicProgressChart
               forecastData={forecastData}
               activePlan={basePlan}
-              activePlanId={activePlanId}
+              activePlanId={currentPlanId}
               allPlans={plans}
             />
+
+            {/* ⚡ 실전코칭받기 이동 CTA 버튼 */}
+            <div style={{ marginTop: '20px', textAlign: 'center' }}>
+              <button
+                type="button"
+                onClick={() => onNavigate && onNavigate('coaching')}
+                className="btn btn-primary"
+                style={{
+                  width: '100%',
+                  padding: '14px',
+                  fontSize: '15px',
+                  fontWeight: '900',
+                  borderRadius: 'var(--radius-md)',
+                  boxShadow: '0 0 20px rgba(48, 209, 88, 0.3)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px'
+                }}
+              >
+                <span>⚡ 선택한 플랜으로 실전코칭 받기</span>
+                <ArrowRight size={18} />
+              </button>
+            </div>
           </div>
         </div>
       )}

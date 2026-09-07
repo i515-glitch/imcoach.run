@@ -14,7 +14,7 @@ export function Navbar({ currentStep, setStep, activeGoal, onReset, user, onOpen
     }}>
       {/* 🏃 글로벌 미니멀 로고 */}
       <div 
-        onClick={() => setStep(activeGoal ? 'roadmap' : 'goal_detail')}
+        onClick={() => setStep(activeGoal ? 'coaching' : 'goal')}
         style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}
       >
         <div style={{
