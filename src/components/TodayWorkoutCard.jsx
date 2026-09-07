@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { CheckCircle2, Circle, Edit3, Check, X, Flame, Trophy, Calendar, Sparkles, ChevronRight, TrendingUp, Scale, Clock } from 'lucide-react';
+import React from 'react';
+import { CheckCircle2, Circle, Edit3, Check, X, Flame, Trophy, Calendar, Sparkles, ChevronRight, TrendingUp, Clock } from 'lucide-react';
 
 export function TodayWorkoutCard({
   basePlan,
@@ -16,7 +16,6 @@ export function TodayWorkoutCard({
   onCancelEdit,
   onViewFullRoadmap
 }) {
-  const [chartTab, setChartTab] = useState('time'); // 'time' | 'weight'
 
   // 오늘 요일 계산 (0: 일, 1: 월, 2: 화, 3: 수, 4: 목, 5: 금, 6: 토)
   const dayNames = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
@@ -43,8 +42,6 @@ export function TodayWorkoutCard({
 
   // 차트 데이터 (컴팩트 SVG 렌더링)
   const graphPoints = forecastData?.graphPoints || [];
-  const weightGraphPoints = forecastData?.weightGraphPoints || [];
-  const hasWeight = forecastData?.includeWeightGoal && weightGraphPoints.length > 0;
 
   // 컴팩트 차트 좌표 (viewBox: 0 0 420 140)
   const padL = 35;
@@ -59,28 +56,12 @@ export function TodayWorkoutCard({
   const getX = (idx, total) => padL + (idx / Math.max(1, total - 1)) * cWidth;
   const getYTime = (t) => padT + ((maxY - Math.max(minY, Math.min(maxY, t))) / (maxY - minY)) * cHeight;
 
-  const minW = Math.floor(Math.min(forecastData?.targetWeight || 70, forecastData?.predictedFinalWeight || 70) - 2);
-  const maxW = Math.ceil(Math.max(forecastData?.startWeight || 75, 80) + 2);
-  const getYWeight = (w) => padT + ((maxW - Math.max(minW, Math.min(maxW, w))) / (maxW - minW)) * cHeight;
-
   // 시간선 경로
   const plannedTimePath = graphPoints.map((pt, i) => `${i === 0 ? 'M' : 'L'} ${getX(i, graphPoints.length)} ${getYTime(pt.plannedTime)}`).join(' ');
   const actualTimePoints = graphPoints.filter(pt => pt.actualTime !== null);
   const actualTimePath = actualTimePoints.map((pt, i) => `${i === 0 ? 'M' : 'L'} ${getX(pt.week, graphPoints.length)} ${getYTime(pt.actualTime)}`).join(' ');
   const forecastTimePoints = graphPoints.filter(pt => pt.week >= (forecastData?.currentActiveWeek > 1 ? forecastData.currentActiveWeek - 1 : 0));
   const forecastTimePath = forecastTimePoints.map((pt, i) => `${i === 0 ? 'M' : 'L'} ${getX(pt.week, graphPoints.length)} ${getYTime(pt.forecastTime)}`).join(' ');
-
-  // 체중선 경로
-  let plannedWeightPath = '';
-  let actualWeightPath = '';
-  let forecastWeightPath = '';
-  if (hasWeight) {
-    plannedWeightPath = weightGraphPoints.map((pt, i) => `${i === 0 ? 'M' : 'L'} ${getX(i, weightGraphPoints.length)} ${getYWeight(pt.plannedWeight)}`).join(' ');
-    const actualWPoints = weightGraphPoints.filter(pt => pt.actualWeight !== null);
-    actualWeightPath = actualWPoints.map((pt, i) => `${i === 0 ? 'M' : 'L'} ${getX(pt.week, weightGraphPoints.length)} ${getYWeight(pt.actualWeight)}`).join(' ');
-    const forecastWPoints = weightGraphPoints.filter(pt => pt.week >= (forecastData?.currentActiveWeek > 1 ? forecastData.currentActiveWeek - 1 : 0));
-    forecastWeightPath = forecastWPoints.map((pt, i) => `${i === 0 ? 'M' : 'L'} ${getX(pt.week, weightGraphPoints.length)} ${getYWeight(pt.forecastWeight)}`).join(' ');
-  }
 
   const statusColor = forecastData?.forecastStatus === 'ahead' ? '#60efff' : forecastData?.forecastStatus === 'behind' ? '#ff6b6b' : 'var(--accent-primary)';
 
@@ -130,7 +111,7 @@ export function TodayWorkoutCard({
           border: '1px solid rgba(255, 255, 255, 0.06)',
           marginBottom: '14px'
         }}>
-          {/* 차트 헤더 & 탭 */}
+          {/* 차트 헤더 */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <TrendingUp size={14} color="var(--accent-primary)" />
@@ -138,66 +119,29 @@ export function TodayWorkoutCard({
                 목표 예측 궤적
               </span>
             </div>
-
-            {hasWeight && (
-              <div style={{ display: 'flex', gap: '4px' }}>
-                <button
-                  type="button"
-                  onClick={() => setChartTab('time')}
-                  style={{
-                    padding: '3px 8px',
-                    borderRadius: '12px',
-                    fontSize: '10px',
-                    fontWeight: '700',
-                    cursor: 'pointer',
-                    background: chartTab === 'time' ? 'var(--accent-primary)' : 'rgba(255,255,255,0.05)',
-                    color: chartTab === 'time' ? '#000' : 'var(--text-muted)',
-                    border: 'none'
-                  }}
-                >
-                  완주시간
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setChartTab('weight')}
-                  style={{
-                    padding: '3px 8px',
-                    borderRadius: '12px',
-                    fontSize: '10px',
-                    fontWeight: '700',
-                    cursor: 'pointer',
-                    background: chartTab === 'weight' ? 'var(--accent-primary)' : 'rgba(255,255,255,0.05)',
-                    color: chartTab === 'weight' ? '#000' : 'var(--text-muted)',
-                    border: 'none'
-                  }}
-                >
-                  체중 감량
-                </button>
-              </div>
-            )}
           </div>
 
           {/* 컴팩트 SVG 차트 */}
           <svg viewBox="0 0 420 140" style={{ width: '100%', height: 'auto', display: 'block' }}>
             {/* 그리드 */}
-            {(chartTab === 'time' ? [80, 70, 60] : [75, 72, 70]).map(val => (
+            {[80, 70, 60].map(val => (
               <g key={val}>
                 <line
                   x1={padL}
-                  y1={chartTab === 'time' ? getYTime(val) : getYWeight(val)}
+                  y1={getYTime(val)}
                   x2={420 - padR}
-                  y2={chartTab === 'time' ? getYTime(val) : getYWeight(val)}
+                  y2={getYTime(val)}
                   stroke="rgba(255, 255, 255, 0.06)"
                   strokeDasharray="3,3"
                 />
                 <text
                   x={padL - 4}
-                  y={(chartTab === 'time' ? getYTime(val) : getYWeight(val)) + 3}
+                  y={getYTime(val) + 3}
                   fill="var(--text-muted)"
                   fontSize="9"
                   textAnchor="end"
                 >
-                  {val}{chartTab === 'time' ? '분' : 'kg'}
+                  {val}분
                 </text>
               </g>
             ))}

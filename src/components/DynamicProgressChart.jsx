@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
-import { TrendingUp, AlertCircle, CheckCircle2, Zap, ArrowUpRight, ArrowDownRight, Clock, Scale } from 'lucide-react';
+import React from 'react';
+import { TrendingUp, AlertCircle, CheckCircle2, Zap, ArrowUpRight, ArrowDownRight, Clock } from 'lucide-react';
 
 export function DynamicProgressChart({ forecastData, activePlan, activePlanId = 'plan2', allPlans = {} }) {
-  const [activeTab, setActiveTab] = useState('time'); // 'time' | 'weight'
-
   if (!forecastData) {
     return null;
   }
@@ -16,12 +14,7 @@ export function DynamicProgressChart({ forecastData, activePlan, activePlanId = 
     predictedFinishPace = '6:00 / km',
     achievementProbability = 85,
     currentActiveWeek = 1,
-    graphPoints = [],
-    includeWeightGoal = false,
-    startWeight = 75,
-    targetWeight = 70,
-    predictedFinalWeight = 70,
-    weightGraphPoints = []
+    graphPoints = []
   } = forecastData;
 
   // 1안, 2안, 3안 정보 추출 및 가장 긴 3안 기준 총 주차 산출
@@ -59,15 +52,6 @@ export function DynamicProgressChart({ forecastData, activePlan, activePlanId = 
   const getYTime = (timeMin) => {
     const clamped = Math.max(minY, Math.min(maxY, timeMin));
     return paddingTop + ((maxY - clamped) / (maxY - minY)) * chartHeight;
-  };
-
-  // Y축 범위 계산 (체중)
-  const minW = Math.floor(Math.min(targetWeight || 70, predictedFinalWeight || 70) - 2);
-  const maxW = Math.ceil(Math.max(startWeight || 75, 80) + 2);
-
-  const getYWeight = (w) => {
-    const clamped = Math.max(minW, Math.min(maxW, w));
-    return paddingTop + ((maxW - clamped) / (maxW - minW)) * chartHeight;
   };
 
   // 1안, 2안, 3안 3가지 계획 곡선 생성 (모두 우하향 시간 단축 곡선)
@@ -117,24 +101,15 @@ export function DynamicProgressChart({ forecastData, activePlan, activePlanId = 
   let statusColor = 'var(--accent-primary)';
   let statusBg = 'rgba(0, 255, 135, 0.1)';
   let statusTitle = '순항 중';
-  let statusDesc = activeTab === 'time'
-    ? `예상 완주 ${predictedFinishMin}분`
-    : `예상 체중 ${predictedFinalWeight}kg`;
 
   if (forecastStatus === 'ahead') {
     statusColor = '#60efff';
     statusBg = 'rgba(96, 239, 255, 0.12)';
     statusTitle = '초과 달성';
-    statusDesc = activeTab === 'time'
-      ? `${predictedFinishMin}분 (${predictedFinishPace}) 단축 예상`
-      : `최종 ${predictedFinalWeight}kg 감량 예상`;
   } else if (forecastStatus === 'behind') {
     statusColor = '#ff6b6b';
     statusBg = 'rgba(255, 107, 107, 0.12)';
     statusTitle = '지연 주의';
-    statusDesc = activeTab === 'time'
-      ? `${predictedFinishMin}분 지연 예상`
-      : `최종 ${predictedFinalWeight}kg`;
   }
 
   // Y축 시간 눈금 (5개)
@@ -144,63 +119,13 @@ export function DynamicProgressChart({ forecastData, activePlan, activePlanId = 
     timeTicks.push(t);
   }
 
-  const hasWeight = includeWeightGoal && weightGraphPoints && weightGraphPoints.length > 0;
-
   return (
     <div className="card-glass" style={{ padding: '16px', marginBottom: '16px' }}>
-      {/* 탭 전환 버튼 (체중 목표 연동 시) */}
-      {hasWeight && (
-        <div style={{ display: 'flex', gap: '8px', marginBottom: '12px', borderBottom: '1px solid var(--border-glass)', paddingBottom: '10px' }}>
-          <button
-            type="button"
-            onClick={() => setActiveTab('time')}
-            style={{
-              padding: '6px 12px',
-              borderRadius: '16px',
-              fontSize: '12px',
-              fontWeight: '700',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              background: activeTab === 'time' ? 'var(--accent-primary)' : 'rgba(255,255,255,0.05)',
-              color: activeTab === 'time' ? '#000' : 'var(--text-secondary)',
-              border: activeTab === 'time' ? 'none' : '1px solid var(--border-glass)',
-              transition: 'all 0.15s ease'
-            }}
-          >
-            <span>🏃 완주 페이스</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveTab('weight')}
-            style={{
-              padding: '6px 12px',
-              borderRadius: '16px',
-              fontSize: '12px',
-              fontWeight: '700',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              background: activeTab === 'weight' ? 'var(--accent-primary)' : 'rgba(255,255,255,0.05)',
-              color: activeTab === 'weight' ? '#000' : 'var(--text-secondary)',
-              border: activeTab === 'weight' ? 'none' : '1px solid var(--border-glass)',
-              transition: 'all 0.15s ease'
-            }}
-          >
-            <Scale size={13} />
-            <span>⚖️ 체중 감량 ({startWeight}kg ➔ {targetWeight}kg)</span>
-          </button>
-        </div>
-      )}
-
       {/* 1. 상단 예측 요약 대시보드 */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', marginBottom: '12px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <span style={{ fontSize: '15px', fontWeight: '800', color: '#ffffff' }}>
-            {activeTab === 'time' ? '📊 1·2·3안 전체 로드맵 & 실행 예측' : '⚖️ 체중 예측'}
+            📊 1·2·3안 전체 로드맵 & 실행 예측
           </span>
           <span className="badge" style={{ backgroundColor: statusBg, color: statusColor, border: `1px solid ${statusColor}40`, fontSize: '11px', fontWeight: '800' }}>
             {statusTitle}
@@ -209,21 +134,12 @@ export function DynamicProgressChart({ forecastData, activePlan, activePlanId = 
 
         {/* 2대 핵심 예측 수치 */}
         <div style={{ display: 'flex', gap: '8px' }}>
-          {activeTab === 'time' ? (
-            <div style={{ padding: '6px 12px', background: 'rgba(0,0,0,0.45)', borderRadius: 'var(--radius-sm)', textAlign: 'center', border: '1px solid var(--border-subtle)' }}>
-              <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: '600' }}>예상 완주</div>
-              <div style={{ fontSize: '16px', fontWeight: '900', color: statusColor, marginTop: '1px' }}>
-                {predictedFinishMin}분
-              </div>
+          <div style={{ padding: '6px 12px', background: 'rgba(0,0,0,0.45)', borderRadius: 'var(--radius-sm)', textAlign: 'center', border: '1px solid var(--border-subtle)' }}>
+            <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: '600' }}>예상 완주</div>
+            <div style={{ fontSize: '16px', fontWeight: '900', color: statusColor, marginTop: '1px' }}>
+              {predictedFinishMin}분
             </div>
-          ) : (
-            <div style={{ padding: '6px 12px', background: 'rgba(0,0,0,0.45)', borderRadius: 'var(--radius-sm)', textAlign: 'center', border: '1px solid var(--border-subtle)' }}>
-              <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: '600' }}>예상 체중</div>
-              <div style={{ fontSize: '16px', fontWeight: '900', color: statusColor, marginTop: '1px' }}>
-                {predictedFinalWeight} kg
-              </div>
-            </div>
-          )}
+          </div>
 
           <div style={{ padding: '6px 12px', background: 'rgba(0,0,0,0.45)', borderRadius: 'var(--radius-sm)', textAlign: 'center', border: '1px solid var(--border-subtle)' }}>
             <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: '600' }}>달성 확률</div>
