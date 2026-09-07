@@ -104,16 +104,6 @@ export function GoalDetailStep({ onGoalSubmit, initialGoal }) {
 
   return (
     <div style={{ maxWidth: '540px', margin: '0 auto', animation: 'fadeIn 0.25s ease' }}>
-      {/* 간결한 헤더 */}
-      <div style={{ marginBottom: '16px', textAlign: 'center' }}>
-        <h1 style={{ fontSize: '22px', fontWeight: '900', letterSpacing: '-0.03em', color: '#ffffff', marginBottom: '4px' }}>
-          목표 설정
-        </h1>
-        <p style={{ color: 'var(--text-muted)', fontSize: '13px' }}>
-          도전할 코스와 목표 시간을 선택하세요
-        </p>
-      </div>
-
       <form onSubmit={handleSubmit}>
         {/* 카드 1: 코스 & 목표 선택 */}
         <div style={{
