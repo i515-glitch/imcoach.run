@@ -107,11 +107,9 @@ export function TodayWorkoutCard({
           marginBottom: '14px'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span style={{ fontSize: '11px', fontWeight: '800', color: weeklyAdvice?.color || 'var(--accent-primary)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                DAILY COACHING
-              </span>
-            </div>
+            <span style={{ fontSize: '12px', fontWeight: '800', color: weeklyAdvice?.color || 'var(--accent-primary)' }}>
+              오늘의 코칭
+            </span>
             <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: '600' }}>{todayDateStr}</span>
           </div>
 
@@ -396,40 +394,24 @@ export function TodayWorkoutCard({
           </div>
         )}
 
-        {/* 📖 공식 레퍼런스 코칭 가이드 안내 배지 */}
-        <div style={{
-          padding: '8px 12px',
-          background: 'rgba(255, 255, 255, 0.03)',
-          borderRadius: '10px',
-          border: '1px dashed rgba(255, 255, 255, 0.1)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginBottom: '12px',
-          fontSize: '10px',
-          color: 'var(--text-muted)'
-        }}>
-          <span>📖 코칭 기준: 잭 대니얼스 VDOT 5대 페이스 & 피칭어 4단계 주기화</span>
-          <span style={{ color: 'var(--accent-primary)', fontWeight: '700' }}>공식 표준</span>
-        </div>
-
-        {/* 하단: 전체 로드맵 & 3안 스케줄 보기 버튼 */}
+        {/* 하단: 전체 로드맵 보기 버튼 */}
         <button
           type="button"
           onClick={onViewFullRoadmap}
           className="btn btn-secondary"
           style={{
             width: '100%',
-            padding: '11px',
+            padding: '12px',
             borderRadius: '14px',
-            fontSize: '12px',
+            fontSize: '13px',
+            fontWeight: '700',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
             gap: '6px'
           }}
         >
-          <span>🗺️ 전체 3안 로드맵 & 상세 스케줄 보기</span>
+          <span>🗺️ 전체 로드맵 보기</span>
           <ChevronRight size={15} />
         </button>
       </div>

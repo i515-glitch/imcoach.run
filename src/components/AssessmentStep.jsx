@@ -41,30 +41,14 @@ export function AssessmentStep({ goal, onCompleteAssessment, onBack }) {
   };
 
   return (
-    <div style={{ maxWidth: '560px', margin: '0 auto', animation: 'fadeIn 0.25s ease' }}>
-      {/* 🍎 iOS Header */}
-      <div style={{ marginBottom: '20px' }}>
-        <div style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '5px',
-          padding: '3px 10px',
-          background: 'rgba(56, 189, 248, 0.12)',
-          borderRadius: '9999px',
-          color: 'var(--accent-secondary)',
-          fontSize: '11px',
-          fontWeight: '800',
-          marginBottom: '6px'
-        }}>
-          <span>STEP 2</span>
-          <span>•</span>
-          <span>FITNESS CHECK</span>
-        </div>
-        <h1 style={{ fontSize: '26px', fontWeight: '900', letterSpacing: '-0.03em', color: '#ffffff' }}>
-          현재 체력 & 러닝 수준 체크
+    <div style={{ maxWidth: '540px', margin: '0 auto', animation: 'fadeIn 0.25s ease' }}>
+      {/* 헤더 */}
+      <div style={{ marginBottom: '16px', textAlign: 'center' }}>
+        <h1 style={{ fontSize: '22px', fontWeight: '900', letterSpacing: '-0.03em', color: '#ffffff', marginBottom: '4px' }}>
+          체력 수준 체크
         </h1>
         <p style={{ color: 'var(--text-muted)', fontSize: '13px' }}>
-          현재 체력을 바탕으로 잭 대니얼스 VDOT 페이스를 과학적으로 계산합니다.
+          현재 달리기와 체력 수준을 선택해주세요
         </p>
       </div>
 

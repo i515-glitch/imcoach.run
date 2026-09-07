@@ -103,52 +103,31 @@ export function GoalDetailStep({ onGoalSubmit, initialGoal }) {
   };
 
   return (
-    <div style={{ maxWidth: '560px', margin: '0 auto', animation: 'fadeIn 0.25s ease' }}>
-      {/* 🍎 iOS 스타일 헤더 (Large Title) */}
-      <div style={{ marginBottom: '20px' }}>
-        <div style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '5px',
-          padding: '3px 10px',
-          background: 'rgba(0, 255, 135, 0.12)',
-          borderRadius: '9999px',
-          color: 'var(--accent-primary)',
-          fontSize: '11px',
-          fontWeight: '800',
-          marginBottom: '6px'
-        }}>
-          <span>STEP 1</span>
-          <span>•</span>
-          <span>TARGET SETUP</span>
-        </div>
-        <h1 style={{ fontSize: '26px', fontWeight: '900', letterSpacing: '-0.03em', color: '#ffffff' }}>
-          마라톤 목표 설정
+    <div style={{ maxWidth: '540px', margin: '0 auto', animation: 'fadeIn 0.25s ease' }}>
+      {/* 간결한 헤더 */}
+      <div style={{ marginBottom: '16px', textAlign: 'center' }}>
+        <h1 style={{ fontSize: '22px', fontWeight: '900', letterSpacing: '-0.03em', color: '#ffffff', marginBottom: '4px' }}>
+          목표 설정
         </h1>
         <p style={{ color: 'var(--text-muted)', fontSize: '13px' }}>
-          도전할 마라톤 거리와 목표 시간을 선택하세요.
+          도전할 코스와 목표 시간을 선택하세요
         </p>
       </div>
 
       <form onSubmit={handleSubmit}>
-        {/* 🍎 iOS Inset Grouped Card 1: 목표 거리 & 원클릭 프리셋 (One-Click Target) */}
+        {/* 카드 1: 코스 & 목표 선택 */}
         <div style={{
           background: 'rgba(28, 28, 30, 0.85)',
           borderRadius: '20px',
-          padding: '18px 16px',
+          padding: '16px',
           border: '1px solid rgba(255, 255, 255, 0.08)',
           backdropFilter: 'blur(20px)',
-          marginBottom: '14px',
+          marginBottom: '12px',
           boxShadow: '0 8px 24px rgba(0,0,0,0.3)'
         }}>
-          {/* 거리 탭 (Segmented Control) */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-            <div style={{ fontSize: '12px', fontWeight: '800', color: 'var(--text-secondary)' }}>
-              1. 목표 거리 선택
-            </div>
-            <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
-              원하는 코스를 탭하세요
-            </span>
+          {/* 코스 선택 */}
+          <div style={{ fontSize: '12px', fontWeight: '800', color: 'var(--text-secondary)', marginBottom: '8px' }}>
+            코스 선택
           </div>
 
           <div style={{
@@ -158,7 +137,7 @@ export function GoalDetailStep({ onGoalSubmit, initialGoal }) {
             padding: '4px',
             borderRadius: '14px',
             gap: '4px',
-            marginBottom: '14px'
+            marginBottom: '12px'
           }}>
             {MARATHON_DISTANCES.map(d => {
               const isSelected = distanceKm === d.km;
@@ -181,21 +160,18 @@ export function GoalDetailStep({ onGoalSubmit, initialGoal }) {
                     transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)'
                   }}
                 >
-                  <div>{d.id === 'slow' ? '🌱SLOW' : d.id.toUpperCase()}</div>
+                  <div>{d.id === 'slow' ? '🌱3k' : d.id.toUpperCase()}</div>
                   <div style={{ fontSize: '9px', opacity: isSelected ? 0.9 : 0.6, fontWeight: '700', marginTop: '1px' }}>
-                    {d.id === 'slow' ? '3k 걷뛰' : `${d.km}k`}
+                    {d.id === 'slow' ? '걷뛰' : `${d.km}k`}
                   </div>
                 </button>
               );
             })}
           </div>
 
-          {/* 원클릭 맞춤 프리셋 버튼 4종 */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-            <div style={{ fontSize: '12px', fontWeight: '800', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '5px' }}>
-              <Zap size={14} color="var(--accent-orange)" />
-              <span>2. 원클릭 목표 선택 (추천 프리셋)</span>
-            </div>
+          {/* 목표 프리셋 */}
+          <div style={{ fontSize: '12px', fontWeight: '800', color: 'var(--text-secondary)', marginBottom: '8px' }}>
+            목표 시간
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
@@ -207,7 +183,7 @@ export function GoalDetailStep({ onGoalSubmit, initialGoal }) {
                   type="button"
                   onClick={() => handleApplyPreset(preset)}
                   style={{
-                    padding: '12px',
+                    padding: '11px 12px',
                     borderRadius: '12px',
                     fontSize: '12px',
                     fontWeight: '800',
@@ -227,30 +203,21 @@ export function GoalDetailStep({ onGoalSubmit, initialGoal }) {
           </div>
         </div>
 
-        {/* 🍎 iOS Inset Grouped Card 2: 세부 시간 미세조정 & 요구 페이스 (Fine Tuning) */}
+        {/* 카드 2: 시간 & 페이스 */}
         <div style={{
           background: 'rgba(28, 28, 30, 0.85)',
           borderRadius: '20px',
-          padding: '16px',
+          padding: '14px 16px',
           border: '1px solid rgba(255, 255, 255, 0.08)',
           backdropFilter: 'blur(20px)',
-          marginBottom: '14px',
+          marginBottom: '12px',
           boxShadow: '0 8px 24px rgba(0,0,0,0.3)'
         }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-            <div style={{ fontSize: '12px', fontWeight: '800', color: 'var(--text-secondary)' }}>
-              3. 세부 시간 미세조정 & 요구 페이스
-            </div>
-            <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
-              직접 분 단위 수정 가능
-            </span>
-          </div>
-
           <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '12px', alignItems: 'center' }}>
             {/* 시간 / 분 스텝 인풋 */}
             <div>
               <div style={{ fontSize: '11px', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '6px' }}>
-                ⏱️ 목표 시간 (Target Time)
+                목표 시간 직접 수정
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
@@ -259,14 +226,12 @@ export function GoalDetailStep({ onGoalSubmit, initialGoal }) {
                     min="0"
                     max="12"
                     className="input-glass"
-                    style={{ width: '54px', textAlign: 'center', fontSize: '18px', fontWeight: '900', padding: '6px 2px', borderRadius: '10px' }}
+                    style={{ width: '50px', textAlign: 'center', fontSize: '17px', fontWeight: '900', padding: '6px 2px', borderRadius: '10px' }}
                     value={hours}
                     onChange={(e) => setHours(Math.max(0, parseInt(e.target.value, 10) || 0))}
                   />
-                  <span style={{ fontSize: '12px', color: 'var(--text-secondary)', fontWeight: '700' }}>h</span>
+                  <span style={{ fontSize: '12px', color: 'var(--text-secondary)', fontWeight: '700' }}>시간</span>
                 </div>
-
-                <span style={{ fontWeight: '900', color: 'var(--text-muted)' }}>:</span>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
                   <input
@@ -274,53 +239,53 @@ export function GoalDetailStep({ onGoalSubmit, initialGoal }) {
                     min="0"
                     max="59"
                     className="input-glass"
-                    style={{ width: '54px', textAlign: 'center', fontSize: '18px', fontWeight: '900', padding: '6px 2px', borderRadius: '10px' }}
+                    style={{ width: '50px', textAlign: 'center', fontSize: '17px', fontWeight: '900', padding: '6px 2px', borderRadius: '10px' }}
                     value={minutes}
                     onChange={(e) => setMinutes(Math.max(0, Math.min(59, parseInt(e.target.value, 10) || 0)))}
                   />
-                  <span style={{ fontSize: '12px', color: 'var(--text-secondary)', fontWeight: '700' }}>m 미만</span>
+                  <span style={{ fontSize: '12px', color: 'var(--text-secondary)', fontWeight: '700' }}>분</span>
                 </div>
               </div>
             </div>
 
-            {/* Apple Activity 스타일 페이스 메트릭 */}
+            {/* 페이스 메트릭 */}
             <div style={{
               background: 'rgba(0, 0, 0, 0.45)',
               borderRadius: '14px',
-              padding: '10px 14px',
+              padding: '8px 12px',
               border: '1px solid rgba(48, 209, 88, 0.3)',
               textAlign: 'center'
             }}>
-              <div style={{ fontSize: '10px', fontWeight: '800', color: 'var(--accent-primary)', letterSpacing: '0.05em' }}>
-                REQUIRED PACE
+              <div style={{ fontSize: '10px', fontWeight: '800', color: 'var(--accent-primary)' }}>
+                1km당 속도
               </div>
-              <div style={{ fontSize: '24px', fontWeight: '900', color: '#ffffff', letterSpacing: '-0.03em', lineHeight: '1.1', marginTop: '2px' }}>
+              <div style={{ fontSize: '22px', fontWeight: '900', color: '#ffffff', letterSpacing: '-0.03em', lineHeight: '1.1', marginTop: '2px' }}>
                 {targetPace}
               </div>
-              <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontWeight: '600' }}>/ km</div>
+              <div style={{ fontSize: '9px', color: 'var(--text-muted)' }}>/ km</div>
             </div>
           </div>
         </div>
 
-        {/* 🍎 iOS Inset Grouped Card 4: D-Day & 빈도 */}
+        {/* 카드 3: D-Day & 주당 빈도 */}
         <div style={{
           background: 'rgba(28, 28, 30, 0.85)',
           borderRadius: '20px',
-          padding: '16px',
+          padding: '14px 16px',
           border: '1px solid rgba(255, 255, 255, 0.08)',
           backdropFilter: 'blur(20px)',
-          marginBottom: '20px',
+          marginBottom: '18px',
           boxShadow: '0 8px 24px rgba(0,0,0,0.3)'
         }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
             <div>
               <label style={{ fontSize: '11px', fontWeight: '700', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>
-                📅 목표 완료 날짜 (D-Day)
+                목표 완료일
               </label>
               <input
                 type="date"
                 className="input-glass"
-                style={{ padding: '8px 10px', fontSize: '12px', fontWeight: '700', borderRadius: '10px' }}
+                style={{ padding: '8px 10px', fontSize: '12px', fontWeight: '700', borderRadius: '10px', width: '100%' }}
                 value={targetDate}
                 onChange={(e) => setTargetDate(e.target.value)}
                 min={new Date().toISOString().split('T')[0]}
@@ -330,7 +295,7 @@ export function GoalDetailStep({ onGoalSubmit, initialGoal }) {
 
             <div>
               <label style={{ fontSize: '11px', fontWeight: '700', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>
-                ⚡ 주당 운동 빈도
+                주당 훈련
               </label>
               <div style={{ display: 'flex', gap: '4px' }}>
                 {[3, 4, 5].map(cnt => (
@@ -375,7 +340,7 @@ export function GoalDetailStep({ onGoalSubmit, initialGoal }) {
           )}
         </div>
 
-        {/* 🍎 iOS Main Action Button (Capsule Button) */}
+        {/* 메인 버튼 */}
         <button
           type="submit"
           disabled={!!safetyError}
@@ -383,7 +348,7 @@ export function GoalDetailStep({ onGoalSubmit, initialGoal }) {
             width: '100%',
             padding: '16px',
             borderRadius: '9999px',
-            fontSize: '16px',
+            fontSize: '15px',
             fontWeight: '900',
             letterSpacing: '-0.02em',
             background: 'var(--accent-primary)',
@@ -399,7 +364,7 @@ export function GoalDetailStep({ onGoalSubmit, initialGoal }) {
             transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)'
           }}
         >
-          <span>AI 역산 진단 & 플랜 생성하기</span>
+          <span>맞춤 로드맵 만들기</span>
           <ChevronRight size={18} strokeWidth={3} />
         </button>
       </form>

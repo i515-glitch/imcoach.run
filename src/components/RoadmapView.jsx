@@ -221,9 +221,8 @@ export function RoadmapView({ roadmap, goal, userAssessment }) {
               marginBottom: '20px'
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                <span className="badge badge-cyan" style={{ fontSize: '11px' }}>AI 필수 능력 역산 진단</span>
-                <span style={{ fontSize: '14px', fontWeight: '800', color: 'var(--text-primary)' }}>
-                  현재 체력 vs 목표 달성을 위해 갖춰야 할 필수 조건
+                <span style={{ fontSize: '13px', fontWeight: '800', color: 'var(--text-primary)' }}>
+                  🎯 목표 달성 필수 지표
                 </span>
               </div>
 
@@ -234,30 +233,30 @@ export function RoadmapView({ roadmap, goal, userAssessment }) {
               {/* 필수 조건 4대 지표 그리드 */}
               <div className="grid-4" style={{ gap: '8px' }}>
                 <div style={{ padding: '8px 10px', background: 'rgba(255,255,255,0.03)', borderRadius: '10px', border: '1px solid var(--border-glass)' }}>
-                  <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>필요 1km 페이스</div>
+                  <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>필요 페이스</div>
                   <div style={{ fontSize: '13px', fontWeight: '800', color: 'var(--accent-primary)', marginTop: '2px' }}>
                     {roadmap.capabilityAnalysis.requirements.req1kPace}
                   </div>
                 </div>
 
                 <div style={{ padding: '8px 10px', background: 'rgba(255,255,255,0.03)', borderRadius: '10px', border: '1px solid var(--border-glass)' }}>
-                  <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>필요 10km 기록</div>
+                  <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>10km 완주 시간</div>
                   <div style={{ fontSize: '13px', fontWeight: '800', color: 'var(--accent-secondary)', marginTop: '2px' }}>
                     {roadmap.capabilityAnalysis.requirements.req10kRecord}
                   </div>
                 </div>
 
                 <div style={{ padding: '8px 10px', background: 'rgba(255,255,255,0.03)', borderRadius: '10px', border: '1px solid var(--border-glass)' }}>
-                  <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>필요 하체 근력</div>
-                  <div style={{ fontSize: '13px', fontWeight: '800', color: '#ffb703', marginTop: '2px' }}>
-                    스쿼트 {roadmap.capabilityAnalysis.requirements.reqSquat}
+                  <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>필요 장거리 지속</div>
+                  <div style={{ fontSize: '13px', fontWeight: '800', color: 'var(--accent-orange)', marginTop: '2px' }}>
+                    {roadmap.capabilityAnalysis.requirements.reqLSD}
                   </div>
                 </div>
 
                 <div style={{ padding: '8px 10px', background: 'rgba(255,255,255,0.03)', borderRadius: '10px', border: '1px solid var(--border-glass)' }}>
-                  <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>필요 권장 기간</div>
-                  <div style={{ fontSize: '13px', fontWeight: '800', color: 'var(--text-primary)', marginTop: '2px' }}>
-                    {roadmap.capabilityAnalysis.requirements.reqBuildUpWeeks}
+                  <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>권장 스쿼트</div>
+                  <div style={{ fontSize: '13px', fontWeight: '800', color: '#ffb703', marginTop: '2px' }}>
+                    {roadmap.capabilityAnalysis.requirements.reqSquat}
                   </div>
                 </div>
               </div>
