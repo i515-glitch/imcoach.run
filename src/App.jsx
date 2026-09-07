@@ -29,54 +29,56 @@ export function App() {
       return;
     }
 
-    const saved = loadUserData();
-    if (saved.goal) {
-      setActiveGoal(saved.goal);
-      if (saved.assessment) {
-        setAssessment(saved.assessment);
+    try {
+      const saved = loadUserData();
+      if (saved && saved.goal) {
+        setActiveGoal(saved.goal);
+        const assessmentData = saved.assessment || { userLevel: 'beginner', answers: {} };
+        setAssessment(assessmentData);
+        
         const freshRoadmap = generateTrainingRoadmap({
           goal: saved.goal,
-          userLevel: saved.assessment.userLevel || 'beginner',
+          userLevel: assessmentData.userLevel || 'beginner',
           scheduleMode: saved.goal.scheduleMode || 'deadline',
           targetDate: saved.goal.targetDate,
           dailyMinutes: saved.goal.dailyMinutes || 35,
           daysPerWeek: saved.goal.daysPerWeek || 3,
-          surveyAnswers: saved.assessment.answers || {}
+          surveyAnswers: assessmentData.answers || {}
         });
         setRoadmap(freshRoadmap);
-        saveUserData({ ...saved, roadmap: freshRoadmap });
+        saveUserData({ ...saved, assessment: assessmentData, roadmap: freshRoadmap });
         setStep('roadmap');
-      } else {
-        setStep('assessment');
       }
+    } catch (e) {
+      console.warn('초기 로컬 데이터 복원 건너뜀:', e);
+      setStep('goal_detail');
     }
 
     // Firebase Auth 구독
     const unsubscribe = subscribeAuth(async (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
-        // 클라우드에서 유저 플랜 불러오기
-        const cloudData = await loadUserPlanFromCloud(currentUser.uid);
-        if (cloudData && cloudData.goal) {
-          setActiveGoal(cloudData.goal);
-          if (cloudData.assessment) {
-            setAssessment(cloudData.assessment);
+        try {
+          const cloudData = await loadUserPlanFromCloud(currentUser.uid);
+          if (cloudData && cloudData.goal) {
+            setActiveGoal(cloudData.goal);
+            const assessmentData = cloudData.assessment || { userLevel: 'beginner', answers: {} };
+            setAssessment(assessmentData);
             const freshRoadmap = generateTrainingRoadmap({
               goal: cloudData.goal,
-              userLevel: cloudData.assessment.userLevel || 'beginner',
+              userLevel: assessmentData.userLevel || 'beginner',
               scheduleMode: cloudData.goal.scheduleMode || 'deadline',
               targetDate: cloudData.goal.targetDate,
               dailyMinutes: cloudData.goal.dailyMinutes || 35,
               daysPerWeek: cloudData.goal.daysPerWeek || 3,
-              surveyAnswers: cloudData.assessment.answers || {}
+              surveyAnswers: assessmentData.answers || {}
             });
             setRoadmap(freshRoadmap);
-            saveUserData({ ...cloudData, roadmap: freshRoadmap });
+            saveUserData({ ...cloudData, assessment: assessmentData, roadmap: freshRoadmap });
             setStep('roadmap');
           }
-        } else if (saved.goal) {
-          // 로컬에 기존 플랜이 있으면 클라우드로 최초 백업 업로드
-          await saveUserPlanToCloud(currentUser.uid, saved);
+        } catch (e) {
+          console.warn('클라우드 동기화 건너뜀:', e);
         }
       }
     });

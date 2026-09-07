@@ -470,21 +470,21 @@ export function calculateRequiredCapabilities(goal, userSurveyAnswers = {}) {
   // 목표 거리에 맞춤화된 단계별 마일스톤 생성
   let milestoneTimeline = [];
 
-  if (targetDistanceKm <= 3.5) {
+  if (distanceKm <= 3.5) {
     // 3km 슬로우조깅
     milestoneTimeline = [
       { step: 1, period: '1~2주차', title: '걷뛰 1.5km 적응', targetMetric: '1.5km 지속', focus: '올바른 착지 자세 & 호흡법', status: '기초 적응' },
       { step: 2, period: '3~4주차', title: '2.5km 지속 달리기', targetMetric: '2.5km 완주', focus: '무릎 충격 없는 부드러운 조깅', status: '거리 확장' },
       { step: 3, period: '5~6주차', title: '3km 완주 도전', targetMetric: `3km ${targetTimeMin}분 (${targetPaceStr}/km)`, focus: '3km 목표 완주 성공', status: '목표 달성' }
     ];
-  } else if (targetDistanceKm <= 6.0) {
+  } else if (distanceKm <= 6.0) {
     // 5km
     milestoneTimeline = [
       { step: 1, period: '1~2주차', title: '3km 안정 완주', targetMetric: '3km 지속주', focus: '기초 심폐 지구력 형성', status: '기초 적응' },
       { step: 2, period: '3~4주차', title: '4km 거리 적응', targetMetric: '4km 지속주', focus: '일정한 템포 페이스 유지', status: '거리 확장' },
       { step: 3, period: '5~6주차', title: '5km 목표 달성', targetMetric: `5km ${targetTimeMin}분 (${targetPaceStr}/km)`, focus: '5km 완벽 완주 성공', status: '목표 달성' }
     ];
-  } else if (targetDistanceKm <= 15.0) {
+  } else if (distanceKm <= 15.0) {
     // 10km (단독 목표)
     milestoneTimeline = [
       { step: 1, period: '1~3주차', title: '5km 베이스 빌드업', targetMetric: '5km 30분 내외', focus: '기초 유산소 & 하체 보강', status: '기초 다지기' },
@@ -492,7 +492,7 @@ export function calculateRequiredCapabilities(goal, userSurveyAnswers = {}) {
       { step: 3, period: '7~8주차', title: '9km 거리 확장 (LSD)', targetMetric: '9km 장거리 완주', focus: '장거리 지속력 & 코어 안정', status: '장거리 적응' },
       { step: 4, period: `${reqBuildUpWeeks}주차`, title: '10km 목표 완주', targetMetric: `10km ${targetTimeMin}분 (${targetPaceStr}/km)`, focus: '대회 실전 페이스 완주 성공!', status: '목표 달성' }
     ];
-  } else if (targetDistanceKm <= 25.0) {
+  } else if (distanceKm <= 25.0) {
     // 하프 마라톤
     milestoneTimeline = [
       { step: 1, period: '1~4주차', title: '10km 안정 완주', targetMetric: '10km 주파', focus: '기초 유산소 지구력', status: '기초 다지기' },
