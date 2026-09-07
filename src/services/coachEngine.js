@@ -596,18 +596,20 @@ export function generateTrainingRoadmap({
     };
   }
 
-  // 2안 (최종 60분 마스터 플랜: 16주)
-  const masterWeeksNeeded = isSenior ? 16 : 12;
-  const masterDaysNeeded = masterWeeksNeeded * 7;
-  const masterPhases = createAdaptivePhases(category, level, masterWeeksNeeded, dailyTime, surveyAnswers, isSenior, true);
+  // 1안 (D-Day 단기 속성 필승도전 플랜: D-Day 주차 기준, 예: 6주)
+  const challengeWeeks = totalWeeks;
+  const challengeDays = estimatedDaysToTarget;
+  const challengePhases = createAdaptivePhases(category, level, challengeWeeks, dailyTime, surveyAnswers, isSenior, false);
 
-  // 1안 (D-Day 단기 실전 플랜: 6주)
-  const phases = createAdaptivePhases(category, level, totalWeeks, dailyTime, surveyAnswers, isSenior, false);
+  // 2안 (적정기간 표준 주기화 플랜: 12주 / 시니어 14주)
+  const moderateWeeksNeeded = Math.max(challengeWeeks, isSenior ? 14 : 12);
+  const moderateDaysNeeded = moderateWeeksNeeded * 7;
+  const moderatePhases = createAdaptivePhases(category, level, moderateWeeksNeeded, dailyTime, surveyAnswers, isSenior, true);
 
-  // 3안 (관절 보호 라이트 케어 플랜: 8주)
-  const lightWeeksNeeded = 8;
-  const lightDaysNeeded = lightWeeksNeeded * 7;
-  const lightPhases = createAdaptivePhases(category, level, lightWeeksNeeded, 25, surveyAnswers, true, false);
+  // 3안 (초보 안심 여유완주 플랜: 가장 긴 16주 / 시니어 20주로 부상 없이 점진적 빌드업)
+  const comfortWeeksNeeded = Math.max(moderateWeeksNeeded + 4, isSenior ? 20 : 16);
+  const comfortDaysNeeded = comfortWeeksNeeded * 7;
+  const comfortPhases = createAdaptivePhases(category, level, comfortWeeksNeeded, 25, surveyAnswers, true, false);
 
   const weightProps = {
     includeWeightGoal: goal.includeWeightGoal || false,
@@ -617,43 +619,43 @@ export function generateTrainingRoadmap({
 
   const plan1 = {
     id: 'plan1',
-    name: '1안: 10/18 단기 실전 플랜',
-    badge: 'D-Day 맞춤 (6주)',
-    totalWeeks,
-    estimatedDaysToTarget,
-    targetDate: scheduleMode === 'deadline' ? targetDate : getFutureDateString(estimatedDaysToTarget),
-    targetGoal: safetyAdvisory?.predictedTotalTime ? `10km ${safetyAdvisory.predictedTotalTime} 완주 (${safetyAdvisory.predictedPace})` : 'D-Day 최선 달성',
-    phases,
+    name: '1안: 필승도전 플랜',
+    badge: `${challengeWeeks}주 필승도전`,
+    totalWeeks: challengeWeeks,
+    estimatedDaysToTarget: challengeDays,
+    targetDate: scheduleMode === 'deadline' ? targetDate : getFutureDateString(challengeDays),
+    targetGoal: safetyAdvisory?.predictedTotalTime ? `10km ${safetyAdvisory.predictedTotalTime} 완주 (${safetyAdvisory.predictedPace})` : 'D-Day 속성 필승 달성',
+    phases: challengePhases,
     weeklySchedule: createWeeklyScheduleTemplate(category, weeklyFrequency, dailyTime, isSenior),
-    weeksChecklist: generateDetailedWeeklyChecklists(category, totalWeeks, isSenior, false, surveyAnswers),
+    weeksChecklist: generateDetailedWeeklyChecklists(category, challengeWeeks, isSenior, false, surveyAnswers),
     ...weightProps
   };
 
   const plan2 = {
     id: 'plan2',
-    name: '2안: 60분 마스터 완성 플랜',
-    badge: '목표 100% 정석 (16주)',
-    totalWeeks: masterWeeksNeeded,
-    estimatedDaysToTarget: masterDaysNeeded,
-    targetDate: getFutureDateString(masterDaysNeeded),
-    targetGoal: '10km 58~60분 완주 (페이스 5:50/km)',
-    phases: masterPhases,
+    name: '2안: 적정기간 완성 플랜',
+    badge: `${moderateWeeksNeeded}주 적정기간 ★`,
+    totalWeeks: moderateWeeksNeeded,
+    estimatedDaysToTarget: moderateDaysNeeded,
+    targetDate: getFutureDateString(moderateDaysNeeded),
+    targetGoal: '10km 58~60분 완주 (표준 주기화)',
+    phases: moderatePhases,
     weeklySchedule: createWeeklyScheduleTemplate(category, weeklyFrequency, dailyTime, isSenior),
-    weeksChecklist: generateDetailedWeeklyChecklists(category, masterWeeksNeeded, isSenior, true, surveyAnswers),
+    weeksChecklist: generateDetailedWeeklyChecklists(category, moderateWeeksNeeded, isSenior, true, surveyAnswers),
     ...weightProps
   };
 
   const plan3 = {
     id: 'plan3',
-    name: '3안: 관절 보호 라이트 케어 플랜',
-    badge: '부상 방지 유지 (8주)',
-    totalWeeks: lightWeeksNeeded,
-    estimatedDaysToTarget: lightDaysNeeded,
-    targetDate: getFutureDateString(lightDaysNeeded),
-    targetGoal: '10km 75~78분 완주 (관절 무리 없는 존2 조깅)',
-    phases: lightPhases,
+    name: '3안: 초보안심 여유완주 플랜',
+    badge: `${comfortWeeksNeeded}주 여유완주`,
+    totalWeeks: comfortWeeksNeeded,
+    estimatedDaysToTarget: comfortDaysNeeded,
+    targetDate: getFutureDateString(comfortDaysNeeded),
+    targetGoal: '10km 75~80분 완주 (초보자 무릎 관절 보호 슬로우 조깅)',
+    phases: comfortPhases,
     weeklySchedule: createWeeklyScheduleTemplate(category, 2, 25, true),
-    weeksChecklist: generateDetailedWeeklyChecklists(category, lightWeeksNeeded, true, false, surveyAnswers),
+    weeksChecklist: generateDetailedWeeklyChecklists(category, comfortWeeksNeeded, true, false, surveyAnswers),
     ...weightProps
   };
 

@@ -245,11 +245,11 @@ export function RoadmapView({ roadmap, goal, userAssessment }) {
                         {activePlanId === 'plan1' && <span style={{ fontSize: '10px', color: 'var(--accent-secondary)', fontWeight: '900' }}>✓</span>}
                       </div>
                       <div style={{ fontSize: '13px', fontWeight: '900', color: activePlanId === 'plan1' ? 'var(--accent-secondary)' : '#fff', marginBottom: '2px' }}>
-                        1안 실전형
+                        1안 필승도전
                       </div>
                     </div>
                     <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginTop: '2px' }}>
-                      단기 실전
+                      단기 속성
                     </div>
                   </div>
                 )}
@@ -279,11 +279,11 @@ export function RoadmapView({ roadmap, goal, userAssessment }) {
                         {activePlanId === 'plan2' && <span style={{ fontSize: '10px', color: 'var(--accent-primary)', fontWeight: '900' }}>✓</span>}
                       </div>
                       <div style={{ fontSize: '13px', fontWeight: '900', color: activePlanId === 'plan2' ? 'var(--accent-primary)' : '#fff', marginBottom: '2px' }}>
-                        2안 정석형
+                        2안 적정기간
                       </div>
                     </div>
                     <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginTop: '2px' }}>
-                      표준 주기화
+                      표준 추천
                     </div>
                   </div>
                 )}
@@ -313,11 +313,11 @@ export function RoadmapView({ roadmap, goal, userAssessment }) {
                         {activePlanId === 'plan3' && <span style={{ fontSize: '10px', color: '#ffb703', fontWeight: '900' }}>✓</span>}
                       </div>
                       <div style={{ fontSize: '13px', fontWeight: '900', color: activePlanId === 'plan3' ? '#ffb703' : '#fff', marginBottom: '2px' }}>
-                        3안 초보형
+                        3안 초보안심
                       </div>
                     </div>
                     <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginTop: '2px' }}>
-                      부상 방지
+                      여유 완주
                     </div>
                   </div>
                 )}
@@ -337,10 +337,10 @@ export function RoadmapView({ roadmap, goal, userAssessment }) {
             <div style={{ marginBottom: '8px' }}>
               <span style={{ fontSize: '12px', fontWeight: '800', color: activePlanId === 'plan3' ? '#ffb703' : activePlanId === 'plan1' ? 'var(--accent-secondary)' : 'var(--accent-primary)' }}>
                 {activePlanId === 'plan3'
-                  ? '🌱 3안 초보 맞춤 페이스'
+                  ? '🌱 3안 초보안심 페이스'
                   : activePlanId === 'plan1'
-                  ? '⚡ 1안 실전 목표 페이스'
-                  : '🏆 2안 정석 표준 페이스'}
+                  ? '⚡ 1안 필승도전 페이스'
+                  : '🏆 2안 적정기간 표준 페이스'}
               </span>
             </div>
 
