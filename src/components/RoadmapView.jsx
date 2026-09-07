@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, CheckCircle2, Circle, Edit3, Check, X, Flame, ShieldCheck, Sparkles, Trophy, Plus, RefreshCw, Smartphone, Layers, ArrowRight, Clock } from 'lucide-react';
+import { Calendar, CheckCircle2, Circle, Edit3, Check, X, Flame, ShieldCheck, Sparkles, Trophy, Plus, RefreshCw, Smartphone, Layers, ArrowRight } from 'lucide-react';
 import { DynamicProgressChart } from './DynamicProgressChart';
 import { TodayWorkoutCard } from './TodayWorkoutCard';
-import { WorkoutLogModal } from './WorkoutLogModal';
 import { calculateForecastTrajectory } from '../services/coachEngine';
 
 export function RoadmapView({
@@ -58,49 +57,6 @@ export function RoadmapView({
     }
   });
 
-  // ⏱️ 실전 훈련 기록 (거리, 시간, 페이스, 메모) 저장 (localStorage 영속화)
-  const [workoutLogs, setWorkoutLogs] = useState(() => {
-    try {
-      const saved = localStorage.getItem('imcoach_workout_logs');
-      return saved ? JSON.parse(saved) : {};
-    } catch (e) {
-      return {};
-    }
-  });
-
-  // 기록 모달 열림 대상 태스크 상태
-  const [activeLogTask, setActiveLogTask] = useState(null);
-
-  const handleSaveWorkoutLog = (taskId, logData) => {
-    setWorkoutLogs(prev => {
-      const next = { ...prev, [taskId]: logData };
-      try {
-        localStorage.setItem('imcoach_workout_logs', JSON.stringify(next));
-      } catch (e) {}
-      return next;
-    });
-
-    // 훈련 기록이 저장되면 해당 태스크는 자동으로 완료 처리
-    setCompletedTasks(prev => {
-      const next = { ...prev, [taskId]: true };
-      try {
-        localStorage.setItem('imcoach_completed_tasks', JSON.stringify(next));
-      } catch (e) {}
-      return next;
-    });
-  };
-
-  const handleDeleteWorkoutLog = (taskId) => {
-    setWorkoutLogs(prev => {
-      const next = { ...prev };
-      delete next[taskId];
-      try {
-        localStorage.setItem('imcoach_workout_logs', JSON.stringify(next));
-      } catch (e) {}
-      return next;
-    });
-  };
-
   // 수정 중인 태스크 상태 { taskId, text }
   const [editingTaskId, setEditingTaskId] = useState(null);
   const [editingText, setEditingText] = useState('');
@@ -137,8 +93,8 @@ export function RoadmapView({
     setEditingTaskId(null);
   };
 
-  // 실천율 및 실제 기록 기반 동적 예측 궤적 계산
-  const forecastData = calculateForecastTrajectory(basePlan, completedTasks, customTaskTexts, workoutLogs);
+  // 실천율 기반 동적 예측 궤적 계산
+  const forecastData = calculateForecastTrajectory(basePlan, completedTasks, customTaskTexts);
 
   const activeWeekData = basePlan.weeksChecklist?.find(w => w.weekNumber === selectedWeek) || basePlan.weeksChecklist?.[0];
 
@@ -204,8 +160,6 @@ export function RoadmapView({
             weeklyAdvice={weeklyAdvice}
             completedTasks={completedTasks}
             customTaskTexts={customTaskTexts}
-            workoutLogs={workoutLogs}
-            onOpenLogModal={(task) => setActiveLogTask(task)}
             onToggleTask={toggleTask}
             onStartEdit={handleStartEdit}
             editingTaskId={editingTaskId}
@@ -285,15 +239,14 @@ export function RoadmapView({
                         const isDone = !!completedTasks[task.id];
                         const isEditing = editingTaskId === task.id;
                         const displayTaskText = customTaskTexts[task.id] || task.text;
-                        const log = workoutLogs[task.id];
 
                         return (
                           <div
                             key={task.id}
                             style={{
                               display: 'flex',
-                              flexDirection: 'column',
-                              gap: '6px',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
                               padding: '10px 14px',
                               borderRadius: 'var(--radius-sm)',
                               backgroundColor: isDone ? 'rgba(0, 255, 135, 0.12)' : 'rgba(255, 255, 255, 0.03)',
@@ -301,143 +254,79 @@ export function RoadmapView({
                               transition: 'all 0.15s ease'
                             }}
                           >
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                              {isEditing ? (
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1 }}>
-                                  <input
-                                    type="text"
-                                    value={editingText}
-                                    onChange={(e) => setEditingText(e.target.value)}
-                                    className="input-field"
-                                    style={{ flex: 1, padding: '6px 10px', fontSize: '13px' }}
-                                    autoFocus
-                                  />
-                                  <button
-                                    onClick={() => handleSaveEdit(task.id)}
-                                    className="btn btn-primary btn-sm"
-                                    style={{ padding: '6px 10px' }}
-                                    title="저장"
-                                  >
-                                    <Check size={14} />
-                                  </button>
-                                  <button
-                                    onClick={handleCancelEdit}
-                                    className="btn btn-secondary btn-sm"
-                                    style={{ padding: '6px 10px' }}
-                                    title="취소"
-                                  >
-                                    <X size={14} />
-                                  </button>
+                            {isEditing ? (
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1 }}>
+                                <input
+                                  type="text"
+                                  value={editingText}
+                                  onChange={(e) => setEditingText(e.target.value)}
+                                  className="input-field"
+                                  style={{ flex: 1, padding: '6px 10px', fontSize: '13px' }}
+                                  autoFocus
+                                />
+                                <button
+                                  onClick={() => handleSaveEdit(task.id)}
+                                  className="btn btn-primary btn-sm"
+                                  style={{ padding: '6px 10px' }}
+                                  title="저장"
+                                >
+                                  <Check size={14} />
+                                </button>
+                                <button
+                                  onClick={handleCancelEdit}
+                                  className="btn btn-secondary btn-sm"
+                                  style={{ padding: '6px 10px' }}
+                                  title="취소"
+                                >
+                                  <X size={14} />
+                                </button>
+                              </div>
+                            ) : (
+                              <>
+                                <div
+                                  onClick={() => toggleTask(task.id)}
+                                  style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', flex: 1 }}
+                                >
+                                  <span className={`badge ${task.category === '달리기' ? 'badge-cyan' : task.category === '근력' ? 'badge-orange' : 'badge-purple'}`} style={{ fontSize: '10px' }}>
+                                    {task.category}
+                                  </span>
+                                  <span style={{
+                                    fontSize: '13px',
+                                    fontWeight: isDone ? '700' : '400',
+                                    color: isDone ? 'var(--accent-primary)' : 'var(--text-primary)',
+                                    textDecoration: isDone ? 'line-through' : 'none'
+                                  }}>
+                                    {displayTaskText}
+                                  </span>
                                 </div>
-                              ) : (
-                                <>
+
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                  {/* 목표치 수정 버튼 */}
+                                  <button
+                                    onClick={(e) => { e.stopPropagation(); handleStartEdit(task); }}
+                                    style={{
+                                      background: 'none',
+                                      border: 'none',
+                                      color: 'var(--text-muted)',
+                                      cursor: 'pointer',
+                                      padding: '4px',
+                                      display: 'flex',
+                                      alignItems: 'center'
+                                    }}
+                                    title="목표치 수정"
+                                  >
+                                    <Edit3 size={14} />
+                                  </button>
+
+                                  {/* 완료 체크 아이콘 */}
                                   <div
                                     onClick={() => toggleTask(task.id)}
-                                    style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', flex: 1 }}
+                                    style={{ color: isDone ? 'var(--accent-primary)' : 'var(--text-muted)', cursor: 'pointer' }}
                                   >
-                                    <span className={`badge ${task.category === '달리기' ? 'badge-cyan' : task.category === '근력' ? 'badge-orange' : 'badge-purple'}`} style={{ fontSize: '10px' }}>
-                                      {task.category}
-                                    </span>
-                                    <span style={{
-                                      fontSize: '13px',
-                                      fontWeight: isDone ? '700' : '400',
-                                      color: isDone ? 'var(--accent-primary)' : 'var(--text-primary)',
-                                      textDecoration: isDone ? 'line-through' : 'none'
-                                    }}>
-                                      {displayTaskText}
-                                    </span>
+                                    {isDone ? <CheckCircle2 size={18} /> : <Circle size={18} />}
                                   </div>
-
-                                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                    {/* ⏱️ 실전 기록 버튼 */}
-                                    <button
-                                      type="button"
-                                      onClick={(e) => { e.stopPropagation(); setActiveLogTask(task); }}
-                                      style={{
-                                        padding: '4px 8px',
-                                        borderRadius: '8px',
-                                        fontSize: '11px',
-                                        fontWeight: '800',
-                                        cursor: 'pointer',
-                                        background: log ? 'rgba(48, 209, 88, 0.18)' : 'rgba(56, 189, 248, 0.15)',
-                                        color: log ? 'var(--accent-primary)' : '#38bdf8',
-                                        border: log ? '1px solid rgba(48, 209, 88, 0.4)' : '1px solid rgba(56, 189, 248, 0.3)',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: '3px'
-                                      }}
-                                      title={log ? '기록 수정' : '실전 러닝 기록 입력'}
-                                    >
-                                      <Clock size={11} />
-                                      <span>{log ? '기록됨' : '기록'}</span>
-                                    </button>
-
-                                    {/* 목표치 수정 버튼 */}
-                                    <button
-                                      onClick={(e) => { e.stopPropagation(); handleStartEdit(task); }}
-                                      style={{
-                                        background: 'none',
-                                        border: 'none',
-                                        color: 'var(--text-muted)',
-                                        cursor: 'pointer',
-                                        padding: '4px',
-                                        display: 'flex',
-                                        alignItems: 'center'
-                                      }}
-                                      title="목표치 수정"
-                                    >
-                                      <Edit3 size={14} />
-                                    </button>
-
-                                    {/* 완료 체크 아이콘 */}
-                                    <div
-                                      onClick={() => toggleTask(task.id)}
-                                      style={{ color: isDone ? 'var(--accent-primary)' : 'var(--text-muted)', cursor: 'pointer' }}
-                                    >
-                                      {isDone ? <CheckCircle2 size={18} /> : <Circle size={18} />}
-                                    </div>
-                                  </div>
-                                </>
-                              )}
-                            </div>
-
-                            {/* ⏱️ 기록 배지 (기록이 있을 때) */}
-                            {log && !isEditing && (
-                              <div
-                                onClick={() => setActiveLogTask(task)}
-                                style={{
-                                  cursor: 'pointer',
-                                  padding: '5px 8px',
-                                  background: 'rgba(0, 0, 0, 0.35)',
-                                  borderRadius: '8px',
-                                  border: '1px solid rgba(48, 209, 88, 0.25)',
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  justifyContent: 'space-between',
-                                  fontSize: '11px',
-                                  marginTop: '2px'
-                                }}
-                              >
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                  <span style={{ fontWeight: '800', color: 'var(--accent-primary)' }}>
-                                    ⏱️ {log.distanceKm}km · {log.minutes}분 {log.seconds > 0 ? `${log.seconds}초` : ''}
-                                  </span>
-                                  <span style={{ color: 'var(--text-muted)' }}>|</span>
-                                  <span style={{ color: '#38bdf8', fontWeight: '700' }}>
-                                    페이스 {log.pace}
-                                  </span>
-                                  {log.feeling && (
-                                    <span>
-                                      {log.feeling === 'easy' ? '😊' : log.feeling === 'hard' ? '🔥' : '⚡'}
-                                    </span>
-                                  )}
                                 </div>
-                                {log.memo && (
-                                  <span style={{ color: 'var(--text-muted)', fontSize: '10px', maxWidth: '140px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                                    "{log.memo}"
-                                  </span>
-                                )}
-                              </div>
+                              </>
                             )}
                           </div>
                         );
@@ -798,16 +687,6 @@ export function RoadmapView({
           </div>
         </div>
       )}
-
-      {/* ⏱️ 실전 훈련 기록 모달 */}
-      <WorkoutLogModal
-        isOpen={!!activeLogTask}
-        task={activeLogTask}
-        initialLog={activeLogTask ? workoutLogs[activeLogTask.id] : null}
-        onClose={() => setActiveLogTask(null)}
-        onSaveLog={handleSaveWorkoutLog}
-        onDeleteLog={handleDeleteWorkoutLog}
-      />
     </div>
   );
 }
