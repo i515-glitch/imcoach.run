@@ -46,14 +46,15 @@ export function DynamicProgressChart({ forecastData, activePlan, activePlanId = 
   // X축 좌표 변환 함수 (0주 ~ maxWeeks)
   const getX = (week) => paddingLeft + (week / maxWeeks) * chartWidth;
 
-  // Y축 범위 계산 (시간)
+  // Y축 범위 계산 (시간: 완주 시간 단축 그래프)
+  // 1안, 2안, 3안 모두 시작 시간(tStart, 느림)에서 목표 완주 시간(targetTimeMin, 빠름)으로 우하향 단축됩니다.
   const t1 = targetTimeMin;
   const t2 = targetTimeMin;
-  const t3 = Math.max(targetTimeMin, Math.round(targetTimeMin * 1.15));
-  const tStart = graphPoints[0]?.plannedTime || Math.max(t1, t2, t3) + 20;
+  const t3 = targetTimeMin;
+  const tStart = graphPoints[0]?.plannedTime || targetTimeMin + 25;
 
-  const minY = Math.max(10, Math.min(t1, t2, t3, predictedFinishMin) - 5);
-  const maxY = Math.max(tStart + 5, 85);
+  const minY = Math.max(10, Math.min(targetTimeMin, predictedFinishMin) - 5);
+  const maxY = Math.max(tStart + 5, targetTimeMin + 30);
 
   const getYTime = (timeMin) => {
     const clamped = Math.max(minY, Math.min(maxY, timeMin));
@@ -69,8 +70,8 @@ export function DynamicProgressChart({ forecastData, activePlan, activePlanId = 
     return paddingTop + ((maxW - clamped) / (maxW - minW)) * chartHeight;
   };
 
-  // 1안, 2안, 3안 3가지 계획 곡선 생성
-  // 1안 (0 ~ w1주)
+  // 1안, 2안, 3안 3가지 계획 곡선 생성 (모두 우하향 시간 단축 곡선)
+  // 1안: 6주 단기 집중 단축 (가파른 하향)
   const plan1Points = [];
   for (let w = 0; w <= w1; w++) {
     const val = tStart - (tStart - t1) * (w / w1);
@@ -78,7 +79,7 @@ export function DynamicProgressChart({ forecastData, activePlan, activePlanId = 
   }
   const plan1Path = plan1Points.map((pt, i) => `${i === 0 ? 'M' : 'L'} ${getX(pt.week)} ${getYTime(pt.time)}`).join(' ');
 
-  // 2안 (0 ~ w2주)
+  // 2안: 12주 표준 주기화 단축 (적정 하향)
   const plan2Points = [];
   for (let w = 0; w <= w2; w++) {
     const val = tStart - (tStart - t2) * (w / w2);
@@ -86,7 +87,7 @@ export function DynamicProgressChart({ forecastData, activePlan, activePlanId = 
   }
   const plan2Path = plan2Points.map((pt, i) => `${i === 0 ? 'M' : 'L'} ${getX(pt.week)} ${getYTime(pt.time)}`).join(' ');
 
-  // 3안 (0 ~ w3주)
+  // 3안: 16주 가장 여유롭고 안전한 점진적 단축 (완만한 하향)
   const plan3Points = [];
   for (let w = 0; w <= w3; w++) {
     const val = tStart - (tStart - t3) * (w / w3);
@@ -96,13 +97,12 @@ export function DynamicProgressChart({ forecastData, activePlan, activePlanId = 
 
   // 선택된 안의 실제 실행선 & 예측선 포개어 생성 (Overlay)
   const activePlanWeeks = activePlanId === 'plan1' ? w1 : activePlanId === 'plan3' ? w3 : w2;
-  const activeTargetTime = activePlanId === 'plan3' ? t3 : t1;
 
   // 실제 실행된 포인트 (0주부터 currentActiveWeek까지)
   const actualPoints = graphPoints.filter(pt => pt.actualTime !== null && pt.week <= activePlanWeeks);
   const actualPath = actualPoints.map((pt, i) => `${i === 0 ? 'M' : 'L'} ${getX(pt.week)} ${getYTime(pt.actualTime)}`).join(' ');
 
-  // 앞으로의 AI 동적 예측선 (currentActiveWeek부터 activePlanWeeks까지)
+  // 앞으로의 AI 동적 예측선 (currentActiveWeek부터 activePlanWeeks까지 우하향)
   const forecastPoints = [];
   const startWeekForForecast = Math.max(0, currentActiveWeek - 1);
   const startValForForecast = graphPoints[startWeekForForecast]?.actualTime || tStart;
