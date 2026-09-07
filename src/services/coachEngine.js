@@ -692,7 +692,7 @@ export function generateTrainingRoadmap({
 }
 
 // 실천율 및 완료 데이터 기반 동적 예측 궤적(Forecast Trajectory) 계산 함수
-export function calculateForecastTrajectory(plan, completedTasks = {}, customOverrides = {}) {
+export function calculateForecastTrajectory(plan, completedTasks = {}, customOverrides = {}, workoutLogs = {}) {
   if (!plan || !plan.weeksChecklist) {
     return {
       completionRate: 0,
@@ -716,18 +716,37 @@ export function calculateForecastTrajectory(plan, completedTasks = {}, customOve
   let totalTasks = 0;
   let totalCompleted = 0;
   const weekStats = [];
+  const weekLoggedPaces = {}; // week -> avg pace sec per km
 
   plan.weeksChecklist.forEach(w => {
     let wTasks = 0;
     let wDone = 0;
+    let wLoggedSecs = 0;
+    let wLoggedCount = 0;
+
     w.days?.forEach(d => {
       d.tasks?.forEach(t => {
         wTasks++;
-        if (completedTasks[t.id]) wDone++;
+        if (completedTasks[t.id] || workoutLogs[t.id]) wDone++;
+
+        if (workoutLogs[t.id]) {
+          const log = workoutLogs[t.id];
+          if (log.distanceKm > 0 && log.totalSeconds > 0) {
+            const secPerKm = log.totalSeconds / log.distanceKm;
+            wLoggedSecs += secPerKm;
+            wLoggedCount++;
+          }
+        }
       });
     });
+
     totalTasks += wTasks;
     totalCompleted += wDone;
+
+    if (wLoggedCount > 0) {
+      weekLoggedPaces[w.weekNumber] = Math.round(wLoggedSecs / wLoggedCount);
+    }
+
     weekStats.push({
       weekNumber: w.weekNumber,
       total: wTasks,
@@ -790,14 +809,19 @@ export function calculateForecastTrajectory(plan, completedTasks = {}, customOve
 
     let actual = null;
     if (w <= currentActiveWeek && totalCompleted > 0) {
-      const pastRate = weekStats.slice(0, w).reduce((acc, cur) => acc + cur.done, 0) / 
-                       Math.max(1, weekStats.slice(0, w).reduce((acc, cur) => acc + cur.total, 0));
-      if (pastRate >= 0.7) {
-        actual = Math.round(initialTimeMin - (initialTimeMin - targetTimeMin) * ratio * 1.12);
-      } else if (pastRate <= 0.3) {
-        actual = Math.round(initialTimeMin - (initialTimeMin - targetTimeMin) * ratio * 0.55);
+      if (weekLoggedPaces[w]) {
+        // 실제 기록된 페이스 기반 완주 환산 시간 (10km 기준 분)
+        actual = Math.round((weekLoggedPaces[w] * 10) / 60);
       } else {
-        actual = planned;
+        const pastRate = weekStats.slice(0, w).reduce((acc, cur) => acc + cur.done, 0) / 
+                         Math.max(1, weekStats.slice(0, w).reduce((acc, cur) => acc + cur.total, 0));
+        if (pastRate >= 0.7) {
+          actual = Math.round(initialTimeMin - (initialTimeMin - targetTimeMin) * ratio * 1.12);
+        } else if (pastRate <= 0.3) {
+          actual = Math.round(initialTimeMin - (initialTimeMin - targetTimeMin) * ratio * 0.55);
+        } else {
+          actual = planned;
+        }
       }
     }
 

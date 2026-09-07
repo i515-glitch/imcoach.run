@@ -7,6 +7,8 @@ export function TodayWorkoutCard({
   weeklyAdvice,
   completedTasks,
   customTaskTexts,
+  workoutLogs = {},
+  onOpenLogModal,
   onToggleTask,
   onStartEdit,
   editingTaskId,
@@ -161,28 +163,18 @@ export function TodayWorkoutCard({
               </text>
             ))}
 
-            {chartTab === 'time' ? (
-              <>
-                <path d={plannedTimePath} fill="none" stroke="rgba(96, 239, 255, 0.4)" strokeWidth="1.5" strokeDasharray="4,4" />
-                {forecastTimePath && <path d={forecastTimePath} fill="none" stroke={statusColor} strokeWidth="2" strokeDasharray="3,3" />}
-                {actualTimePath && <path d={actualTimePath} fill="none" stroke="var(--accent-primary)" strokeWidth="3" strokeLinecap="round" />}
-              </>
-            ) : (
-              <>
-                <path d={plannedWeightPath} fill="none" stroke="rgba(96, 239, 255, 0.4)" strokeWidth="1.5" strokeDasharray="4,4" />
-                {forecastWeightPath && <path d={forecastWeightPath} fill="none" stroke={statusColor} strokeWidth="2" strokeDasharray="3,3" />}
-                {actualWeightPath && <path d={actualWeightPath} fill="none" stroke="var(--accent-primary)" strokeWidth="3" strokeLinecap="round" />}
-              </>
-            )}
+            <path d={plannedTimePath} fill="none" stroke="rgba(96, 239, 255, 0.4)" strokeWidth="1.5" strokeDasharray="4,4" />
+            {forecastTimePath && <path d={forecastTimePath} fill="none" stroke={statusColor} strokeWidth="2" strokeDasharray="3,3" />}
+            {actualTimePath && <path d={actualTimePath} fill="none" stroke="var(--accent-primary)" strokeWidth="3" strokeLinecap="round" />}
           </svg>
 
           {/* 실시간 예측 요약 바 */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '8px', paddingTop: '8px', borderTop: '1px solid rgba(255,255,255,0.06)', fontSize: '11px' }}>
             <span style={{ color: 'var(--text-muted)' }}>
-              {chartTab === 'time' ? '예상 완주 시간' : '예상 최종 체중'}
+              예상 완주 시간
             </span>
             <span style={{ fontWeight: '800', color: statusColor }}>
-              {chartTab === 'time' ? `${forecastData?.predictedFinishMin || 60}분 (${forecastData?.predictedFinishPace || '6:00/km'})` : `${forecastData?.predictedFinalWeight || 70} kg`}
+              {`${forecastData?.predictedFinishMin || 60}분 (${forecastData?.predictedFinishPace || '6:00/km'})`}
             </span>
           </div>
         </div>
@@ -213,14 +205,15 @@ export function TodayWorkoutCard({
               const isCompleted = !!completedTasks[task.id];
               const isEditing = editingTaskId === task.id;
               const displayText = customTaskTexts[task.id] || task.text;
+              const log = workoutLogs[task.id];
 
               return (
                 <div
                   key={task.id}
                   style={{
                     display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
+                    flexDirection: 'column',
+                    gap: '8px',
                     padding: '12px 14px',
                     borderRadius: '14px',
                     background: isCompleted ? 'rgba(0, 255, 135, 0.08)' : 'rgba(255, 255, 255, 0.03)',
@@ -228,88 +221,159 @@ export function TodayWorkoutCard({
                     transition: 'all 0.2s ease'
                   }}
                 >
-                  {/* 체크박스 & 운동명 */}
-                  <div
-                    onClick={() => !isEditing && onToggleTask(task.id)}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '10px',
-                      flex: 1,
-                      cursor: isEditing ? 'default' : 'pointer'
-                    }}
-                  >
-                    <button
-                      type="button"
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between'
+                  }}>
+                    {/* 체크박스 & 운동명 */}
+                    <div
+                      onClick={() => !isEditing && onToggleTask(task.id)}
                       style={{
-                        background: 'none',
-                        border: 'none',
-                        cursor: 'pointer',
-                        padding: 0,
                         display: 'flex',
                         alignItems: 'center',
-                        color: isCompleted ? 'var(--accent-primary)' : 'var(--text-muted)'
+                        gap: '10px',
+                        flex: 1,
+                        cursor: isEditing ? 'default' : 'pointer'
                       }}
                     >
-                      {isCompleted ? <CheckCircle2 size={20} strokeWidth={2.5} /> : <Circle size={20} />}
-                    </button>
+                      <button
+                        type="button"
+                        style={{
+                          background: 'none',
+                          border: 'none',
+                          cursor: 'pointer',
+                          padding: 0,
+                          display: 'flex',
+                          alignItems: 'center',
+                          color: isCompleted ? 'var(--accent-primary)' : 'var(--text-muted)'
+                        }}
+                      >
+                        {isCompleted ? <CheckCircle2 size={20} strokeWidth={2.5} /> : <Circle size={20} />}
+                      </button>
 
-                    {isEditing ? (
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flex: 1 }}>
-                        <input
-                          type="text"
-                          className="input-glass"
-                          style={{ padding: '4px 8px', fontSize: '13px', width: '100%' }}
-                          value={editingText}
-                          onChange={(e) => setEditingText(e.target.value)}
-                          autoFocus
-                        />
+                      {isEditing ? (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flex: 1 }}>
+                          <input
+                            type="text"
+                            className="input-glass"
+                            style={{ padding: '4px 8px', fontSize: '13px', width: '100%' }}
+                            value={editingText}
+                            onChange={(e) => setEditingText(e.target.value)}
+                            autoFocus
+                          />
+                          <button
+                            type="button"
+                            onClick={() => onSaveEdit(task.id)}
+                            className="btn btn-primary btn-sm"
+                            style={{ padding: '4px 8px' }}
+                          >
+                            <Check size={13} />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={onCancelEdit}
+                            className="btn btn-secondary btn-sm"
+                            style={{ padding: '4px 8px' }}
+                          >
+                            <X size={13} />
+                          </button>
+                        </div>
+                      ) : (
+                        <span style={{
+                          fontSize: '13px',
+                          fontWeight: isCompleted ? '500' : '600',
+                          color: isCompleted ? 'var(--text-muted)' : 'var(--text-primary)',
+                          textDecoration: isCompleted ? 'line-through' : 'none'
+                        }}>
+                          {displayText}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* 오른쪽 액션 버튼군: 실전 기록 버튼 / 수정 버튼 */}
+                    {!isEditing && (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        {onOpenLogModal && (
+                          <button
+                            type="button"
+                            onClick={() => onOpenLogModal(task)}
+                            style={{
+                              padding: '5px 10px',
+                              borderRadius: '10px',
+                              fontSize: '11px',
+                              fontWeight: '800',
+                              cursor: 'pointer',
+                              background: log ? 'rgba(48, 209, 88, 0.18)' : 'rgba(56, 189, 248, 0.15)',
+                              color: log ? 'var(--accent-primary)' : '#38bdf8',
+                              border: log ? '1px solid rgba(48, 209, 88, 0.4)' : '1px solid rgba(56, 189, 248, 0.3)',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '4px',
+                              transition: 'all 0.15s ease'
+                            }}
+                            title={log ? '기록 수정' : '실전 러닝 기록 입력'}
+                          >
+                            <Clock size={12} />
+                            <span>{log ? '기록됨' : '기록'}</span>
+                          </button>
+                        )}
+
                         <button
                           type="button"
-                          onClick={() => onSaveEdit(task.id)}
-                          className="btn btn-primary btn-sm"
-                          style={{ padding: '4px 8px' }}
+                          onClick={() => onStartEdit(task)}
+                          style={{
+                            background: 'none',
+                            border: 'none',
+                            color: 'var(--text-muted)',
+                            cursor: 'pointer',
+                            padding: '4px',
+                            opacity: 0.6
+                          }}
+                          title="목표치 수정"
                         >
-                          <Check size={13} />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={onCancelEdit}
-                          className="btn btn-secondary btn-sm"
-                          style={{ padding: '4px 8px' }}
-                        >
-                          <X size={13} />
+                          <Edit3 size={14} />
                         </button>
                       </div>
-                    ) : (
-                      <span style={{
-                        fontSize: '13px',
-                        fontWeight: isCompleted ? '500' : '600',
-                        color: isCompleted ? 'var(--text-muted)' : 'var(--text-primary)',
-                        textDecoration: isCompleted ? 'line-through' : 'none'
-                      }}>
-                        {displayText}
-                      </span>
                     )}
                   </div>
 
-                  {/* ✏️ 수정 버튼 */}
-                  {!isEditing && (
-                    <button
-                      type="button"
-                      onClick={() => onStartEdit(task)}
+                  {/* ⏱️ 실전 기록 배지 영역 (기록이 있는 경우) */}
+                  {log && (
+                    <div
+                      onClick={() => onOpenLogModal && onOpenLogModal(task)}
                       style={{
-                        background: 'none',
-                        border: 'none',
-                        color: 'var(--text-muted)',
                         cursor: 'pointer',
-                        padding: '4px',
-                        opacity: 0.6
+                        padding: '6px 10px',
+                        background: 'rgba(0, 0, 0, 0.35)',
+                        borderRadius: '10px',
+                        border: '1px solid rgba(48, 209, 88, 0.25)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        fontSize: '11px'
                       }}
-                      title="목표치 수정"
                     >
-                      <Edit3 size={14} />
-                    </button>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <span style={{ fontWeight: '800', color: 'var(--accent-primary)' }}>
+                          ⏱️ {log.distanceKm}km · {log.minutes}분 {log.seconds > 0 ? `${log.seconds}초` : ''}
+                        </span>
+                        <span style={{ color: 'var(--text-muted)' }}>|</span>
+                        <span style={{ color: '#38bdf8', fontWeight: '700' }}>
+                          페이스 {log.pace}
+                        </span>
+                        {log.feeling && (
+                          <span style={{ fontSize: '10px' }}>
+                            {log.feeling === 'easy' ? '😊' : log.feeling === 'hard' ? '🔥' : '⚡'}
+                          </span>
+                        )}
+                      </div>
+                      {log.memo && (
+                        <span style={{ color: 'var(--text-muted)', fontSize: '10px', maxWidth: '140px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          "{log.memo}"
+                        </span>
+                      )}
+                    </div>
                   )}
                 </div>
               );
