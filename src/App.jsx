@@ -188,7 +188,7 @@ export function App() {
         fontSize: '12px',
         color: 'var(--text-muted)'
       }}>
-        <p>© 2026 imcoach.run - AI Marathon & Precision Running Coach</p>
+        <p>© 2026 imcoach.run - AI Precision Running Coach</p>
       </footer>
     </div>
   );

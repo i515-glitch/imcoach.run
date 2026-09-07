@@ -30,20 +30,9 @@ export function Navbar({ currentStep, setStep, activeGoal, onReset, user, onOpen
           <Flame size={20} color="#000000" strokeWidth={2.5} />
         </div>
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <span style={{ fontSize: '20px', fontWeight: '900', letterSpacing: '-0.03em', color: '#fff' }}>
-              imcoach<span style={{ color: 'var(--accent-primary)' }}>.run</span>
-            </span>
-            <span style={{
-              fontSize: '9px',
-              padding: '2px 6px',
-              borderRadius: '6px',
-              background: 'rgba(48, 209, 88, 0.15)',
-              color: 'var(--accent-primary)',
-              fontWeight: '800'
-            }}>MARATHON AI</span>
-          </div>
-          <p style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Precision Running Coach</p>
+          <span style={{ fontSize: '20px', fontWeight: '900', letterSpacing: '-0.03em', color: '#fff' }}>
+            imcoach<span style={{ color: 'var(--accent-primary)' }}>.run</span>
+          </span>
         </div>
       </div>
 
