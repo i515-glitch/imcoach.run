@@ -97,28 +97,27 @@ export function TodayWorkoutCard({
       }}>
 
         {/* ======================================================== */}
-        {/* 1️⃣ [맨 위] 오늘의 코칭 (Apple Summary Card) */}
+        {/* 1️⃣ [맨 위] 오늘의 코칭 / 날짜 헤더 */}
         {/* ======================================================== */}
         <div style={{
-          padding: '14px 16px',
-          borderRadius: '18px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '12px 16px',
+          borderRadius: '16px',
           background: 'rgba(0, 0, 0, 0.4)',
           border: '1px solid rgba(255, 255, 255, 0.06)',
           marginBottom: '14px'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
-            <span style={{ fontSize: '12px', fontWeight: '800', color: weeklyAdvice?.color || 'var(--accent-primary)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Sparkles size={15} color="var(--accent-primary)" />
+            <span style={{ fontSize: '14px', fontWeight: '900', color: '#ffffff' }}>
               오늘의 코칭
             </span>
-            <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: '600' }}>{todayDateStr}</span>
           </div>
-
-          <div style={{ fontSize: '15px', fontWeight: '900', color: '#ffffff', letterSpacing: '-0.02em' }}>
-            {weeklyAdvice?.title}
-          </div>
-          <p style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '3px', lineHeight: '1.4' }}>
-            {weeklyAdvice?.desc}
-          </p>
+          <span style={{ fontSize: '12px', color: 'var(--text-secondary)', fontWeight: '700' }}>
+            {todayDateStr}
+          </span>
         </div>
 
         {/* ======================================================== */}
