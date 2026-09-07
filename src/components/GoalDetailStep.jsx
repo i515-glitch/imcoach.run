@@ -11,22 +11,22 @@ import {
 export function GoalDetailStep({ onGoalSubmit, initialGoal }) {
   const [targetDate, setTargetDate] = useState(initialGoal?.targetDate || '2026-10-18');
   const [distanceKm, setDistanceKm] = useState(initialGoal?.distanceKm || 10.0);
-  const [hours, setHours] = useState(initialGoal?.hours !== undefined ? initialGoal.hours : 0);
-  const [minutes, setMinutes] = useState(initialGoal?.minutes !== undefined ? initialGoal.minutes : 50);
+  const [hours, setHours] = useState(initialGoal?.hours !== undefined ? initialGoal.hours : 1);
+  const [minutes, setMinutes] = useState(initialGoal?.minutes !== undefined ? initialGoal.minutes : 0);
   
-  const [targetPace, setTargetPace] = useState(initialGoal?.targetPace || '5:00');
+  const [targetPace, setTargetPace] = useState(initialGoal?.targetPace || '6:00');
   const [daysPerWeek, setDaysPerWeek] = useState(initialGoal?.daysPerWeek || 3);
   const [safetyError, setSafetyError] = useState(null);
 
   // 현재 거리에 맞는 4대 원클릭 프리셋
   const currentPresets = getPresetsForDistance(distanceKm);
 
-  // 거리 변경 핸들러 (거리 변경 시 해당 거리의 2번째 대표 프리셋으로 자동 추천 세팅)
+  // 거리 변경 핸들러 (거리 변경 시 해당 거리의 추천 프리셋으로 자동 세팅)
   const handleDistanceChange = (km) => {
     setDistanceKm(km);
     const newPresets = getPresetsForDistance(km);
     if (newPresets && newPresets.length > 0) {
-      const defaultPreset = newPresets[1] || newPresets[0];
+      const defaultPreset = newPresets.find(p => p.label.includes('★')) || newPresets[1] || newPresets[0];
       setHours(defaultPreset.hours);
       setMinutes(defaultPreset.minutes);
       setTargetPace(defaultPreset.pace);
