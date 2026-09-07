@@ -84,42 +84,32 @@ export function App() {
     return () => unsubscribe();
   }, []);
 
-  // 1단계: 마라톤 세부 목표 입력 완료 ➔ 2단계 이동
+  // 1단계: 목표 입력 완료 ➔ 3안 맞춤 로드맵 즉시 생성 및 로드맵 화면으로 직행!
   const handleGoalSubmit = (goalData) => {
     setActiveGoal(goalData);
-    saveUserData({ goal: goalData });
-    if (user) {
-      saveUserPlanToCloud(user.uid, { goal: goalData });
-    }
-    setStep('assessment');
-  };
+    const defaultAssessment = { userLevel: 'beginner', answers: {} };
+    setAssessment(defaultAssessment);
 
-  // 2단계: 운동능력 체크 완료 ➔ 3단계(로드맵 & 오늘의 코칭) 자동 생성
-  const handleCompleteAssessment = (assessmentData) => {
-    setAssessment(assessmentData);
-    
-    // 로드맵 생성 (사용자 세부 목표 + 기초 운동능력 baseline 반영)
     const generatedRoadmap = generateTrainingRoadmap({
-      goal: activeGoal,
-      userLevel: assessmentData.userLevel,
-      scheduleMode: activeGoal.scheduleMode,
-      targetDate: activeGoal.targetDate,
-      dailyMinutes: activeGoal.dailyMinutes,
-      daysPerWeek: activeGoal.daysPerWeek
+      goal: goalData,
+      userLevel: 'beginner',
+      scheduleMode: goalData.scheduleMode || 'deadline',
+      targetDate: goalData.targetDate,
+      dailyMinutes: goalData.dailyMinutes || 35,
+      daysPerWeek: goalData.daysPerWeek || 3,
+      surveyAnswers: {}
     });
 
     setRoadmap(generatedRoadmap);
     const fullData = {
-      goal: activeGoal,
-      assessment: assessmentData,
+      goal: goalData,
+      assessment: defaultAssessment,
       roadmap: generatedRoadmap
     };
     saveUserData(fullData);
-
     if (user) {
       saveUserPlanToCloud(user.uid, fullData);
     }
-
     setStep('roadmap');
   };
 
