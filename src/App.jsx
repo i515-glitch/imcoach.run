@@ -32,9 +32,19 @@ export function App() {
     const saved = loadUserData();
     if (saved.goal) {
       setActiveGoal(saved.goal);
-      if (saved.assessment) setAssessment(saved.assessment);
-      if (saved.roadmap) {
-        setRoadmap(saved.roadmap);
+      if (saved.assessment) {
+        setAssessment(saved.assessment);
+        const freshRoadmap = generateTrainingRoadmap({
+          goal: saved.goal,
+          userLevel: saved.assessment.userLevel || 'beginner',
+          scheduleMode: saved.goal.scheduleMode || 'deadline',
+          targetDate: saved.goal.targetDate,
+          dailyMinutes: saved.goal.dailyMinutes || 35,
+          daysPerWeek: saved.goal.daysPerWeek || 3,
+          surveyAnswers: saved.assessment.answers || {}
+        });
+        setRoadmap(freshRoadmap);
+        saveUserData({ ...saved, roadmap: freshRoadmap });
         setStep('roadmap');
       } else {
         setStep('assessment');
@@ -49,12 +59,21 @@ export function App() {
         const cloudData = await loadUserPlanFromCloud(currentUser.uid);
         if (cloudData && cloudData.goal) {
           setActiveGoal(cloudData.goal);
-          if (cloudData.assessment) setAssessment(cloudData.assessment);
-          if (cloudData.roadmap) {
-            setRoadmap(cloudData.roadmap);
+          if (cloudData.assessment) {
+            setAssessment(cloudData.assessment);
+            const freshRoadmap = generateTrainingRoadmap({
+              goal: cloudData.goal,
+              userLevel: cloudData.assessment.userLevel || 'beginner',
+              scheduleMode: cloudData.goal.scheduleMode || 'deadline',
+              targetDate: cloudData.goal.targetDate,
+              dailyMinutes: cloudData.goal.dailyMinutes || 35,
+              daysPerWeek: cloudData.goal.daysPerWeek || 3,
+              surveyAnswers: cloudData.assessment.answers || {}
+            });
+            setRoadmap(freshRoadmap);
+            saveUserData({ ...cloudData, roadmap: freshRoadmap });
             setStep('roadmap');
           }
-          saveUserData(cloudData);
         } else if (saved.goal) {
           // 로컬에 기존 플랜이 있으면 클라우드로 최초 백업 업로드
           await saveUserPlanToCloud(currentUser.uid, saved);
