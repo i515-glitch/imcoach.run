@@ -467,65 +467,48 @@ export function calculateRequiredCapabilities(goal, userSurveyAnswers = {}) {
 
   const isCurrentCapable = (currentPaceSec <= targetPaceSec + 20) && (currentMaxDist >= (isFullCourse ? 25 : distanceKm * 0.7));
 
-  // 사용자의 현재 페이스와 목표 페이스를 바탕으로 3개월, 6개월, 9개월, 12개월 단계별 예상 기록 정밀 역산
-  // 3개월 10km 페이스: 현재 페이스에서 약 15~25% 개선된 페이스
-  const m3PaceSec = Math.max(targetPaceSec, Math.round(currentPaceSec * 0.82));
-  const m3_10k_min = Math.round((m3PaceSec * 10) / 60);
-  const m3PaceStr = `${Math.floor(m3PaceSec / 60)}:${m3PaceSec % 60 < 10 ? '0' : ''}${m3PaceSec % 60}`;
+  // 목표 거리에 맞춤화된 단계별 마일스톤 생성
+  let milestoneTimeline = [];
 
-  // 6개월 하프 마라톤 페이스: 3개월 페이스에서 추가 5~8% 단축 및 21.1km 유지
-  const m6PaceSec = Math.max(targetPaceSec, Math.round(m3PaceSec * 0.95));
-  const m6_half_total_sec = Math.round(m6PaceSec * 21.0975);
-  const m6_half_h = Math.floor(m6_half_total_sec / 3600);
-  const m6_half_m = Math.floor((m6_half_total_sec % 3600) / 60);
-  const m6PaceStr = `${Math.floor(m6PaceSec / 60)}:${m6PaceSec % 60 < 10 ? '0' : ''}${m6PaceSec % 60}`;
-
-  // 9개월 30km LSD 페이스
-  const m9PaceSec = Math.max(targetPaceSec + 10, Math.round(m6PaceSec * 1.02));
-  const m9_30k_total_sec = Math.round(m9PaceSec * 30);
-  const m9_30k_h = Math.floor(m9_30k_total_sec / 3600);
-  const m9_30k_m = Math.floor((m9_30k_total_sec % 3600) / 60);
-
-  // 12개월 풀코스 예상 완주 기록
-  const m12_full_total_sec = Math.round(targetPaceSec * 42.195);
-  const m12_full_h = Math.floor(m12_full_total_sec / 3600);
-  const m12_full_m = Math.floor((m12_full_total_sec % 3600) / 60);
-
-  // 단계별 장기 마라톤 마일스톤 빌드업 타임라인 (현재 기초 능력 기반 역산)
-  const milestoneTimeline = [
-    {
-      step: 1,
-      period: '3개월 후 (12주차)',
-      title: '10km 레이스 완주',
-      targetMetric: `10km ${m3_10k_min}분 완주 (${m3PaceStr}/km)`,
-      focus: '심폐 지구력 기초 형성, 러닝 자세 안정화 & 스쿼트 30회',
-      status: '기초 다지기'
-    },
-    {
-      step: 2,
-      period: '6개월 후 (24주차)',
-      title: '21.1km 하프 마라톤 주파',
-      targetMetric: `하프 ${m6_half_h > 0 ? `${m6_half_h}시간 ` : ''}${m6_half_m}분 (${m6PaceStr}/km)`,
-      focus: '15~18km 중장거리 LSD 적응, 페이스 유지력 & 코어 플랭크 60초',
-      status: '중거리 돌파'
-    },
-    {
-      step: 3,
-      period: '9개월 후 (36주차)',
-      title: '30km LSD 장거리 벽 돌파',
-      targetMetric: `30km ${m9_30k_h}시간 ${m9_30k_m}분 지속`,
-      focus: '30km 사점(Dead Point) 극복, 카보로딩 & 수분 보충 전략',
-      status: '장거리 완성'
-    },
-    {
-      step: 4,
-      period: '12개월 후 (48주차)',
-      title: isSub3 ? '42.195km 풀코스 서브3 도전!' : '42.195km 풀코스 완주 도전!',
-      targetMetric: `풀코스 ${m12_full_h}시간 ${m12_full_m}분 (${targetPaceStr}/km)`,
-      focus: '실전 대회 페이스 분배, 테이퍼링 및 마라톤 피니셔 등극',
-      status: '목표 달성'
-    }
-  ];
+  if (targetDistanceKm <= 3.5) {
+    // 3km 슬로우조깅
+    milestoneTimeline = [
+      { step: 1, period: '1~2주차', title: '걷뛰 1.5km 적응', targetMetric: '1.5km 지속', focus: '올바른 착지 자세 & 호흡법', status: '기초 적응' },
+      { step: 2, period: '3~4주차', title: '2.5km 지속 달리기', targetMetric: '2.5km 완주', focus: '무릎 충격 없는 부드러운 조깅', status: '거리 확장' },
+      { step: 3, period: '5~6주차', title: '3km 완주 도전', targetMetric: `3km ${targetTimeMin}분 (${targetPaceStr}/km)`, focus: '3km 목표 완주 성공', status: '목표 달성' }
+    ];
+  } else if (targetDistanceKm <= 6.0) {
+    // 5km
+    milestoneTimeline = [
+      { step: 1, period: '1~2주차', title: '3km 안정 완주', targetMetric: '3km 지속주', focus: '기초 심폐 지구력 형성', status: '기초 적응' },
+      { step: 2, period: '3~4주차', title: '4km 거리 적응', targetMetric: '4km 지속주', focus: '일정한 템포 페이스 유지', status: '거리 확장' },
+      { step: 3, period: '5~6주차', title: '5km 목표 달성', targetMetric: `5km ${targetTimeMin}분 (${targetPaceStr}/km)`, focus: '5km 완벽 완주 성공', status: '목표 달성' }
+    ];
+  } else if (targetDistanceKm <= 15.0) {
+    // 10km (단독 목표)
+    milestoneTimeline = [
+      { step: 1, period: '1~3주차', title: '5km 베이스 빌드업', targetMetric: '5km 30분 내외', focus: '기초 유산소 & 하체 보강', status: '기초 다지기' },
+      { step: 2, period: '4~6주차', title: '7km 템포런 적응', targetMetric: '7km 지속주', focus: '젖산 역치 스피드 지구력', status: '스피드 향상' },
+      { step: 3, period: '7~8주차', title: '9km 거리 확장 (LSD)', targetMetric: '9km 장거리 완주', focus: '장거리 지속력 & 코어 안정', status: '장거리 적응' },
+      { step: 4, period: `${reqBuildUpWeeks}주차`, title: '10km 목표 완주', targetMetric: `10km ${targetTimeMin}분 (${targetPaceStr}/km)`, focus: '대회 실전 페이스 완주 성공!', status: '목표 달성' }
+    ];
+  } else if (targetDistanceKm <= 25.0) {
+    // 하프 마라톤
+    milestoneTimeline = [
+      { step: 1, period: '1~4주차', title: '10km 안정 완주', targetMetric: '10km 주파', focus: '기초 유산소 지구력', status: '기초 다지기' },
+      { step: 2, period: '5~8주차', title: '15km 중장거리 LSD', targetMetric: '15km 지속주', focus: '중장거리 페이스 배분', status: '거리 확장' },
+      { step: 3, period: '9~12주차', title: '18km 실전 시뮬레이션', targetMetric: '18km 빌드업', focus: '에너지 보충 & 피로 극복', status: '실전 대비' },
+      { step: 4, period: `${reqBuildUpWeeks}주차`, title: '21.1km 하프 완주', targetMetric: `하프 ${targetTimeMin}분 (${targetPaceStr}/km)`, focus: '하프 피니셔 등극!', status: '목표 달성' }
+    ];
+  } else {
+    // 풀코스 마라톤
+    milestoneTimeline = [
+      { step: 1, period: '1단계 (12주차)', title: '10km 베이스 구축', targetMetric: '10km 안정 완주', focus: '기초 유산소 & 관절 보강', status: '기초 다지기' },
+      { step: 2, period: '2단계 (24주차)', title: '21.1km 하프 주파', targetMetric: '하프 마라톤 완주', focus: '15~18km LSD 적응', status: '중거리 돌파' },
+      { step: 3, period: '3단계 (36주차)', title: '30km LSD 장거리 벽 돌파', targetMetric: '30km 장거리 지속', focus: '30km 사점 극복 & 카보로딩', status: '장거리 완성' },
+      { step: 4, period: '4단계 (48주차)', title: '42.195km 풀코스 완주', targetMetric: `풀코스 ${Math.floor(targetTimeMin / 60)}시간 ${targetTimeMin % 60}분`, focus: '마라톤 피니셔 등극!', status: '목표 달성' }
+    ];
+  }
 
   // 잭 대니얼스 VDOT 5대 트레이닝 존 산출
   const vdotZones = calculateVDOTZones(targetPaceSec);
@@ -539,16 +522,6 @@ export function calculateRequiredCapabilities(goal, userSurveyAnswers = {}) {
     milestoneTimeline,
     vdotZones,
     currentVdotZones,
-    referenceGuide: {
-      formula: "Jack Daniels' Running Formula (VDOT 5대 페이스 시스템)",
-      periodization: "Pete Pfitzinger Advanced Marathoning (4단계 주기화 스케줄북)",
-      principles: [
-        "E(이지런/LSD)로 심폐 모세혈관 기초 구축 (전체 훈련의 75~80%)",
-        "T(젖산역치 템포런)로 피로 저항력 및 스피드 지속력 극대화",
-        "주말 장거리 LSD 점증 빌드업 (10km ➔ 21.1km ➔ 30km ➔ 42.195km)",
-        "대회 3주 전 테이퍼링(Tapering)으로 근육 글리코겐 충전 및 피로 회복"
-      ]
-    },
     requirements: {
       req1kPace: `${req1kPace} / km`,
       req10kRecord,
@@ -559,8 +532,8 @@ export function calculateRequiredCapabilities(goal, userSurveyAnswers = {}) {
       reqBuildUpWeeks: `${reqBuildUpWeeks}주`
     },
     advisoryText: isCurrentCapable
-      ? '현재 기초 운동능력이 목표에 근접해 있어 단기 집중 훈련으로도 완주 가능합니다.'
-      : `현재 상태로는 단기 무리한 완주시 부상 위험이 큽니다. 정통 마라톤 바이블(VDOT & 피칭어 4단계 주기화)에 따라 3개월(10km) ➔ 6개월(하프) ➔ 12개월(풀코스) 단계별 마일스톤으로 준비하면 안전하게 성공할 수 있습니다.`
+      ? '현재 체력으로 무리 없이 달성 가능한 목표입니다.'
+      : `목표 달성을 위해 단계별(${reqBuildUpWeeks}주)로 주행 거리와 페이스를 체계적으로 빌드업합니다.`
   };
 }
 

@@ -267,11 +267,8 @@ export function RoadmapView({ roadmap, goal, userAssessment }) {
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
                     <div style={{ fontSize: '12px', fontWeight: '800', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
                       <span>🏁</span>
-                      <span>단계별 장기 빌드업 타임라인 (현재 기초 능력 역산)</span>
+                      <span>단계별 빌드업 마일스톤</span>
                     </div>
-                    <span style={{ fontSize: '10px', color: 'var(--accent-primary)', fontWeight: '700' }}>
-                      3개월 ➔ 6개월 ➔ 12개월 풀코스
-                    </span>
                   </div>
 
                   <div className="grid-4" style={{ gap: '8px' }}>
