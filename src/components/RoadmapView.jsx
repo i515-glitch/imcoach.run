@@ -448,6 +448,8 @@ export function RoadmapView({ roadmap, goal, userAssessment }) {
             <DynamicProgressChart
               forecastData={forecastData}
               activePlan={basePlan}
+              activePlanId={activePlanId}
+              allPlans={plans}
             />
           </div>
 
