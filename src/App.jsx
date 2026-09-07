@@ -27,12 +27,11 @@ const getDefaultGoal = () => ({
 });
 
 export function App() {
-  // 활성 서비스: 'run' (러닝 코칭) | 'hub' (imcoach.co 메인 허브)
+  // 활성 서비스: 'hub' (imcoach.co 메인 허브 포털) | 'run' (러닝 코칭)
   const [activeService, setActiveService] = useState(() => {
     const p = window.location.pathname.toLowerCase();
     if (p.startsWith('/run')) return 'run';
-    if (p.startsWith('/hub')) return 'hub';
-    return 'run'; // 기본은 완성된 러닝 코칭으로 진입 (언제든 🏠 허브 토글 가능)
+    return 'hub'; // 메인 첫 화면은 imcoach.co 허브 홈페이지가 바로 뜸!
   });
 
   // 3대 핵심 탭: 'goal' (목표설정) | 'roadmap' (훈련로드맵) | 'coaching' (실전코칭받기)
