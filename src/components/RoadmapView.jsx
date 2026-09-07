@@ -338,124 +338,56 @@ export function RoadmapView({
             </div>
           )}
 
-          {/* 필수 체력 기준 & 단계별 마일스톤 (가로 방향 2열 나란히 배치) */}
+          {/* 필수 체력 기준 (가로 4열 와이드 카드) */}
           {roadmap.capabilityAnalysis && (
             <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-              gap: '12px',
+              padding: '16px 18px',
+              borderRadius: '18px',
+              background: 'rgba(28, 28, 30, 0.85)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              backdropFilter: 'blur(20px)',
               marginTop: '16px',
               marginBottom: '16px'
             }}>
-              {/* 1. 필수 체력 기준 카드 */}
-              <div style={{
-                padding: '16px',
-                borderRadius: '18px',
-                background: 'rgba(28, 28, 30, 0.85)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                backdropFilter: 'blur(20px)',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between'
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-                  <div style={{ fontSize: '13px', fontWeight: '800', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <span>🎯 필수 체력 기준</span>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+                <div style={{ fontSize: '13px', fontWeight: '800', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <span>🎯 필수 체력 기준</span>
+                </div>
+                <span style={{ fontSize: '10px', color: 'var(--accent-primary)', fontWeight: '700' }}>
+                  10km 완주 기준
+                </span>
+              </div>
+
+              {/* 4대 지표 가로 4열 그리드 */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px' }}>
+                <div style={{ padding: '10px 12px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>필요 페이스</div>
+                  <div style={{ fontSize: '14px', fontWeight: '900', color: 'var(--accent-primary)', marginTop: '3px' }}>
+                    {roadmap.capabilityAnalysis.requirements.req1kPace}
                   </div>
-                  <span style={{ fontSize: '10px', color: 'var(--accent-primary)', fontWeight: '700' }}>
-                    10km 완주 기준
-                  </span>
                 </div>
 
-                {/* 4대 지표 2x2 그리드 */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
-                  <div style={{ padding: '10px 12px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>필요 페이스</div>
-                    <div style={{ fontSize: '14px', fontWeight: '900', color: 'var(--accent-primary)', marginTop: '3px' }}>
-                      {roadmap.capabilityAnalysis.requirements.req1kPace}
-                    </div>
+                <div style={{ padding: '10px 12px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>완주 시간</div>
+                  <div style={{ fontSize: '14px', fontWeight: '900', color: 'var(--accent-secondary)', marginTop: '3px' }}>
+                    {roadmap.capabilityAnalysis.requirements.req10kRecord}
                   </div>
+                </div>
 
-                  <div style={{ padding: '10px 12px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>완주 시간</div>
-                    <div style={{ fontSize: '14px', fontWeight: '900', color: 'var(--accent-secondary)', marginTop: '3px' }}>
-                      {roadmap.capabilityAnalysis.requirements.req10kRecord}
-                    </div>
+                <div style={{ padding: '10px 12px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>지속 훈련</div>
+                  <div style={{ fontSize: '14px', fontWeight: '900', color: 'var(--accent-orange)', marginTop: '3px' }}>
+                    {roadmap.capabilityAnalysis.requirements.reqLSD}
                   </div>
+                </div>
 
-                  <div style={{ padding: '10px 12px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>지속 훈련</div>
-                    <div style={{ fontSize: '14px', fontWeight: '900', color: 'var(--accent-orange)', marginTop: '3px' }}>
-                      {roadmap.capabilityAnalysis.requirements.reqLSD}
-                    </div>
-                  </div>
-
-                  <div style={{ padding: '10px 12px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>권장 스쿼트</div>
-                    <div style={{ fontSize: '14px', fontWeight: '900', color: '#ffb703', marginTop: '3px' }}>
-                      {roadmap.capabilityAnalysis.requirements.reqSquat}
-                    </div>
+                <div style={{ padding: '10px 12px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>권장 스쿼트</div>
+                  <div style={{ fontSize: '14px', fontWeight: '900', color: '#ffb703', marginTop: '3px' }}>
+                    {roadmap.capabilityAnalysis.requirements.reqSquat}
                   </div>
                 </div>
               </div>
-
-              {/* 2. 단계별 마일스톤 카드 */}
-              {roadmap.capabilityAnalysis.milestoneTimeline && (
-                <div style={{
-                  padding: '16px',
-                  borderRadius: '18px',
-                  background: 'rgba(28, 28, 30, 0.85)',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
-                  backdropFilter: 'blur(20px)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between'
-                }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-                    <div style={{ fontSize: '13px', fontWeight: '800', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <span>🏁 단계별 마일스톤</span>
-                    </div>
-                    <span style={{ fontSize: '10px', color: 'var(--text-muted)', fontWeight: '700' }}>
-                      4단계 로드맵
-                    </span>
-                  </div>
-
-                  {/* 4단계 가로형 배치 */}
-                  <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(4, 1fr)',
-                    gap: '6px'
-                  }}>
-                    {roadmap.capabilityAnalysis.milestoneTimeline.map((ms, idx) => (
-                      <div
-                        key={idx}
-                        style={{
-                          padding: '10px 6px',
-                          borderRadius: '10px',
-                          background: idx === 3 ? 'rgba(0, 255, 135, 0.1)' : 'rgba(255, 255, 255, 0.03)',
-                          border: idx === 3 ? '1px solid var(--accent-primary)' : '1px solid rgba(255, 255, 255, 0.06)',
-                          display: 'flex',
-                          flexDirection: 'column',
-                          justifyContent: 'space-between',
-                          textAlign: 'center'
-                        }}
-                      >
-                        <div>
-                          <div style={{ fontSize: '9px', fontWeight: '800', color: idx === 3 ? 'var(--accent-primary)' : 'var(--accent-secondary)', marginBottom: '2px' }}>
-                            {ms.period}
-                          </div>
-                          <div style={{ fontSize: '11px', fontWeight: '800', color: '#ffffff', marginBottom: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                            {ms.title}
-                          </div>
-                        </div>
-                        <div style={{ fontSize: '10px', fontWeight: '700', color: idx === 3 ? 'var(--accent-primary)' : '#ffb703', marginTop: '4px' }}>
-                          {ms.targetMetric}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
           )}
         </div>
