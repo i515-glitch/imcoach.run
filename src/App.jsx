@@ -143,33 +143,38 @@ export function App() {
     setStep(targetTab);
   };
 
-  // 1단계: 목표 입력 완료 ➔ 3안 맞춤 로드맵 즉시 생성 및 실전코칭 화면으로 직행!
+  // 1단계: 목표 입력 완료 ➔ 체력 진단 설문 단계로 이동!
   const handleGoalSubmit = (goalData) => {
     setActiveGoal(goalData);
-    const defaultAssessment = assessment || { userLevel: 'beginner', answers: {} };
-    setAssessment(defaultAssessment);
+    setStep('assessment');
+  };
+
+  // 2단계: 체력 설문 완료 ➔ 3안 맞춤 로드맵 생성 및 실전코칭 화면으로 이동!
+  const handleCompleteAssessment = (assessmentData) => {
+    setAssessment(assessmentData);
+    const targetGoal = activeGoal || getDefaultGoal();
 
     const generatedRoadmap = generateTrainingRoadmap({
-      goal: goalData,
-      userLevel: 'beginner',
-      scheduleMode: goalData.scheduleMode || 'deadline',
-      targetDate: goalData.targetDate,
-      dailyMinutes: goalData.dailyMinutes || 35,
-      daysPerWeek: goalData.daysPerWeek || 3,
-      surveyAnswers: {}
+      goal: targetGoal,
+      userLevel: assessmentData.userLevel || 'beginner',
+      scheduleMode: targetGoal.scheduleMode || 'deadline',
+      targetDate: targetGoal.targetDate,
+      dailyMinutes: targetGoal.dailyMinutes || 35,
+      daysPerWeek: targetGoal.daysPerWeek || 3,
+      surveyAnswers: assessmentData.surveyAnswers || {}
     });
 
     setRoadmap(generatedRoadmap);
     const fullData = {
-      goal: goalData,
-      assessment: defaultAssessment,
+      goal: targetGoal,
+      assessment: assessmentData,
       roadmap: generatedRoadmap
     };
     saveUserData(fullData);
     if (user) {
       saveUserPlanToCloud(user.uid, fullData);
     }
-    setStep('coaching'); // 목표 설정 완료 후 즉시 실전코칭받기로 이동!
+    setStep('coaching'); // 설문 완료 후 실전 코칭 탭으로 이동!
   };
 
   // 초기화 (새 목표 설정)
@@ -288,12 +293,20 @@ export function App() {
 
       {/* 메인 콘텐츠 영역 */}
       <main style={{ flex: 1 }}>
-        {/* 1️⃣ 🎯 목표설정 탭 */}
+        {/* 1️⃣ 🎯 목표설정 탭 & 체력 수준 설문 */}
         {step === 'goal' && (
           <GoalDetailStep
             sportCategory="running"
             onGoalSubmit={handleGoalSubmit}
             initialGoal={activeGoal}
+          />
+        )}
+
+        {step === 'assessment' && (
+          <AssessmentStep
+            goal={activeGoal}
+            onCompleteAssessment={handleCompleteAssessment}
+            onBack={() => setStep('goal')}
           />
         )}
 

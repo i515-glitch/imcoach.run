@@ -347,7 +347,7 @@ export function GoalDetailStep({ onGoalSubmit, initialGoal }) {
           )}
         </div>
 
-        {/* 메인 버튼: 로드맵 코칭받기 */}
+        {/* 메인 버튼: 다음 체력 체크 설문 */}
         <button
           type="submit"
           style={{
@@ -370,7 +370,7 @@ export function GoalDetailStep({ onGoalSubmit, initialGoal }) {
             WebkitTapHighlightColor: 'transparent'
           }}
         >
-          <span>로드맵 코칭받기</span>
+          <span>다음: 체력 수준 체크 (설문)</span>
           <ChevronRight size={20} strokeWidth={3} />
         </button>
       </form>
