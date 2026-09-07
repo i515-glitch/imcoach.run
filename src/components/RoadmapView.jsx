@@ -652,29 +652,8 @@ export function RoadmapView({
             )}
           </div>
 
-          {/* 3️⃣ [그 아래] 그래프 및 AI 주간 코칭 조언 */}
+          {/* 3️⃣ [그 아래] 16주 통합 다이내믹 예측 그래프 */}
           <div style={{ marginBottom: '16px' }}>
-            {/* AI 주간 코칭 조언 배너 */}
-            <div style={{
-              padding: '12px 16px',
-              backgroundColor: weeklyAdvice.bg,
-              borderRadius: 'var(--radius-md)',
-              borderLeft: `4px solid ${weeklyAdvice.color}`,
-              marginBottom: '14px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: '8px'
-            }}>
-              <span style={{ fontSize: '13px', fontWeight: '800', color: weeklyAdvice.color }}>
-                {weeklyAdvice.title}
-              </span>
-              <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
-                {weeklyAdvice.desc}
-              </span>
-            </div>
-
-            {/* 계획 vs 실천 동적 예측 그래프 컴포넌트 */}
             <DynamicProgressChart
               forecastData={forecastData}
               activePlan={basePlan}
