@@ -482,8 +482,6 @@ export function RoadmapView({ roadmap, goal, userAssessment }) {
                   </div>
                 </div>
               )}
-
-              </div>
             </div>
           )}
 
