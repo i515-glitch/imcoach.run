@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
+import { HubHome } from './components/HubHome';
 import { SportSelectStep } from './components/SportSelectStep';
 import { GoalDetailStep } from './components/GoalDetailStep';
 import { AssessmentStep } from './components/AssessmentStep';
@@ -26,6 +27,14 @@ const getDefaultGoal = () => ({
 });
 
 export function App() {
+  // 활성 서비스: 'run' (러닝 코칭) | 'hub' (imcoach.co 메인 허브)
+  const [activeService, setActiveService] = useState(() => {
+    const p = window.location.pathname.toLowerCase();
+    if (p.startsWith('/run')) return 'run';
+    if (p.startsWith('/hub')) return 'hub';
+    return 'run'; // 기본은 완성된 러닝 코칭으로 진입 (언제든 🏠 허브 토글 가능)
+  });
+
   // 3대 핵심 탭: 'goal' (목표설정) | 'roadmap' (훈련로드맵) | 'coaching' (실전코칭받기)
   const [step, setStep] = useState('coaching'); 
   const [activePlanId, setActivePlanId] = useState('plan2');
@@ -212,130 +221,154 @@ export function App() {
         user={user}
         onOpenAuth={() => setIsAuthModalOpen(true)}
         onLogout={handleLogout}
+        activeService={activeService}
+        onSelectService={(svc) => {
+          if (svc === 'run') {
+            setActiveService('run');
+            setStep('coaching');
+          } else {
+            setActiveService('hub');
+          }
+        }}
       />
 
-      {/* 🏃‍♂️ 3대 핵심 내비게이션 탭: 목표설정 | 훈련로드맵 | 실전코칭받기 */}
-      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '22px' }}>
-        <div style={{
-          display: 'inline-flex',
-          background: 'rgba(118, 118, 128, 0.24)',
-          padding: '4px',
-          borderRadius: '16px',
-          backdropFilter: 'blur(20px)',
-          border: '1px solid rgba(255, 255, 255, 0.08)',
-          gap: '3px'
-        }}>
-          <button
-            type="button"
-            onClick={() => handleTabSwitch('goal')}
-            style={{
-              padding: '9px 18px',
-              borderRadius: '12px',
-              fontSize: '13px',
-              fontWeight: '800',
-              cursor: 'pointer',
-              border: 'none',
-              background: step === 'goal' ? '#1c1c1e' : 'transparent',
-              color: step === 'goal' ? '#ffffff' : 'rgba(255, 255, 255, 0.65)',
-              boxShadow: step === 'goal' ? '0 3px 8px rgba(0,0,0,0.4)' : 'none',
-              transition: 'all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px'
-            }}
-          >
-            <span>🎯 목표설정</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => handleTabSwitch('roadmap')}
-            style={{
-              padding: '9px 18px',
-              borderRadius: '12px',
-              fontSize: '13px',
-              fontWeight: '800',
-              cursor: 'pointer',
-              border: 'none',
-              background: step === 'roadmap' ? '#1c1c1e' : 'transparent',
-              color: step === 'roadmap' ? '#ffffff' : 'rgba(255, 255, 255, 0.65)',
-              boxShadow: step === 'roadmap' ? '0 3px 8px rgba(0,0,0,0.4)' : 'none',
-              transition: 'all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px'
-            }}
-          >
-            <span>🗺️ 훈련로드맵</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => handleTabSwitch('coaching')}
-            style={{
-              padding: '9px 18px',
-              borderRadius: '12px',
-              fontSize: '13px',
-              fontWeight: '800',
-              cursor: 'pointer',
-              border: 'none',
-              background: step === 'coaching' ? '#1c1c1e' : 'transparent',
-              color: step === 'coaching' ? '#ffffff' : 'rgba(255, 255, 255, 0.65)',
-              boxShadow: step === 'coaching' ? '0 3px 8px rgba(0,0,0,0.4)' : 'none',
-              transition: 'all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px'
-            }}
-          >
-            <span>⚡ 실전코칭받기</span>
-          </button>
-        </div>
-      </div>
+      {/* 🏠 1. imcoach.co 메인 허브 포털 화면 */}
+      {activeService === 'hub' ? (
+        <HubHome
+          onSelectService={(svcId) => {
+            if (svcId === 'run') {
+              setActiveService('run');
+              setStep('coaching');
+            }
+          }}
+        />
+      ) : (
+        /* 🏃 2. imcoach.run 러닝/마라톤 코칭 화면 */
+        <>
+          {/* 3대 핵심 내비게이션 탭: 목표설정 | 훈련로드맵 | 실전코칭받기 */}
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '22px' }}>
+            <div style={{
+              display: 'inline-flex',
+              background: 'rgba(118, 118, 128, 0.24)',
+              padding: '4px',
+              borderRadius: '16px',
+              backdropFilter: 'blur(20px)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              gap: '3px'
+            }}>
+              <button
+                type="button"
+                onClick={() => handleTabSwitch('goal')}
+                style={{
+                  padding: '9px 18px',
+                  borderRadius: '12px',
+                  fontSize: '13px',
+                  fontWeight: '800',
+                  cursor: 'pointer',
+                  border: 'none',
+                  background: step === 'goal' ? '#1c1c1e' : 'transparent',
+                  color: step === 'goal' ? '#ffffff' : 'rgba(255, 255, 255, 0.65)',
+                  boxShadow: step === 'goal' ? '0 3px 8px rgba(0,0,0,0.4)' : 'none',
+                  transition: 'all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}
+              >
+                <span>🎯 목표설정</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleTabSwitch('roadmap')}
+                style={{
+                  padding: '9px 18px',
+                  borderRadius: '12px',
+                  fontSize: '13px',
+                  fontWeight: '800',
+                  cursor: 'pointer',
+                  border: 'none',
+                  background: step === 'roadmap' ? '#1c1c1e' : 'transparent',
+                  color: step === 'roadmap' ? '#ffffff' : 'rgba(255, 255, 255, 0.65)',
+                  boxShadow: step === 'roadmap' ? '0 3px 8px rgba(0,0,0,0.4)' : 'none',
+                  transition: 'all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}
+              >
+                <span>🗺️ 훈련로드맵</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleTabSwitch('coaching')}
+                style={{
+                  padding: '9px 18px',
+                  borderRadius: '12px',
+                  fontSize: '13px',
+                  fontWeight: '800',
+                  cursor: 'pointer',
+                  border: 'none',
+                  background: step === 'coaching' ? '#1c1c1e' : 'transparent',
+                  color: step === 'coaching' ? '#ffffff' : 'rgba(255, 255, 255, 0.65)',
+                  boxShadow: step === 'coaching' ? '0 3px 8px rgba(0,0,0,0.4)' : 'none',
+                  transition: 'all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}
+              >
+                <span>⚡ 실전코칭받기</span>
+              </button>
+            </div>
+          </div>
 
-      {/* 메인 콘텐츠 영역 */}
-      <main style={{ flex: 1 }}>
-        {/* 1️⃣ 🎯 목표설정 탭 & 체력 수준 설문 */}
-        {step === 'goal' && (
-          <GoalDetailStep
-            sportCategory="running"
-            onGoalSubmit={handleGoalSubmit}
-            initialGoal={activeGoal}
-          />
-        )}
+          {/* 메인 콘텐츠 영역 */}
+          <main style={{ flex: 1 }}>
+            {/* 1️⃣ 🎯 목표설정 탭 & 체력 수준 설문 */}
+            {step === 'goal' && (
+              <GoalDetailStep
+                sportCategory="running"
+                onGoalSubmit={handleGoalSubmit}
+                initialGoal={activeGoal}
+              />
+            )}
 
-        {step === 'assessment' && (
-          <AssessmentStep
-            goal={activeGoal}
-            onCompleteAssessment={handleCompleteAssessment}
-            onBack={() => setStep('goal')}
-          />
-        )}
+            {step === 'assessment' && (
+              <AssessmentStep
+                goal={activeGoal}
+                onCompleteAssessment={handleCompleteAssessment}
+                onBack={() => setStep('goal')}
+              />
+            )}
 
-        {/* 2️⃣ 🗺️ 훈련로드맵 탭 */}
-        {step === 'roadmap' && roadmap && (
-          <RoadmapView
-            roadmap={roadmap}
-            goal={activeGoal}
-            userAssessment={assessment}
-            viewMode="roadmap"
-            onNavigate={handleTabSwitch}
-            activePlanId={activePlanId}
-            setActivePlanId={setActivePlanId}
-          />
-        )}
+            {/* 2️⃣ 🗺️ 훈련로드맵 탭 */}
+            {step === 'roadmap' && roadmap && (
+              <RoadmapView
+                roadmap={roadmap}
+                goal={activeGoal}
+                userAssessment={assessment}
+                viewMode="roadmap"
+                onNavigate={handleTabSwitch}
+                activePlanId={activePlanId}
+                setActivePlanId={setActivePlanId}
+              />
+            )}
 
-        {/* 3️⃣ ⚡ 실전코칭받기 탭 */}
-        {step === 'coaching' && roadmap && (
-          <RoadmapView
-            roadmap={roadmap}
-            goal={activeGoal}
-            userAssessment={assessment}
-            viewMode="coaching"
-            onNavigate={handleTabSwitch}
-            activePlanId={activePlanId}
-            setActivePlanId={setActivePlanId}
-          />
-        )}
-      </main>
+            {/* 3️⃣ ⚡ 실전코칭받기 탭 */}
+            {step === 'coaching' && roadmap && (
+              <RoadmapView
+                roadmap={roadmap}
+                goal={activeGoal}
+                userAssessment={assessment}
+                viewMode="coaching"
+                onNavigate={handleTabSwitch}
+                activePlanId={activePlanId}
+                setActivePlanId={setActivePlanId}
+              />
+            )}
+          </main>
+        </>
+      )}
 
       {/* 🔐 Firebase 로그인 & 회원가입 모달 */}
       <AuthModal
