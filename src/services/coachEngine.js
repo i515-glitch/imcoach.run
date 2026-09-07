@@ -252,34 +252,39 @@ export const MARATHON_DISTANCES = [
 
 export const MARATHON_PRESETS_BY_DISTANCE = {
   3.0: [
-    { label: '🌱 3km 걷뛰 25분 (8:20)', distanceKm: 3.0, hours: 0, minutes: 25, pace: '8:20' },
-    { label: '💚 3km 슬로우조깅 30분 (10:00)', distanceKm: 3.0, hours: 0, minutes: 30, pace: '10:00' },
-    { label: '🌿 3km 회복 35분 (11:40)', distanceKm: 3.0, hours: 0, minutes: 35, pace: '11:40' },
-    { label: '🏃 5km 슬로우 45분 (9:00)', distanceKm: 5.0, hours: 0, minutes: 45, pace: '9:00' }
+    { label: '15분', shortLabel: '15분', subLabel: '5:00', distanceKm: 3.0, hours: 0, minutes: 15, pace: '5:00' },
+    { label: '20분', shortLabel: '20분', subLabel: '6:40', distanceKm: 3.0, hours: 0, minutes: 20, pace: '6:40' },
+    { label: '25분', shortLabel: '25분', subLabel: '8:20', distanceKm: 3.0, hours: 0, minutes: 25, pace: '8:20' },
+    { label: '30분', shortLabel: '30분', subLabel: '10:00', distanceKm: 3.0, hours: 0, minutes: 30, pace: '10:00', isDefault: true },
+    { label: '완주만', shortLabel: '완주만', subLabel: '11:40', distanceKm: 3.0, hours: 0, minutes: 35, pace: '11:40' }
   ],
   5.0: [
-    { label: '⚡ 5km 30분 (6:00)', distanceKm: 5.0, hours: 0, minutes: 30, pace: '6:00' },
-    { label: '🏃 5km 35분 (7:00) ★', distanceKm: 5.0, hours: 0, minutes: 35, pace: '7:00' },
-    { label: '🌿 5km 40분 (8:00)', distanceKm: 5.0, hours: 0, minutes: 40, pace: '8:00' },
-    { label: '🌱 5km 45분 (9:00)', distanceKm: 5.0, hours: 0, minutes: 45, pace: '9:00' }
+    { label: '20분', shortLabel: '20분', subLabel: '4:00', distanceKm: 5.0, hours: 0, minutes: 20, pace: '4:00' },
+    { label: '25분', shortLabel: '25분', subLabel: '5:00', distanceKm: 5.0, hours: 0, minutes: 25, pace: '5:00' },
+    { label: '30분', shortLabel: '30분', subLabel: '6:00', distanceKm: 5.0, hours: 0, minutes: 30, pace: '6:00' },
+    { label: '35분', shortLabel: '35분', subLabel: '7:00', distanceKm: 5.0, hours: 0, minutes: 35, pace: '7:00', isDefault: true },
+    { label: '완주만', shortLabel: '완주만', subLabel: '9:00', distanceKm: 5.0, hours: 0, minutes: 45, pace: '9:00' }
   ],
   10.0: [
-    { label: '⚡ 10km 55분 (5:30)', distanceKm: 10.0, hours: 0, minutes: 55, pace: '5:30' },
-    { label: '🏃 10km 60분 (6:00) ★', distanceKm: 10.0, hours: 1, minutes: 0, pace: '6:00' },
-    { label: '🌿 10km 70분 (7:00)', distanceKm: 10.0, hours: 1, minutes: 10, pace: '7:00' },
-    { label: '🌱 10km 80분 (8:00)', distanceKm: 10.0, hours: 1, minutes: 20, pace: '8:00' }
+    { label: '40분', shortLabel: '40분', subLabel: '4:00', distanceKm: 10.0, hours: 0, minutes: 40, pace: '4:00' },
+    { label: '50분', shortLabel: '50분', subLabel: '5:00', distanceKm: 10.0, hours: 0, minutes: 50, pace: '5:00' },
+    { label: '60분', shortLabel: '60분', subLabel: '6:00', distanceKm: 10.0, hours: 1, minutes: 0, pace: '6:00', isDefault: true },
+    { label: '70분', shortLabel: '70분', subLabel: '7:00', distanceKm: 10.0, hours: 1, minutes: 10, pace: '7:00' },
+    { label: '완주만', shortLabel: '완주만', subLabel: '8:30', distanceKm: 10.0, hours: 1, minutes: 25, pace: '8:30' }
   ],
   21.0975: [
-    { label: '⚡ 하프 2시간 (5:41)', distanceKm: 21.0975, hours: 2, minutes: 0, pace: '5:41' },
-    { label: '🏃 하프 2시간 15분 (6:23)', distanceKm: 21.0975, hours: 2, minutes: 15, pace: '6:23' },
-    { label: '🌿 하프 2시간 30분 (7:06) ★', distanceKm: 21.0975, hours: 2, minutes: 30, pace: '7:06' },
-    { label: '🌱 하프 2시간 45분 (7:49)', distanceKm: 21.0975, hours: 2, minutes: 45, pace: '7:49' }
+    { label: '1시간 30분', shortLabel: '1시간30분', subLabel: '4:16', distanceKm: 21.0975, hours: 1, minutes: 30, pace: '4:16' },
+    { label: '1시간 45분', shortLabel: '1시간45분', subLabel: '4:58', distanceKm: 21.0975, hours: 1, minutes: 45, pace: '4:58' },
+    { label: '2시간', shortLabel: '2시간', subLabel: '5:41', distanceKm: 21.0975, hours: 2, minutes: 0, pace: '5:41' },
+    { label: '2시간 30분', shortLabel: '2시간30분', subLabel: '7:06', distanceKm: 21.0975, hours: 2, minutes: 30, pace: '7:06', isDefault: true },
+    { label: '완주만', shortLabel: '완주만', subLabel: '8:03', distanceKm: 21.0975, hours: 2, minutes: 50, pace: '8:03' }
   ],
   42.195: [
-    { label: '⚡ 풀코스 4시간 (5:41)', distanceKm: 42.195, hours: 4, minutes: 0, pace: '5:41' },
-    { label: '🏃 풀코스 4시간 30분 (6:23)', distanceKm: 42.195, hours: 4, minutes: 30, pace: '6:23' },
-    { label: '🌿 풀코스 5시간 (7:06) ★', distanceKm: 42.195, hours: 5, minutes: 0, pace: '7:06' },
-    { label: '🌱 풀코스 5시간 30분 (7:49)', distanceKm: 42.195, hours: 5, minutes: 30, pace: '7:49' }
+    { label: '서브3', shortLabel: '서브3', subLabel: '4:15', distanceKm: 42.195, hours: 3, minutes: 0, pace: '4:15' },
+    { label: '3시간 30분', shortLabel: '3시간30분', subLabel: '4:58', distanceKm: 42.195, hours: 3, minutes: 30, pace: '4:58' },
+    { label: '4시간', shortLabel: '4시간', subLabel: '5:41', distanceKm: 42.195, hours: 4, minutes: 0, pace: '5:41' },
+    { label: '4시간 반', shortLabel: '4시간반', subLabel: '6:23', distanceKm: 42.195, hours: 4, minutes: 30, pace: '6:23', isDefault: true },
+    { label: '완주만', shortLabel: '완주만', subLabel: '7:49', distanceKm: 42.195, hours: 5, minutes: 30, pace: '7:49' }
   ]
 };
 

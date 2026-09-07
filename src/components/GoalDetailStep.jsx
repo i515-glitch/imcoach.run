@@ -18,15 +18,15 @@ export function GoalDetailStep({ onGoalSubmit, initialGoal }) {
   const [daysPerWeek, setDaysPerWeek] = useState(initialGoal?.daysPerWeek || 3);
   const [safetyError, setSafetyError] = useState(null);
 
-  // 현재 거리에 맞는 4대 원클릭 프리셋
+  // 현재 거리에 맞는 5대 원클릭 프리셋
   const currentPresets = getPresetsForDistance(distanceKm);
 
-  // 거리 변경 핸들러 (거리 변경 시 해당 거리의 추천 프리셋으로 자동 세팅)
+  // 거리 변경 핸들러 (거리 변경 시 해당 거리의 대표 추천 프리셋으로 자동 세팅)
   const handleDistanceChange = (km) => {
     setDistanceKm(km);
     const newPresets = getPresetsForDistance(km);
     if (newPresets && newPresets.length > 0) {
-      const defaultPreset = newPresets.find(p => p.label.includes('★')) || newPresets[1] || newPresets[0];
+      const defaultPreset = newPresets.find(p => p.isDefault) || newPresets[2] || newPresets[0];
       setHours(defaultPreset.hours);
       setMinutes(defaultPreset.minutes);
       setTargetPace(defaultPreset.pace);
@@ -169,12 +169,19 @@ export function GoalDetailStep({ onGoalSubmit, initialGoal }) {
             })}
           </div>
 
-          {/* 목표 프리셋 */}
+          {/* 목표 시간 (5단계 가로 단추) */}
           <div style={{ fontSize: '12px', fontWeight: '800', color: 'var(--text-secondary)', marginBottom: '8px' }}>
             목표 시간
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(5, 1fr)',
+            background: 'rgba(0, 0, 0, 0.45)',
+            padding: '4px',
+            borderRadius: '14px',
+            gap: '4px'
+          }}>
             {currentPresets.map((preset, idx) => {
               const isMatch = Number(hours) === Number(preset.hours) && Number(minutes) === Number(preset.minutes);
               return (
@@ -183,20 +190,30 @@ export function GoalDetailStep({ onGoalSubmit, initialGoal }) {
                   type="button"
                   onClick={() => handleApplyPreset(preset)}
                   style={{
-                    padding: '11px 12px',
-                    borderRadius: '12px',
-                    fontSize: '12px',
+                    padding: '9px 2px',
+                    borderRadius: '10px',
+                    fontSize: '11px',
                     fontWeight: '800',
                     cursor: 'pointer',
-                    background: isMatch ? 'rgba(48, 209, 88, 0.15)' : 'rgba(255, 255, 255, 0.04)',
-                    color: isMatch ? 'var(--accent-primary)' : 'var(--text-primary)',
-                    border: isMatch ? '1px solid var(--accent-primary)' : '1px solid rgba(255, 255, 255, 0.07)',
-                    textAlign: 'left',
-                    transition: 'all 0.15s ease',
-                    boxShadow: isMatch ? '0 0 12px rgba(48, 209, 88, 0.2)' : 'none'
+                    textAlign: 'center',
+                    background: isMatch ? 'var(--accent-primary)' : 'transparent',
+                    color: isMatch ? '#000000' : 'var(--text-secondary)',
+                    border: 'none',
+                    boxShadow: isMatch ? '0 2px 10px rgba(48, 209, 88, 0.35)' : 'none',
+                    transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    minHeight: '44px'
                   }}
                 >
-                  {preset.label}
+                  <div style={{ fontSize: '11px', fontWeight: '900', lineHeight: 1.15, wordBreak: 'keep-all' }}>
+                    {preset.label}
+                  </div>
+                  <div style={{ fontSize: '9px', opacity: isMatch ? 0.9 : 0.6, fontWeight: '700', marginTop: '2px' }}>
+                    {preset.subLabel ? `${preset.subLabel}/km` : preset.pace}
+                  </div>
                 </button>
               );
             })}
