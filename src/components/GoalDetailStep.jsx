@@ -343,7 +343,6 @@ export function GoalDetailStep({ onGoalSubmit, initialGoal }) {
         {/* 메인 버튼: 로드맵 코칭받기 */}
         <button
           type="submit"
-          onClick={handleSubmit}
           style={{
             width: '100%',
             padding: '16px',

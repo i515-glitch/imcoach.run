@@ -670,7 +670,7 @@ export function generateTrainingRoadmap({
     safetyAdvisory,
     capabilityAnalysis,
     targetDate: scheduleMode === 'deadline' ? targetDate : getFutureDateString(estimatedDaysToTarget),
-    phases,
+    phases: moderatePhases,
     weeklySchedule: createWeeklyScheduleTemplate(category, weeklyFrequency, dailyTime, isSenior),
     coachAdvice: getCoachAdvice(category, level, scheduleMode, isSenior),
     plans: { plan1, plan2, plan3 }
