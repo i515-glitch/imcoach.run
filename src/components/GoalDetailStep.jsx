@@ -340,15 +340,15 @@ export function GoalDetailStep({ onGoalSubmit, initialGoal }) {
           )}
         </div>
 
-        {/* 메인 버튼 */}
+        {/* 메인 버튼: 로드맵 코칭받기 */}
         <button
           type="submit"
-          disabled={!!safetyError}
+          onClick={handleSubmit}
           style={{
             width: '100%',
             padding: '16px',
             borderRadius: '9999px',
-            fontSize: '15px',
+            fontSize: '16px',
             fontWeight: '900',
             letterSpacing: '-0.02em',
             background: 'var(--accent-primary)',
@@ -357,15 +357,15 @@ export function GoalDetailStep({ onGoalSubmit, initialGoal }) {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: '6px',
+            gap: '8px',
             boxShadow: '0 4px 20px rgba(0, 255, 135, 0.4)',
-            cursor: safetyError ? 'not-allowed' : 'pointer',
-            opacity: safetyError ? 0.4 : 1,
-            transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)'
+            cursor: 'pointer',
+            transition: 'all 0.15s ease',
+            WebkitTapHighlightColor: 'transparent'
           }}
         >
-          <span>맞춤 로드맵 만들기</span>
-          <ChevronRight size={18} strokeWidth={3} />
+          <span>로드맵 코칭받기</span>
+          <ChevronRight size={20} strokeWidth={3} />
         </button>
       </form>
     </div>
