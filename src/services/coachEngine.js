@@ -58,67 +58,65 @@ export function analyzeGoalInput(text) {
   };
 }
 
-// 2가지 핵심 섹션(달리기 / 근력운동) 정밀 문진 설문 세트 (스케줄에 나오는 모든 기초 운동 측정)
-// 2가지 핵심 섹션(달리기 / 근력운동) 정밀 문진 설문 세트
 export const GOAL_SPECIFIC_SURVEYS = {
   running: {
-    title: '🏃 달리기 & 기초 체력 정밀 진단',
+    title: '🏃 기초 체력 진단',
     questions: [
       {
         id: 'user_age_group',
         question: '1. 연령대',
         options: [
-          { label: '50대 이상', value: '50s', score: 10 },
+          { label: '50대+', value: '50s', score: 10 },
           { label: '40대', value: '40s', score: 15 },
-          { label: '20 ~ 30대', value: '2030s', score: 20 }
+          { label: '20~30대', value: '2030s', score: 20 }
         ]
       },
       {
         id: 'run_current_pace',
-        question: '2. 현재 1km 달리기 페이스',
+        question: '2. 1km 달리기 속도',
         options: [
-          { label: '8분 30초 이상 / km', value: '8:45', paceSec: 525, score: 5 },
-          { label: '7분 50초 ~ 8분 20초 / km', value: '8:05', paceSec: 485, score: 12 },
-          { label: '7분 00초 ~ 7분 40초 / km', value: '7:20', paceSec: 440, score: 20 },
-          { label: '6분 15초 ~ 6분 50초 / km', value: '6:30', paceSec: 390, score: 30 },
-          { label: '5분 40초 이하 / km', value: '5:40', paceSec: 340, score: 40 }
+          { label: '8분 30초+', value: '8:45', paceSec: 525, score: 5 },
+          { label: '8분대', value: '8:05', paceSec: 485, score: 12 },
+          { label: '7분대', value: '7:20', paceSec: 440, score: 20 },
+          { label: '6분대', value: '6:30', paceSec: 390, score: 30 },
+          { label: '5분대 이하', value: '5:40', paceSec: 340, score: 40 }
         ]
       },
       {
         id: 'run_distance',
-        question: '3. 현재 최장 지속 달리기 거리',
+        question: '3. 최장 달리기 거리',
         options: [
           { label: '1km 미만', value: 1.0, score: 5 },
-          { label: '2 ~ 3km', value: 2.5, score: 15 },
-          { label: '4 ~ 6km', value: 5.0, score: 25 },
+          { label: '2~3km', value: 2.5, score: 15 },
+          { label: '4~6km', value: 5.0, score: 25 },
           { label: '7km 이상', value: 8.0, score: 35 }
         ]
       },
       {
         id: 'squat_current_reps',
-        question: '4. 스쿼트 1세트 가능 개수',
+        question: '4. 스쿼트 1세트',
         options: [
           { label: '8개 미만', value: 6, score: 5 },
-          { label: '10 ~ 15개', value: 12, score: 15 },
-          { label: '20 ~ 25개', value: 20, score: 25 },
+          { label: '10~15개', value: 12, score: 15 },
+          { label: '20~25개', value: 20, score: 25 },
           { label: '30개 이상', value: 30, score: 35 }
         ]
       },
       {
         id: 'legraise_current_reps',
-        question: '5. 다리들기(레그레이즈) 가능 횟수',
+        question: '5. 레그레이즈(복근)',
         options: [
           { label: '6회 미만', value: 5, score: 5 },
-          { label: '10 ~ 12회', value: 10, score: 15 },
-          { label: '15 ~ 20회', value: 18, score: 25 }
+          { label: '10~12회', value: 10, score: 15 },
+          { label: '15~20회', value: 18, score: 25 }
         ]
       },
       {
         id: 'plank_seconds',
-        question: '6. 플랭크 버티기 시간',
+        question: '6. 코어 플랭크',
         options: [
           { label: '15초 미만', value: 15, score: 5 },
-          { label: '20 ~ 40초', value: 30, score: 15 },
+          { label: '20~40초', value: 30, score: 15 },
           { label: '60초 이상', value: 60, score: 25 }
         ]
       },
@@ -127,7 +125,7 @@ export const GOAL_SPECIFIC_SURVEYS = {
         question: '7. 관절 통증 여부',
         options: [
           { label: '전혀 없음', value: 'none', score: 15 },
-          { label: '가끔 무릎/발목 뻐근함', value: 'knee', score: 10 },
+          { label: '가끔 뻐근함', value: 'knee', score: 10 },
           { label: '통증 있음', value: 'shin', score: 5 }
         ]
       }
@@ -254,34 +252,34 @@ export const MARATHON_DISTANCES = [
 
 export const MARATHON_PRESETS_BY_DISTANCE = {
   3.0: [
-    { label: '🌿 슬로우조깅 20분 (초보 첫걸음)', distanceKm: 3.0, hours: 0, minutes: 25, pace: '8:20' },
-    { label: '🌱 80:20 걷뛰 30분 (지방 연소/부상 제로)', distanceKm: 3.0, hours: 0, minutes: 30, pace: '9:00' },
-    { label: '💚 슬로우 3K 25분 미만 (니코니코 페이스)', distanceKm: 3.0, hours: 0, minutes: 25, pace: '8:20' },
-    { label: '🏃 슬로우 5K 45분 미만 (체력 기초 빌드업)', distanceKm: 5.0, hours: 0, minutes: 45, pace: '9:00' }
+    { label: '🌿 3km 20분', distanceKm: 3.0, hours: 0, minutes: 20, pace: '6:40' },
+    { label: '🌱 3km 걷뛰 25분', distanceKm: 3.0, hours: 0, minutes: 25, pace: '8:20' },
+    { label: '💚 슬로우 3km 30분', distanceKm: 3.0, hours: 0, minutes: 30, pace: '10:00' },
+    { label: '🏃 슬로우 5km 45분', distanceKm: 5.0, hours: 0, minutes: 45, pace: '9:00' }
   ],
   5.0: [
-    { label: '🏆 5K 25분 미만 (5:00 페이스)', distanceKm: 5.0, hours: 0, minutes: 25, pace: '5:00' },
-    { label: '⚡ 5K 30분 미만 (6:00 페이스)', distanceKm: 5.0, hours: 0, minutes: 30, pace: '6:00' },
-    { label: '🏃 5K 35분 미만 (7:00 페이스)', distanceKm: 5.0, hours: 0, minutes: 35, pace: '7:00' },
-    { label: '🌿 5K 42분 미만 (초보 8분대 페이스)', distanceKm: 5.0, hours: 0, minutes: 42, pace: '8:24' }
+    { label: '🏆 5km 25분 (5:00)', distanceKm: 5.0, hours: 0, minutes: 25, pace: '5:00' },
+    { label: '⚡ 5km 30분 (6:00)', distanceKm: 5.0, hours: 0, minutes: 30, pace: '6:00' },
+    { label: '🏃 5km 35분 (7:00)', distanceKm: 5.0, hours: 0, minutes: 35, pace: '7:00' },
+    { label: '🌿 5km 42분 (8:24)', distanceKm: 5.0, hours: 0, minutes: 42, pace: '8:24' }
   ],
   10.0: [
-    { label: '🏆 10K 50분 미만 (5:00 페이스)', distanceKm: 10.0, hours: 0, minutes: 50, pace: '5:00' },
-    { label: '⚡ 10K 1시간 미만 (6:00 페이스)', distanceKm: 10.0, hours: 1, minutes: 0, pace: '6:00' },
-    { label: '🏃 10K 1시간 10분 미만 (7:00 페이스)', distanceKm: 10.0, hours: 1, minutes: 10, pace: '7:00' },
-    { label: '🌿 10K 1시간 25분 미만 (초보 8분대 페이스)', distanceKm: 10.0, hours: 1, minutes: 25, pace: '8:30' }
+    { label: '🏆 10km 50분 (5:00)', distanceKm: 10.0, hours: 0, minutes: 50, pace: '5:00' },
+    { label: '⚡ 10km 60분 (6:00)', distanceKm: 10.0, hours: 1, minutes: 0, pace: '6:00' },
+    { label: '🏃 10km 70분 (7:00)', distanceKm: 10.0, hours: 1, minutes: 10, pace: '7:00' },
+    { label: '🌿 10km 85분 (8:30)', distanceKm: 10.0, hours: 1, minutes: 25, pace: '8:30' }
   ],
   21.0975: [
-    { label: '🔥 하프 1시간 30분 미만', distanceKm: 21.0975, hours: 1, minutes: 30, pace: '4:16' },
-    { label: '🏆 하프 1시간 45분 미만', distanceKm: 21.0975, hours: 1, minutes: 45, pace: '4:58' },
-    { label: '⚡ 하프 2시간 미만 (서브2)', distanceKm: 21.0975, hours: 2, minutes: 0, pace: '5:41' },
-    { label: '🏃 하프 2시간 15분 미만', distanceKm: 21.0975, hours: 2, minutes: 15, pace: '6:23' }
+    { label: '🔥 하프 1시간 30분', distanceKm: 21.0975, hours: 1, minutes: 30, pace: '4:16' },
+    { label: '🏆 하프 1시간 45분', distanceKm: 21.0975, hours: 1, minutes: 45, pace: '4:58' },
+    { label: '⚡ 하프 2시간 (서브2)', distanceKm: 21.0975, hours: 2, minutes: 0, pace: '5:41' },
+    { label: '🏃 하프 2시간 15분', distanceKm: 21.0975, hours: 2, minutes: 15, pace: '6:23' }
   ],
   42.195: [
-    { label: '🔥 풀코스 3시간 미만 (서브3)', distanceKm: 42.195, hours: 3, minutes: 0, pace: '4:15' },
-    { label: '🏆 풀코스 3시간 30분 미만', distanceKm: 42.195, hours: 3, minutes: 30, pace: '4:58' },
-    { label: '⚡ 풀코스 4시간 미만 (서브4)', distanceKm: 42.195, hours: 4, minutes: 0, pace: '5:41' },
-    { label: '🏃 풀코스 4시간 30분 미만', distanceKm: 42.195, hours: 4, minutes: 30, pace: '6:23' }
+    { label: '🔥 풀코스 3시간 (서브3)', distanceKm: 42.195, hours: 3, minutes: 0, pace: '4:15' },
+    { label: '🏆 풀코스 3시간 30분', distanceKm: 42.195, hours: 3, minutes: 30, pace: '4:58' },
+    { label: '⚡ 풀코스 4시간 (서브4)', distanceKm: 42.195, hours: 4, minutes: 0, pace: '5:41' },
+    { label: '🏃 풀코스 4시간 30분', distanceKm: 42.195, hours: 4, minutes: 30, pace: '6:23' }
   ]
 };
 
@@ -920,7 +918,6 @@ function generateDetailedWeeklyChecklists(category, totalWeeks, isSenior, isMast
   const daysOfWeek = ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'];
 
   // 사용자 설문 기반 시작 기준값 추출
-  // 1) 달리기 시작 거리 (기본 2.5km or 설문값)
   const distOptMap = [1.0, 2.5, 5.0, 8.0];
   const userStartDist = distOptMap[surveyAnswers.run_distance] || 2.5;
 
@@ -965,49 +962,49 @@ function generateDetailedWeeklyChecklists(category, totalWeeks, isSenior, isMast
 
       if (isWorkout) {
         if (dIdx === 0) {
-          // 월요일: E페이스(Easy Run) 조깅 + 하체 근력
+          // 월요일: 조깅 + 하체
           return {
             dayKey,
             dayName,
             isWorkout: true,
-            theme: '🏃 E페이스 조깅 & 하체 보강 (피칭어 Base)',
+            theme: '🏃 조깅 & 하체 보강',
             tasks: [
-              { id: `${dayKey}_t1`, category: '달리기', text: `E페이스 이지 조깅 ${distKm}km (페이스: ${paceStr})`, isDone: false },
-              { id: `${dayKey}_t2`, category: '근력', text: `맨몸 스쿼트 ${squatReps}회 x 3세트`, isDone: false },
-              { id: `${dayKey}_t3`, category: '근력', text: `카프레이즈(종아리 충격흡수) ${legRaiseReps + 5}회 x 3세트`, isDone: false },
+              { id: `${dayKey}_t1`, category: '달리기', text: `이지 조깅 ${distKm}km (${paceStr}/km)`, isDone: false },
+              { id: `${dayKey}_t2`, category: '근력', text: `스쿼트 ${squatReps}회 x 3세트`, isDone: false },
+              { id: `${dayKey}_t3`, category: '근력', text: `카프레이즈 ${legRaiseReps + 5}회 x 3세트`, isDone: false },
               { id: `${dayKey}_t4`, category: '복근', text: `코어 플랭크 ${plankSec}초 x 3세트`, isDone: false },
-              { id: `${dayKey}_t5`, category: '회복', text: `종아리 & 대퇴사두근 폼롤러 스트레칭 10분`, isDone: false }
+              { id: `${dayKey}_t5`, category: '회복', text: `폼롤러 스트레칭 10분`, isDone: false }
             ]
           };
         } else if (dIdx === 2) {
-          // 수요일: T페이스(Threshold) 템포런 또는 미디엄 롱런
+          // 수요일: 템포런 & 코어
           const midDist = Math.max(2.0, (distKm * 0.8)).toFixed(1);
           return {
             dayKey,
             dayName,
             isWorkout: true,
-            theme: '⚡ T페이스 젖산역치 템포런 & 코어',
+            theme: '⚡ 템포런 & 코어',
             tasks: [
-              { id: `${dayKey}_t1`, category: '달리기', text: `T페이스 젖산역치 템포런 ${midDist}km (기분 좋은 고통 유지)`, isDone: false },
+              { id: `${dayKey}_t1`, category: '달리기', text: `템포런 ${midDist}km 지속주`, isDone: false },
               { id: `${dayKey}_t2`, category: '근력', text: `와이드 스쿼트 ${squatReps}회 x 3세트`, isDone: false },
-              { id: `${dayKey}_t3`, category: '근력', text: `누워서 다리들기(레그레이즈) ${legRaiseReps}회 x 3세트`, isDone: false },
-              { id: `${dayKey}_t4`, category: '복근', text: `버드독 코어 밸런스 12회 x 3세트`, isDone: false },
-              { id: `${dayKey}_t5`, category: '회복', text: `고관절 장요근 딥 스트레칭 10분`, isDone: false }
+              { id: `${dayKey}_t3`, category: '근력', text: `레그레이즈 ${legRaiseReps}회 x 3세트`, isDone: false },
+              { id: `${dayKey}_t4`, category: '복근', text: `버드독 ${Math.min(12, squatReps)}회 x 3세트`, isDone: false },
+              { id: `${dayKey}_t5`, category: '회복', text: `고관절 스트레칭 10분`, isDone: false }
             ]
           };
         } else {
-          // 토요일: 주말 핵심 롱런 LSD (Long Slow Distance)
+          // 토요일: 장거리 LSD
           return {
             dayKey,
             dayName,
             isWorkout: true,
-            theme: '🏆 주말 핵심 장거리 LSD (Long Slow Distance)',
+            theme: '🏆 주말 장거리 LSD',
             tasks: [
-              { id: `${dayKey}_t1`, category: '달리기', text: `주말 메인 LSD ${distKm}km 지속 완주 (E~M페이스 빌드업)`, isDone: false },
-              { id: `${dayKey}_t2`, category: '근력', text: `런지 하체 밸런스 좌우 ${Math.max(6, legRaiseReps - 2)}회 x 3세트`, isDone: false },
-              { id: `${dayKey}_t3`, category: '근력', text: `덩키킥 둔근 활성화 좌우 ${legRaiseReps}회 x 3세트`, isDone: false },
+              { id: `${dayKey}_t1`, category: '달리기', text: `장거리 LSD ${distKm}km 완주`, isDone: false },
+              { id: `${dayKey}_t2`, category: '근력', text: `런지 ${Math.max(6, legRaiseReps - 2)}회 x 3세트`, isDone: false },
+              { id: `${dayKey}_t3`, category: '근력', text: `덩키킥 ${legRaiseReps}회 x 3세트`, isDone: false },
               { id: `${dayKey}_t4`, category: '복근', text: `사이드 플랭크 좌우 25초 x 3세트`, isDone: false },
-              { id: `${dayKey}_t5`, category: '회복', text: `발바닥 족저근막 & 아킬레스건 아이싱/마사지 10분`, isDone: false }
+              { id: `${dayKey}_t5`, category: '회복', text: `발바닥 & 종아리 마사지 10분`, isDone: false }
             ]
           };
         }
@@ -1019,8 +1016,8 @@ function generateDetailedWeeklyChecklists(category, totalWeeks, isSenior, isMast
           isWorkout: false,
           theme: '🌿 관절 회복 & 휴식',
           tasks: [
-            { id: `${dayKey}_t1`, category: '회복', text: '가벼운 산책 20분 또는 전신 폼롤러 이완', isDone: false },
-            { id: `${dayKey}_t2`, category: '영양', text: '충분한 수분 섭취 및 양질의 수면 취하기', isDone: false }
+            { id: `${dayKey}_t1`, category: '회복', text: '가벼운 산책 20분 또는 폼롤러', isDone: false },
+            { id: `${dayKey}_t2`, category: '영양', text: '충분한 수면 (7시간 이상)', isDone: false }
           ]
         };
       }
