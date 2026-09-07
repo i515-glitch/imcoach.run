@@ -34,14 +34,14 @@ export function DynamicProgressChart({ forecastData, activePlan, activePlanId = 
   const w3 = p3?.totalWeeks || 16;
   const maxWeeks = Math.max(w1, w2, w3, 16);
 
-  // 차트 좌표 계산 (SVG viewBox: 0 0 680 230)
-  const paddingLeft = 45;
-  const paddingRight = 35;
-  const paddingTop = 28;
-  const paddingBottom = 32;
+  // 차트 좌표 계산 (SVG viewBox: 0 0 680 245)
+  const paddingLeft = 54;
+  const paddingRight = 32;
+  const paddingTop = 32;
+  const paddingBottom = 36;
 
   const chartWidth = 680 - paddingLeft - paddingRight;
-  const chartHeight = 230 - paddingTop - paddingBottom;
+  const chartHeight = 245 - paddingTop - paddingBottom;
 
   // X축 좌표 변환 함수 (0주 ~ maxWeeks)
   const getX = (week) => paddingLeft + (week / maxWeeks) * chartWidth;
@@ -197,12 +197,12 @@ export function DynamicProgressChart({ forecastData, activePlan, activePlanId = 
       )}
 
       {/* 1. 상단 예측 요약 대시보드 */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', marginBottom: '10px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', marginBottom: '12px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ fontSize: '14px', fontWeight: '800', color: '#ffffff' }}>
+          <span style={{ fontSize: '15px', fontWeight: '800', color: '#ffffff' }}>
             {activeTab === 'time' ? '📊 1·2·3안 전체 로드맵 & 실행 예측' : '⚖️ 체중 예측'}
           </span>
-          <span className="badge" style={{ backgroundColor: statusBg, color: statusColor, border: `1px solid ${statusColor}40`, fontSize: '10px' }}>
+          <span className="badge" style={{ backgroundColor: statusBg, color: statusColor, border: `1px solid ${statusColor}40`, fontSize: '11px', fontWeight: '800' }}>
             {statusTitle}
           </span>
         </div>
@@ -210,24 +210,24 @@ export function DynamicProgressChart({ forecastData, activePlan, activePlanId = 
         {/* 2대 핵심 예측 수치 */}
         <div style={{ display: 'flex', gap: '8px' }}>
           {activeTab === 'time' ? (
-            <div style={{ padding: '4px 10px', background: 'rgba(0,0,0,0.4)', borderRadius: 'var(--radius-sm)', textAlign: 'center', border: '1px solid var(--border-subtle)' }}>
-              <div style={{ fontSize: '9px', color: 'var(--text-muted)' }}>예상 완주</div>
-              <div style={{ fontSize: '14px', fontWeight: '900', color: statusColor }}>
+            <div style={{ padding: '6px 12px', background: 'rgba(0,0,0,0.45)', borderRadius: 'var(--radius-sm)', textAlign: 'center', border: '1px solid var(--border-subtle)' }}>
+              <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: '600' }}>예상 완주</div>
+              <div style={{ fontSize: '16px', fontWeight: '900', color: statusColor, marginTop: '1px' }}>
                 {predictedFinishMin}분
               </div>
             </div>
           ) : (
-            <div style={{ padding: '4px 10px', background: 'rgba(0,0,0,0.4)', borderRadius: 'var(--radius-sm)', textAlign: 'center', border: '1px solid var(--border-subtle)' }}>
-              <div style={{ fontSize: '9px', color: 'var(--text-muted)' }}>예상 체중</div>
-              <div style={{ fontSize: '14px', fontWeight: '900', color: statusColor }}>
+            <div style={{ padding: '6px 12px', background: 'rgba(0,0,0,0.45)', borderRadius: 'var(--radius-sm)', textAlign: 'center', border: '1px solid var(--border-subtle)' }}>
+              <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: '600' }}>예상 체중</div>
+              <div style={{ fontSize: '16px', fontWeight: '900', color: statusColor, marginTop: '1px' }}>
                 {predictedFinalWeight} kg
               </div>
             </div>
           )}
 
-          <div style={{ padding: '4px 10px', background: 'rgba(0,0,0,0.4)', borderRadius: 'var(--radius-sm)', textAlign: 'center', border: '1px solid var(--border-subtle)' }}>
-            <div style={{ fontSize: '9px', color: 'var(--text-muted)' }}>달성 확률</div>
-            <div style={{ fontSize: '14px', fontWeight: '900', color: achievementProbability >= 80 ? 'var(--accent-primary)' : achievementProbability >= 60 ? '#ffb703' : '#ff6b6b' }}>
+          <div style={{ padding: '6px 12px', background: 'rgba(0,0,0,0.45)', borderRadius: 'var(--radius-sm)', textAlign: 'center', border: '1px solid var(--border-subtle)' }}>
+            <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: '600' }}>달성 확률</div>
+            <div style={{ fontSize: '16px', fontWeight: '900', color: achievementProbability >= 80 ? 'var(--accent-primary)' : achievementProbability >= 60 ? '#ffb703' : '#ff6b6b', marginTop: '1px' }}>
               {achievementProbability}%
             </div>
           </div>
@@ -236,7 +236,7 @@ export function DynamicProgressChart({ forecastData, activePlan, activePlanId = 
 
       {/* 2. SVG 통합 다이나믹 로드맵 그래프 (1·2·3안 전체 기간 칸수 & 3선 + 실행 오버레이) */}
       <div style={{ position: 'relative', width: '100%', overflowX: 'auto' }}>
-        <svg viewBox="0 0 680 230" style={{ width: '100%', height: 'auto', display: 'block' }}>
+        <svg viewBox="0 0 680 245" style={{ width: '100%', height: 'auto', display: 'block' }}>
           <defs>
             <filter id="glowEffect" x="-20%" y="-20%" width="140%" height="140%">
               <feDropShadow dx="0" dy="0" stdDeviation="3" floodColor={statusColor} floodOpacity="0.8" />
@@ -246,7 +246,7 @@ export function DynamicProgressChart({ forecastData, activePlan, activePlanId = 
             </filter>
           </defs>
 
-          {/* 1) Y축 가로 눈금선 & 라벨 */}
+          {/* 1) Y축 가로 눈금선 & 라벨 (글자 크기 및 가독성 대폭 향상) */}
           {timeTicks.map(val => (
             <g key={val}>
               <line
@@ -254,14 +254,15 @@ export function DynamicProgressChart({ forecastData, activePlan, activePlanId = 
                 y1={getYTime(val)}
                 x2={680 - paddingRight}
                 y2={getYTime(val)}
-                stroke="rgba(255, 255, 255, 0.07)"
+                stroke="rgba(255, 255, 255, 0.08)"
                 strokeDasharray="3,3"
               />
               <text
-                x={paddingLeft - 6}
-                y={getYTime(val) + 3.5}
-                fill="var(--text-muted)"
-                fontSize="9.5"
+                x={paddingLeft - 8}
+                y={getYTime(val) + 4}
+                fill="rgba(255, 255, 255, 0.8)"
+                fontSize="11.5"
+                fontWeight="700"
                 textAnchor="end"
               >
                 {val}분
@@ -269,7 +270,7 @@ export function DynamicProgressChart({ forecastData, activePlan, activePlanId = 
             </g>
           ))}
 
-          {/* 2) X축 전체 기간 칸수(0주 ~ maxWeeks) 세로 눈금선 및 주차 라벨 */}
+          {/* 2) X축 전체 기간 칸수(0주 ~ maxWeeks) 세로 눈금선 및 주차 라벨 (글자 크기 확대) */}
           {Array.from({ length: maxWeeks + 1 }, (_, i) => i).map(w => {
             const x = getX(w);
             const isMilestone = w === w1 || w === w2 || w === w3;
@@ -281,17 +282,17 @@ export function DynamicProgressChart({ forecastData, activePlan, activePlanId = 
                   y1={paddingTop}
                   x2={x}
                   y2={paddingTop + chartHeight}
-                  stroke={isMilestone ? 'transparent' : 'rgba(255, 255, 255, 0.05)'}
+                  stroke={isMilestone ? 'transparent' : 'rgba(255, 255, 255, 0.06)'}
                   strokeWidth="1"
                   strokeDasharray="2,2"
                 />
                 {/* X축 주차 텍스트 */}
                 <text
                   x={x}
-                  y={230 - 10}
-                  fill={w === currentActiveWeek ? 'var(--accent-primary)' : 'var(--text-muted)'}
-                  fontSize="8.5"
-                  fontWeight={w === currentActiveWeek || isMilestone ? '800' : '400'}
+                  y={245 - 10}
+                  fill={w === currentActiveWeek ? 'var(--accent-primary)' : isMilestone ? '#ffffff' : 'rgba(255, 255, 255, 0.75)'}
+                  fontSize="11"
+                  fontWeight={w === currentActiveWeek || isMilestone ? '900' : '600'}
                   textAnchor="middle"
                 >
                   {w === 0 ? '시작' : `${w}주`}
@@ -300,11 +301,11 @@ export function DynamicProgressChart({ forecastData, activePlan, activePlanId = 
             );
           })}
 
-          {/* 3) 1안, 2안, 3안 기간 구분선 & 상단 뱃지 */}
+          {/* 3) 1안, 2안, 3안 기간 구분선 & 상단 뱃지 (글자 크기 및 가독성 개선) */}
           {/* 1안 구분선 (w1주) */}
           <line
             x1={getX(w1)}
-            y1={paddingTop - 10}
+            y1={paddingTop - 8}
             x2={getX(w1)}
             y2={paddingTop + chartHeight}
             stroke="#64d2ff"
@@ -313,20 +314,20 @@ export function DynamicProgressChart({ forecastData, activePlan, activePlanId = 
             opacity="0.85"
           />
           <rect
-            x={getX(w1) - 27}
-            y={paddingTop - 24}
-            width="54"
-            height="15"
-            rx="4"
+            x={getX(w1) - 32}
+            y={paddingTop - 27}
+            width="64"
+            height="18"
+            rx="5"
             fill="rgba(100, 210, 255, 0.25)"
             stroke="#64d2ff"
-            strokeWidth="1"
+            strokeWidth="1.2"
           />
           <text
             x={getX(w1)}
-            y={paddingTop - 13}
+            y={paddingTop - 14}
             fill="#64d2ff"
-            fontSize="8.5"
+            fontSize="10.5"
             fontWeight="900"
             textAnchor="middle"
           >
@@ -336,7 +337,7 @@ export function DynamicProgressChart({ forecastData, activePlan, activePlanId = 
           {/* 2안 구분선 (w2주) */}
           <line
             x1={getX(w2)}
-            y1={paddingTop - 10}
+            y1={paddingTop - 8}
             x2={getX(w2)}
             y2={paddingTop + chartHeight}
             stroke="#00ff87"
@@ -345,20 +346,20 @@ export function DynamicProgressChart({ forecastData, activePlan, activePlanId = 
             opacity="0.85"
           />
           <rect
-            x={getX(w2) - 29}
-            y={paddingTop - 24}
-            width="58"
-            height="15"
-            rx="4"
+            x={getX(w2) - 35}
+            y={paddingTop - 27}
+            width="70"
+            height="18"
+            rx="5"
             fill="rgba(0, 255, 135, 0.25)"
             stroke="#00ff87"
-            strokeWidth="1"
+            strokeWidth="1.2"
           />
           <text
             x={getX(w2)}
-            y={paddingTop - 13}
+            y={paddingTop - 14}
             fill="#00ff87"
-            fontSize="8.5"
+            fontSize="10.5"
             fontWeight="900"
             textAnchor="middle"
           >
@@ -368,7 +369,7 @@ export function DynamicProgressChart({ forecastData, activePlan, activePlanId = 
           {/* 3안 구분선 (w3주) */}
           <line
             x1={getX(w3)}
-            y1={paddingTop - 10}
+            y1={paddingTop - 8}
             x2={getX(w3)}
             y2={paddingTop + chartHeight}
             stroke="#ffb703"
@@ -377,20 +378,20 @@ export function DynamicProgressChart({ forecastData, activePlan, activePlanId = 
             opacity="0.85"
           />
           <rect
-            x={getX(w3) - 27}
-            y={paddingTop - 24}
-            width="54"
-            height="15"
-            rx="4"
+            x={getX(w3) - 32}
+            y={paddingTop - 27}
+            width="64"
+            height="18"
+            rx="5"
             fill="rgba(255, 183, 3, 0.25)"
             stroke="#ffb703"
-            strokeWidth="1"
+            strokeWidth="1.2"
           />
           <text
             x={getX(w3)}
-            y={paddingTop - 13}
+            y={paddingTop - 14}
             fill="#ffb703"
-            fontSize="8.5"
+            fontSize="10.5"
             fontWeight="900"
             textAnchor="middle"
           >
@@ -497,34 +498,34 @@ export function DynamicProgressChart({ forecastData, activePlan, activePlanId = 
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        gap: '8px',
-        marginTop: '10px',
-        paddingTop: '8px',
-        borderTop: '1px solid rgba(255,255,255,0.06)',
+        gap: '10px',
+        marginTop: '12px',
+        paddingTop: '10px',
+        borderTop: '1px solid rgba(255,255,255,0.08)',
         flexWrap: 'wrap',
-        fontSize: '10.5px'
+        fontSize: '12px'
       }}>
         {/* 1안 범례 */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', opacity: activePlanId === 'plan1' ? 1 : 0.65 }}>
-          <span style={{ width: '12px', height: '2px', borderBottom: '2px dashed #64d2ff', display: 'inline-block' }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '5px', opacity: activePlanId === 'plan1' ? 1 : 0.65 }}>
+          <span style={{ width: '14px', height: '2px', borderBottom: '2.5px dashed #64d2ff', display: 'inline-block' }} />
           <span style={{ color: '#64d2ff', fontWeight: '800' }}>1안({w1}주)</span>
         </div>
 
         {/* 2안 범례 */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', opacity: activePlanId === 'plan2' ? 1 : 0.65 }}>
-          <span style={{ width: '12px', height: '2px', borderBottom: '2px dashed #00ff87', display: 'inline-block' }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '5px', opacity: activePlanId === 'plan2' ? 1 : 0.65 }}>
+          <span style={{ width: '14px', height: '2px', borderBottom: '2.5px dashed #00ff87', display: 'inline-block' }} />
           <span style={{ color: '#00ff87', fontWeight: '800' }}>2안({w2}주)★</span>
         </div>
 
         {/* 3안 범례 */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', opacity: activePlanId === 'plan3' ? 1 : 0.65 }}>
-          <span style={{ width: '12px', height: '2px', borderBottom: '2px dashed #ffb703', display: 'inline-block' }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '5px', opacity: activePlanId === 'plan3' ? 1 : 0.65 }}>
+          <span style={{ width: '14px', height: '2px', borderBottom: '2.5px dashed #ffb703', display: 'inline-block' }} />
           <span style={{ color: '#ffb703', fontWeight: '800' }}>3안({w3}주)</span>
         </div>
 
         {/* 포개진 실행 & 예측 범례 */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '5px', background: 'rgba(255,255,255,0.05)', padding: '3px 8px', borderRadius: '6px' }}>
-          <span style={{ width: '10px', height: '3px', backgroundColor: '#ffffff', display: 'inline-block', borderRadius: '1px' }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(255,255,255,0.08)', padding: '4px 10px', borderRadius: '8px' }}>
+          <span style={{ width: '12px', height: '3.5px', backgroundColor: '#ffffff', display: 'inline-block', borderRadius: '2px' }} />
           <span style={{ color: '#ffffff', fontWeight: '800' }}>선택한 {activePlanId === 'plan1' ? '1안' : activePlanId === 'plan3' ? '3안' : '2안'} 실행포개짐</span>
         </div>
       </div>
